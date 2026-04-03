@@ -1,0 +1,15 @@
+{
+  "name": "fooo-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Design token pipeline for Figma Tokens Studio exports.",
+  "scripts": {
+    "build": "node build-tokens.js",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@tokens-studio/sd-transforms": "^2.0.3",
+    "style-dictionary": "^5.0.0"
+  }
+}
