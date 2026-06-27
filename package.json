@@ -6,7 +6,9 @@
   "description": "Design token pipeline for Figma Tokens Studio exports.",
   "scripts": {
     "build": "node build-tokens.js",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "tokens:push": "sh push-tokens.sh",
+    "docs": "npx serve docs -p 4000"
   },
   "devDependencies": {
     "@tokens-studio/sd-transforms": "^2.0.3",
