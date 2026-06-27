@@ -1,0 +1,3587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOOO Design System — Reference Library</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500&family=Exo+2:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face {
+      font-family: 'Metropolis';
+      src: url('https://fonts.cdnfonts.com/s/16308/Metropolis-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Metropolis';
+      src: url('https://fonts.cdnfonts.com/s/16308/Metropolis-SemiBold.woff') format('woff');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+
+  <style>
+    /* ── Site design tokens — light neutral, on-bright ── */
+    :root {
+      --s-bg:           #f2f2f2;
+      --s-surface:      #ffffff;
+      --s-surface-mid:  #f8f8f8;
+      --s-border:       rgba(15,15,15,0.09);
+      --s-border-mid:   rgba(15,15,15,0.16);
+      --s-text:         #0f0f0f;
+      --s-text-muted:   #3e3e3e;
+      --s-text-subtle:  #696969;  /* 4.63:1 on white, 4.51:1 on #f2f2f2 — WCAG AA both surfaces */
+      --s-accent:       #0f0f0f;
+      --s-sidebar-w:    216px;
+      --s-topbar-h:     54px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip; /* prevent horizontal scroll at any viewport width */
+    }
+
+    body {
+      background: var(--s-bg);
+      color: var(--s-text);
+      font-family: Inter, sans-serif;
+      font-size: 15px;
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-width: 0;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--s-topbar-h);
+      background: var(--s-surface);
+      border-bottom: 1px solid var(--s-border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 24px;
+      z-index: 200;
+    }
+
+    .topbar-wordmark {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--s-text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .topbar-wordmark-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--s-text);
+      display: inline-block;
+    }
+
+    .topbar-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--s-border-mid);
+    }
+
+    .topbar-tabs {
+      display: flex;
+      gap: 3px;
+    }
+
+    .tab-btn {
+      font-family: Inter, sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      background: none;
+      cursor: pointer;
+      color: var(--s-text-subtle);
+      transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+      line-height: 1.5;
+    }
+
+    .tab-btn:hover {
+      background: rgba(15,15,15,0.05);
+      color: var(--s-text);
+    }
+
+    .tab-btn.active {
+      background: var(--s-text);
+      color: #fbfbfb;
+      border-color: transparent;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      padding-top: var(--s-topbar-h);
+      min-height: 100vh;
+      min-width: 0;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--s-sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: var(--s-topbar-h);
+      bottom: 0;
+      overflow-y: auto;
+      border-right: 1px solid var(--s-border);
+      background: var(--s-surface);
+      padding: 28px 0 40px;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(15,15,15,0.12); border-radius: 2px; }
+
+    .sidebar-group { margin-bottom: 4px; }
+
+    .sidebar-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--s-text-subtle);
+      padding: 12px 20px 6px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      color: var(--s-text-subtle);
+      padding: 5px 20px;
+      text-decoration: none;
+      transition: color 120ms ease, background 120ms ease;
+      line-height: 1.4;
+    }
+
+    .sidebar-link:hover {
+      color: var(--s-text);
+      background: rgba(15,15,15,0.04);
+    }
+
+    .sidebar-link.active {
+      color: var(--s-text);
+      font-weight: 500;
+    }
+
+    .sidebar-link-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      opacity: 0.5;
+      min-width: 16px;
+    }
+
+    /* ── Main content ── */
+    .main {
+      margin-left: var(--s-sidebar-w);
+      flex: 1;
+      min-width: 0;           /* prevent flex child overflow */
+      padding: 52px 56px 96px;
+      max-width: 900px;       /* content width only, sidebar not included */
+    }
+
+    /* ── Tab panels ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom: 60px; }
+
+    .page-header-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--s-text-subtle);
+      margin-bottom: 10px;
+    }
+
+    .page-header-title {
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: -0.7px;
+      line-height: 1.1;
+      color: var(--s-text);
+      margin-bottom: 14px;
+    }
+
+    .page-header-desc {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--s-text-muted);
+      max-width: 500px;
+    }
+
+    /* ── Section ── */
+    .ref-section { margin-bottom: 80px; }
+
+    .ref-section-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      margin-bottom: 6px;
+    }
+
+    .ref-section-title {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.35px;
+      color: var(--s-text);
+      margin-bottom: 28px;
+    }
+
+    .ref-divider {
+      border: none;
+      border-top: 1px solid var(--s-border);
+      margin-bottom: 32px;
+    }
+
+    /* ── Color group ── */
+    .color-group { margin-bottom: 36px; }
+
+    .color-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--s-text-subtle);
+      margin-bottom: 14px;
+    }
+
+    .color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .swatch { width: 84px; }
+
+    .swatch-box {
+      width: 84px;
+      height: 60px;
+      border-radius: 9px;
+      border: 1px solid rgba(15,15,15,0.08);
+      margin-bottom: 8px;
+    }
+
+    .swatch-name {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--s-text);
+      line-height: 1.3;
+    }
+
+    .swatch-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
+    /* Neutral strip */
+    .neutral-strip-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      margin-bottom: 8px;
+    }
+
+    .neutral-strip {
+      display: flex;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid rgba(15,15,15,0.08);
+      min-width: 0;
+      width: 100%;
+    }
+
+    .neutral-cell {
+      flex: 1;
+      height: 52px;
+      position: relative;
+    }
+
+    .neutral-cell-lbl {
+      position: absolute;
+      bottom: 7px;
+      left: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;  /* raised from 9px — large-ish text for AA at lower contrast */
+      font-weight: 500;
+      line-height: 1;
+      /* colour is set inline via JS based on cell background luminance */
+    }
+
+    /* ── Typography specimens ── */
+    .type-category-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      padding: 24px 0 12px;
+      border-top: 1px solid var(--s-border);
+      margin-top: 8px;
+    }
+
+    .type-category-label:first-child { border-top: none; padding-top: 0; }
+
+    .type-specimen {
+      display: grid;
+      grid-template-columns: 176px 1fr;
+      gap: 24px;
+      align-items: baseline;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .type-specimen:last-child { border-bottom: none; }
+
+    .type-spec-token {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--s-text);
+      margin-bottom: 5px;
+    }
+
+    .type-spec-detail {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      line-height: 1.8;
+    }
+
+    .type-sample {
+      overflow: hidden;
+      color: var(--s-text);
+      max-width: 100%;
+    }
+
+    /* ── Scale bars ── */
+    .scale-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .scale-row:last-child { border-bottom: none; }
+
+    .scale-token {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-subtle);
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .scale-bar-track {
+      flex: 1;
+      height: 5px;
+      background: rgba(15,15,15,0.07);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .scale-bar-fill {
+      height: 100%;
+      background: var(--s-text);
+      border-radius: 3px;
+      transition: width 400ms ease;
+    }
+
+    .scale-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-subtle);
+      width: 52px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── Containers ── */
+    .containers-track {
+      position: relative;
+      padding-bottom: 16px;
+    }
+
+    .container-row {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .container-bar {
+      height: 34px;
+      background: rgba(15,15,15,0.07);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .container-bar.composite {
+      background: transparent;
+      border: 1.5px dashed rgba(15,15,15,0.20);
+    }
+
+    .container-bar-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-muted);
+      white-space: nowrap;
+    }
+
+    .container-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-subtle);
+      white-space: nowrap;
+    }
+
+    .containers-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      margin: 28px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .containers-group-label:first-child { margin-top: 0; }
+
+    .comp-badge {
+      font-size: 10px;
+      background: rgba(15,15,15,0.07);
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--s-text-subtle);
+    }
+
+    /* ── Aspect ratios ── */
+    .ratio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .ratio-card {
+      background: var(--s-surface);
+      border: 1px solid var(--s-border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .ratio-box {
+      background: rgba(15,15,15,0.06);
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .ratio-name {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--s-text);
+      margin-bottom: 3px;
+    }
+
+    .ratio-detail {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      line-height: 1.7;
+    }
+
+    /* ── Elevation ── */
+    .elevation-rows { display: flex; flex-direction: column; gap: 16px; }
+
+    .elevation-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .elevation-item:last-child { border-bottom: none; }
+
+    .elevation-spec-token {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--s-text);
+      margin-bottom: 4px;
+    }
+
+    .elevation-spec-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      margin-bottom: 4px;
+    }
+
+    .elevation-spec-desc {
+      font-size: 12px;
+      color: var(--s-text-subtle);
+      line-height: 1.5;
+    }
+
+    .elevation-swatch-wrap {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .elevation-swatch {
+      border-radius: 7px;
+      padding: 12px 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+    }
+
+    /* ── Easing ── */
+
+    .easing-chart-wrap {
+      border: 1px solid var(--s-border);
+      border-radius: 12px;
+      padding: 24px 20px 16px;
+      background: var(--s-surface);
+      margin: 0;
+    }
+
+    .easing-chart-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .easing-chart-formula {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--s-text);
+      letter-spacing: 0.1px;
+    }
+
+    .easing-chart-subtitle {
+      font-size: 11px;
+      color: var(--s-text-subtle);
+      font-weight: 400;
+    }
+
+    .easing-chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: 16px;
+    }
+
+    .easing-legend-item {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .easing-legend-line {
+      width: 20px;
+      height: 2px;
+      border-radius: 1px;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .easing-legend-line.dashed {
+      background: repeating-linear-gradient(
+        90deg, currentColor 0, currentColor 4px, transparent 4px, transparent 7px
+      );
+    }
+
+    /* Spring / Bounce */
+    .easing-spring-wrap {
+      border: 1px solid var(--s-border);
+      border-radius: 12px;
+      padding: 24px 20px 20px;
+      background: var(--s-surface);
+      margin-top: 16px;
+    }
+
+    .easing-spring-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .easing-spring-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .easing-spring-subtitle {
+      font-size: 11px;
+      color: var(--s-text-subtle);
+      font-weight: 400;
+    }
+
+    .spring-switch {
+      display: flex;
+      gap: 3px;
+      background: rgba(15,15,15,0.05);
+      border-radius: 7px;
+      padding: 3px;
+    }
+
+    .spring-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 5px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--s-text-subtle);
+      transition: background 140ms ease, color 140ms ease;
+      line-height: 1.4;
+    }
+
+    .spring-btn:hover { color: var(--s-text); }
+    .spring-btn.active {
+      background: var(--s-surface);
+      color: var(--s-text);
+      box-shadow: 0 1px 3px rgba(15,15,15,0.10);
+    }
+
+    .spring-content { display: flex; gap: 24px; align-items: stretch; flex-wrap: wrap; }
+
+    .spring-curve-box {
+      flex: 0 0 180px;
+      min-width: 140px;
+    }
+
+    .spring-curve-svg {
+      width: 100%;
+      display: block;
+      border-radius: 6px;
+      overflow: visible;
+    }
+
+    .spring-info { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+
+    .spring-info-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .spring-info-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .spring-info-bezier {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+    }
+
+    .spring-demo-track {
+      position: relative;
+      height: 32px;
+      background: rgba(15,15,15,0.05);
+      border-radius: 7px;
+      overflow: visible;
+      margin-top: 6px;
+    }
+
+    .spring-demo-dot {
+      position: absolute;
+      top: 50%;
+      left: 4px;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      background: var(--s-text);
+      border-radius: 50%;
+    }
+
+    /* Curve cards */
+    .easing-curves-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .easing-curves-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .easing-curve-card {
+      background: var(--s-surface);
+      border: 1px solid var(--s-border);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .easing-curve-card:hover {
+      border-color: var(--s-border-mid);
+      box-shadow: 0 2px 12px rgba(15,15,15,0.07);
+    }
+
+    .easing-curve-svg {
+      display: block;
+      width: 100%;
+      height: 72px;
+      margin-bottom: 12px;
+    }
+
+    .easing-curve-power {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      margin-bottom: 2px;
+    }
+
+    .easing-curve-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--s-text);
+      margin-bottom: 4px;
+    }
+
+    .easing-curve-bezier {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      word-break: break-all;
+    }
+
+    /* Demo */
+    .easing-demo-wrap {
+      background: var(--s-surface-mid);
+      border: 1px solid var(--s-border);
+      border-radius: 10px;
+      padding: 24px 20px;
+      margin-top: 32px;
+    }
+
+    .easing-demo-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--s-text-subtle);
+      margin-bottom: 20px;
+    }
+
+    .easing-demo-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .easing-demo-row:last-child { border-bottom: none; }
+
+    .easing-demo-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-muted);
+      width: 60px;
+      flex-shrink: 0;
+    }
+
+    .easing-demo-track {
+      flex: 1;
+      height: 28px;
+      background: rgba(15,15,15,0.04);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .easing-demo-dot {
+      position: absolute;
+      top: 50%;
+      left: 4px;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: #0f0f0f;
+      border-radius: 50%;
+      will-change: left;
+    }
+
+    /* Semantic tokens table */
+    .easing-token-row {
+      display: grid;
+      grid-template-columns: minmax(140px, 1fr) minmax(180px, 1.4fr) minmax(120px, 1fr);
+      gap: 12px 20px;
+      align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .easing-token-row:last-child { border-bottom: none; }
+
+    .easing-token-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+      word-break: break-word;
+    }
+
+    .easing-token-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      word-break: break-all;
+    }
+
+    .easing-token-desc {
+      font-size: 12px;
+      color: var(--s-text-muted);
+      line-height: 1.5;
+    }
+
+    /* Below ~700px: name + value stack, description moves under both */
+    @media (max-width: 700px) {
+      .easing-token-row {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+      }
+      .easing-token-name  { grid-column: 1; grid-row: 1; }
+      .easing-token-value { grid-column: 2; grid-row: 1; }
+      .easing-token-desc  { grid-column: 1 / -1; grid-row: 2;
+                            color: var(--s-text-subtle); padding-top: 2px; }
+    }
+
+    /* Mobile: full single-column stack */
+    @media (max-width: 480px) {
+      .easing-token-row {
+        grid-template-columns: 1fr;
+        grid-template-rows: unset;
+        gap: 3px;
+      }
+      .easing-token-name,
+      .easing-token-value,
+      .easing-token-desc { grid-column: 1; grid-row: unset; }
+    }
+
+    /* ── Chart scale input ── */
+    .chart-scale-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .chart-scale-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--s-text-subtle);
+      flex-shrink: 0;
+    }
+    .chart-scale-input {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      width: 48px;
+      padding: 4px 8px;
+      border: 1px solid var(--s-border-mid);
+      border-radius: 5px;
+      background: var(--s-bg);
+      color: var(--s-text);
+      text-align: center;
+      -moz-appearance: textfield;
+    }
+    .chart-scale-input::-webkit-inner-spin-button,
+    .chart-scale-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .chart-preset-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+    .chart-preset-chip {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--s-border-mid);
+      background: none;
+      cursor: pointer;
+      color: var(--s-text-subtle);
+      transition: background 100ms ease, color 100ms ease, border-color 100ms ease;
+    }
+    .chart-preset-chip:hover { color: var(--s-text); border-color: var(--s-text); }
+    .chart-preset-chip.active {
+      background: var(--s-text);
+      color: var(--s-surface);
+      border-color: var(--s-text);
+    }
+    .chart-scale-output {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text);
+      margin-left: auto;
+    }
+
+    /* ── Duration section ── */
+    .duration-group { margin-bottom: 40px; }
+
+    .duration-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      margin-bottom: 20px;
+    }
+
+    .duration-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 54px;
+      gap: 10px 16px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .duration-row:last-child { border-bottom: none; }
+
+    .duration-token-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .duration-token-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .duration-token-desc {
+      font-size: 11.5px;
+      color: var(--s-text-subtle);
+      line-height: 1.4;
+    }
+
+    .duration-bar-track {
+      height: 6px;
+      background: rgba(15,15,15,0.07);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .duration-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--s-text);
+      transform-origin: left;
+      transition: transform 400ms ease;
+    }
+
+    .duration-ms {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .duration-play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 24px;
+      padding: 7px 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      border: 1px solid var(--s-border-mid);
+      border-radius: 6px;
+      background: none;
+      cursor: pointer;
+      color: var(--s-text-muted);
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+
+    .duration-play-btn:hover {
+      background: rgba(15,15,15,0.05);
+      color: var(--s-text);
+      border-color: var(--s-text);
+    }
+
+    .duration-demo-wrap {
+      background: var(--s-surface-mid);
+      border: 1px solid var(--s-border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 32px;
+    }
+
+    .duration-demo-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--s-text-subtle);
+      margin-bottom: 18px;
+    }
+
+    .duration-demo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .duration-demo-row:last-child { border-bottom: none; }
+
+    .duration-demo-token {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-muted);
+      width: 144px;
+      flex-shrink: 0;
+    }
+
+    .duration-demo-track {
+      flex: 1;
+      height: 26px;
+      background: rgba(15,15,15,0.04);
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .duration-demo-dot {
+      position: absolute;
+      top: 50%;
+      left: 4px;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      background: var(--s-text);
+      border-radius: 50%;
+      will-change: left;
+    }
+
+    .duration-demo-ms {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      width: 46px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .duration-row {
+        grid-template-columns: 1fr 44px;
+        grid-template-rows: auto auto;
+      }
+      .duration-token-col { grid-column: 1; grid-row: 1; }
+      .duration-ms        { grid-column: 2; grid-row: 1; }
+      .duration-bar-track { grid-column: 1 / -1; grid-row: 2; }
+      .duration-demo-token { width: 110px; font-size: 9px; }
+    }
+
+    /* ── Easing rationale — three separate accordions ── */
+    .easing-rationale-list {
+      border: 1px solid var(--s-border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+      margin-bottom: 32px;
+    }
+
+    .easing-rationale-item {
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .easing-rationale-item:last-child { border-bottom: none; }
+
+    .easing-rationale-item > summary {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      list-style: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--s-text-subtle);
+      padding: 13px 18px;
+      user-select: none;
+      outline: none;
+      background: var(--s-surface-mid);
+      transition: background 120ms ease, color 120ms ease;
+    }
+
+    .easing-rationale-item > summary:hover {
+      background: rgba(15,15,15,0.04);
+      color: var(--s-text);
+    }
+
+    .easing-rationale-item > summary::-webkit-details-marker { display: none; }
+
+    .easing-rationale-item > summary::before {
+      content: '▸';
+      font-size: 9px;
+      transition: transform 200ms ease;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .easing-rationale-item[open] > summary {
+      color: var(--s-text);
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .easing-rationale-item[open] > summary::before { transform: rotate(90deg); }
+
+    .easing-rationale-section {
+      padding: 20px 20px 22px;
+    }
+
+    /* ── Easing explainer ── */
+    .easing-explainer {
+      background: var(--s-surface-mid);
+      border: 1px solid var(--s-border);
+      border-radius: 10px;
+      padding: 22px 24px 24px;
+      margin-top: 28px;
+    }
+
+    .easing-explainer-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      margin-bottom: 10px;
+    }
+
+    .easing-explainer-body {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--s-text-muted);
+      margin-bottom: 18px;
+    }
+
+    .easing-explainer-body strong {
+      color: var(--s-text);
+      font-weight: 500;
+    }
+
+    .easing-stops-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      margin: 14px 0 18px;
+    }
+
+    .easing-stops-table th {
+      text-align: left;
+      color: var(--s-text-subtle);
+      font-weight: 500;
+      padding: 4px 12px 4px 0;
+      border-bottom: 1px solid var(--s-border-mid);
+    }
+
+    .easing-stops-table td {
+      padding: 5px 12px 5px 0;
+      color: var(--s-text-muted);
+      border-bottom: 1px solid var(--s-border);
+      vertical-align: middle;
+    }
+
+    .easing-stops-table td:first-child { color: var(--s-text-subtle); }
+    .easing-stops-table td.exact-val   { color: var(--s-text); }
+    .easing-stops-table td.rounded-val { color: var(--s-text); font-weight: 500; }
+
+    .easing-stops-table tr:last-child td { border-bottom: none; }
+
+    .easing-rounding-note {
+      font-size: 12px;
+      color: var(--s-text-subtle);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      background: rgba(15,15,15,0.04);
+      border-radius: 6px;
+      border-left: 2px solid var(--s-border-mid);
+    }
+
+    /* Accordion (details/summary) */
+    .easing-accordion {
+      border-top: 1px solid var(--s-border);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+
+    .easing-accordion summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      list-style: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      user-select: none;
+      outline: none;
+    }
+
+    .easing-accordion summary::-webkit-details-marker { display: none; }
+
+    .easing-accordion summary::before {
+      content: '▸';
+      font-size: 9px;
+      transition: transform 180ms ease;
+      display: inline-block;
+    }
+
+    .easing-accordion[open] summary::before { transform: rotate(90deg); }
+
+    .easing-accordion-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--s-text-muted);
+      padding-top: 12px;
+    }
+
+    .easing-accordion-body p + p { margin-top: 10px; }
+
+    /* Usage note */
+    .easing-usage {
+      margin-bottom: 32px;
+      padding: 16px 20px;
+      background: rgba(15,15,15,0.03);
+      border-radius: 8px;
+      border: 1px solid var(--s-border);
+    }
+
+    .easing-usage-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      margin-bottom: 10px;
+    }
+
+    .easing-usage-list {
+      list-style: none;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--s-text-muted);
+    }
+
+    .easing-usage-list li {
+      display: flex;
+      gap: 10px;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .easing-usage-list li:last-child { border-bottom: none; }
+
+    .easing-usage-list .usage-context {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--s-text);
+      min-width: 120px;
+      padding-top: 2px;
+    }
+
+    /* ── Radius section ── */
+    .radius-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-end;
+      margin-bottom: 32px;
+    }
+
+    .radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .radius-box {
+      background: var(--s-text);
+      flex-shrink: 0;
+    }
+
+    .radius-token-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .radius-token-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      margin-top: 1px;
+    }
+
+    .radius-token-note {
+      font-size: 11.5px;
+      color: var(--s-text-subtle);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .radius-smoothing-note {
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--s-text-subtle);
+      padding: 12px 16px;
+      background: rgba(15,15,15,0.04);
+      border-radius: 7px;
+      border-left: 2px solid var(--s-border-mid);
+      margin-top: 8px;
+    }
+
+    .radius-smoothing-note strong { color: var(--s-text-muted); font-weight: 500; }
+
+    /* ── Border width section ── */
+    .border-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 24px;
+    }
+
+    .border-row {
+      display: grid;
+      grid-template-columns: 140px 80px 1fr;
+      gap: 12px 20px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .border-row:last-child { border-bottom: none; }
+
+    .border-token-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .border-token-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-subtle);
+    }
+
+    .border-swatch-track {
+      height: 32px;
+      display: flex;
+      align-items: center;
+    }
+
+    .border-swatch-line {
+      width: 120px;
+      background: var(--s-text);
+      border-radius: 99px;
+    }
+
+    /* ── Shadow section (Seed only) ── */
+    .shadow-list { display: flex; flex-direction: column; gap: 0; }
+
+    .shadow-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      align-items: start;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .shadow-item:last-child { border-bottom: none; }
+
+    .shadow-swatch-wrap {
+      background: #eeece4;
+      border-radius: 12px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shadow-swatch {
+      width: 100px;
+      height: 64px;
+      background: #fcfcfa;
+      border-radius: 10px;
+    }
+
+    .shadow-token-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+      margin-bottom: 8px;
+    }
+
+    .shadow-css {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      word-break: break-all;
+      line-height: 1.7;
+      margin-bottom: 4px;
+    }
+
+    .shadow-companion {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      opacity: 0.75;
+      margin-bottom: 10px;
+    }
+
+    .shadow-desc {
+      font-size: 13px;
+      color: var(--s-text-muted);
+      line-height: 1.5;
+      margin-bottom: 5px;
+    }
+
+    .shadow-note {
+      font-size: 11.5px;
+      color: var(--s-text-subtle);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 600px) {
+      .shadow-item { grid-template-columns: 1fr; }
+      .shadow-swatch-wrap { height: 80px; }
+    }
+
+    /* ── Blur section ── */
+    .blur-token-list { margin-bottom: 28px; }
+
+    .blur-token-row {
+      display: grid;
+      grid-template-columns: 160px 120px 1fr;
+      gap: 10px 20px;
+      align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .blur-token-row:last-child { border-bottom: none; }
+
+    .blur-token-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .blur-token-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-subtle);
+    }
+
+    .blur-token-meta { display: flex; flex-direction: column; gap: 3px; }
+
+    .blur-token-desc {
+      font-size: 12.5px;
+      color: var(--s-text-muted);
+      line-height: 1.45;
+    }
+
+    .blur-token-note {
+      font-size: 11px;
+      color: var(--s-text-subtle);
+      line-height: 1.5;
+    }
+
+    /* Space dark glass nav demo */
+    .blur-space-demo {
+      background: #0f0f0f;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .blur-space-nav {
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      background: rgba(251,251,251,0.02);
+      border: 1px solid rgba(15,15,15,0.22);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .blur-space-nav-wordmark {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #fbfbfb;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .blur-space-nav-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #fbfbfb;
+    }
+
+    .blur-space-nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .blur-space-nav-link {
+      font-family: Inter, sans-serif;
+      font-size: 13px;
+      color: rgba(251,251,251,0.74);
+      text-decoration: none;
+    }
+
+    /* Seed light glass nav demo */
+    .blur-seed-demo {
+      background: linear-gradient(145deg, #eae6db 0%, #d8d4c8 100%);
+      border-radius: 14px;
+      padding: 28px 20px;
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .blur-seed-nav {
+      backdrop-filter: blur(54px);
+      -webkit-backdrop-filter: blur(54px);
+      background: rgba(255,255,255,0.01);
+      border-radius: 18px;
+      box-shadow: 1px 1px 1px 0 rgba(239,239,239,0.25), inset 1px 1px 1px 0 rgba(250,250,250,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 18px 14px;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .blur-seed-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 14px;
+    }
+
+    .blur-seed-logo-mark {
+      width: 28px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .blur-seed-logotype {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 1.15;
+      letter-spacing: 0.5px;
+      color: rgba(71,48,61,0.88);
+      text-transform: uppercase;
+    }
+
+    .blur-seed-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .blur-seed-nav-link {
+      font-family: Inter, sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 2;
+      color: rgba(71,48,61,0.88);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .blur-seed-cta {
+      background: #ceff1a;
+      color: rgba(71,48,61,0.88);
+      border-radius: 9999px;
+      padding: 12px 30px;
+      font-family: Inter, sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: underline;
+      letter-spacing: 0.3px;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    @media (max-width: 640px) {
+      .blur-token-row { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+      .blur-token-meta { grid-column: 1 / -1; }
+      .blur-seed-nav-links { gap: 16px; }
+      .blur-seed-nav-link { font-size: 14px; }
+      .blur-seed-cta { padding: 10px 20px; font-size: 14px; }
+    }
+
+    /* ── Z-index section ── */
+    .zindex-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 48px;
+    }
+
+    .zindex-table th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      font-weight: 500;
+      text-align: left;
+      padding: 6px 12px 10px 0;
+      border-bottom: 1px solid var(--s-border-mid);
+    }
+
+    .zindex-table td {
+      padding: 11px 12px 11px 0;
+      border-bottom: 1px solid var(--s-border);
+      vertical-align: middle;
+    }
+
+    .zindex-table tr:last-child td { border-bottom: none; }
+
+    .zindex-td-token {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--s-text);
+    }
+
+    .zindex-td-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-subtle);
+    }
+
+    .zindex-td-scale {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+      opacity: 0.6;
+    }
+
+    .zindex-td-desc {
+      font-size: 12.5px;
+      color: var(--s-text-muted);
+    }
+
+    /* Layer map */
+    .zindex-map-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--s-text-subtle);
+      margin-bottom: 16px;
+    }
+
+    .zindex-map {
+      position: relative;
+      border: 1px solid var(--s-border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--s-surface-mid);
+      padding: 20px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .zindex-layer {
+      display: grid;
+      grid-template-columns: 58% 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 9px 0;
+      border-bottom: 1px dashed var(--s-border);
+    }
+
+    .zindex-layer:last-child { border-bottom: none; }
+
+    .zindex-layer-bar-col {
+      position: relative;
+      height: 28px;
+    }
+
+    .zindex-layer-bar {
+      height: 28px;
+      border-radius: 5px;
+      background: var(--s-text);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      min-width: 44px;
+      /* width% is applied inline, relative to .zindex-layer-bar-col */
+    }
+
+    .zindex-layer-bar-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: #fbfbfb;
+      white-space: nowrap;
+      opacity: 0.9;
+    }
+
+    .zindex-layer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .zindex-layer-token {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--s-text);
+      white-space: nowrap;
+    }
+
+    .zindex-layer-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--s-text-subtle);
+    }
+
+    .zindex-layer-desc {
+      font-size: 11.5px;
+      color: var(--s-text-subtle);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .zindex-note {
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--s-text-subtle);
+      margin-top: 20px;
+      padding: 12px 14px;
+      background: rgba(15,15,15,0.04);
+      border-radius: 7px;
+      border-left: 2px solid var(--s-border-mid);
+    }
+
+    @media (max-width: 600px) {
+      .zindex-layer-desc { display: none; }
+      .zindex-table th:last-child,
+      .zindex-table td:last-child { display: none; }
+    }
+
+    /* ── Focus styles — WCAG 2.2 AA §2.4.11 ── */
+    :focus-visible {
+      outline: 2px solid #0f0f0f;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Sidebar links need visible focus on the white surface */
+    .sidebar-link:focus-visible {
+      outline: 2px solid #0f0f0f;
+      outline-offset: -2px;
+      border-radius: 4px;
+    }
+
+    /* Tab buttons on dark active state */
+    .tab-btn.active:focus-visible {
+      outline: 2px solid #666666;
+      outline-offset: 2px;
+    }
+
+    /* Skip-to-content link — WCAG §2.4.1 */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 9999;
+      padding: 8px 16px;
+      background: #0f0f0f;
+      color: #fbfbfb;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 0 0 6px 6px;
+      text-decoration: none;
+      transition: top 150ms ease;
+    }
+
+    .skip-link:focus {
+      top: 0;
+      outline: 2px solid #ceff1a;
+      outline-offset: 2px;
+    }
+
+    /* ── Menu toggle (mobile only) ── */
+    .menu-toggle {
+      display: none;
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--s-border-mid);
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--s-text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────────── */
+
+    /* Tablet — narrow sidebar, tighter main */
+    @media (max-width: 900px) {
+      :root { --s-sidebar-w: 180px; }
+
+      .main {
+        padding: 40px 36px 80px;
+      }
+
+      .ratio-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .type-specimen {
+        grid-template-columns: 140px 1fr;
+        gap: 16px;
+      }
+
+      .elevation-item {
+        grid-template-columns: 160px 1fr;
+        gap: 16px;
+      }
+    }
+
+    /* Mobile — sidebar collapses into a drawer */
+    @media (max-width: 640px) {
+      :root { --s-sidebar-w: 0px; }
+
+      .topbar { padding: 0 16px; gap: 12px; }
+
+      .menu-toggle { display: block; }
+
+      .sidebar {
+        width: 240px;
+        transform: translateX(-100%);
+        transition: transform 240ms ease;
+        z-index: 150;
+        box-shadow: none;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(15,15,15,0.10);
+      }
+
+      .layout { display: block; }
+
+      .main {
+        margin-left: 0;
+        padding: 28px 20px 72px;
+        max-width: 100%;
+      }
+
+      .page-header-title { font-size: 28px; }
+      .ref-section-title { font-size: 18px; }
+
+      .color-swatches { gap: 8px; }
+      .swatch { width: 72px; }
+      .swatch-box { width: 72px; height: 48px; }
+
+      .neutral-strip { border-radius: 7px; }
+      .neutral-cell { height: 40px; }
+
+      .type-specimen {
+        display: block;
+      }
+      .type-spec-token { margin-bottom: 8px; }
+      .type-sample { margin-top: 8px; }
+
+      .ratio-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+      .elevation-item {
+        display: block;
+      }
+      .elevation-item > div:last-child { margin-top: 12px; }
+
+      .scale-token { width: 60px; font-size: 10px; }
+      .scale-val { width: 42px; font-size: 10px; }
+
+      .container-row { flex-wrap: wrap; gap: 6px; }
+      .container-meta { width: 100%; padding-left: 0; }
+    }
+
+    /* Overlay backdrop for mobile drawer */
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,15,15,0.25);
+      z-index: 140;
+    }
+
+    .sidebar-backdrop.visible { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Skip to main content — WCAG 2.1 §2.4.1 -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Top bar -->
+<header class="topbar" role="banner">
+  <a class="topbar-wordmark" href="." aria-label="FOOO Design System — reload">
+    <span class="topbar-wordmark-dot"></span>
+    FOOO DS
+  </a>
+  <div class="topbar-sep"></div>
+  <div class="topbar-tabs" role="tablist" aria-label="Design system library">
+    <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="panel-space" id="tab-space" data-tab="space">Space</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-seed"  id="tab-seed"  data-tab="seed">Seed</button>
+  </div>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">Menu</button>
+</header>
+
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar" aria-label="Section navigation"></nav>
+
+  <!-- Main -->
+  <main class="main" id="main-content" tabindex="-1">
+
+    <!-- ══ SPACE TAB ══════════════════════════════════════════════════════════ -->
+    <div class="tab-panel active" id="panel-space" role="tabpanel" aria-labelledby="tab-space">
+
+      <div class="page-header">
+        <p class="page-header-eyebrow">Reference Library</p>
+        <h1 class="page-header-title">Space</h1>
+        <p class="page-header-desc">Dark-mode system. Metropolis · Inter · IBM Plex Mono. Built for high-contrast digital products on dark surfaces.</p>
+      </div>
+
+      <section class="ref-section" id="space-colors">
+        <p class="ref-section-eyebrow">01 — Colors</p>
+        <h2 class="ref-section-title">Color tokens</h2>
+        <hr class="ref-divider">
+        <div class="color-group">
+          <p class="color-group-label">Brand</p>
+          <div class="color-swatches" id="space-brand-swatches"></div>
+        </div>
+        <div class="color-group">
+          <p class="color-group-label">Primary scale</p>
+          <div class="color-swatches" id="space-primary-swatches"></div>
+        </div>
+        <div class="color-group">
+          <p class="color-group-label">Neutrals — on-dark (opaque)</p>
+          <div id="space-neutral-dark"></div>
+        </div>
+        <div class="color-group">
+          <p class="color-group-label">Neutrals — on-bright (opaque)</p>
+          <div id="space-neutral-bright"></div>
+        </div>
+      </section>
+
+      <section class="ref-section" id="space-typography">
+        <p class="ref-section-eyebrow">02 — Typography</p>
+        <h2 class="ref-section-title">Type scale</h2>
+        <hr class="ref-divider">
+        <div id="space-type-specimens"></div>
+      </section>
+
+      <section class="ref-section" id="space-scale">
+        <p class="ref-section-eyebrow">03 — Scale</p>
+        <h2 class="ref-section-title">Spatial scale</h2>
+        <hr class="ref-divider">
+        <div id="space-scale-bars"></div>
+      </section>
+
+      <section class="ref-section" id="space-containers">
+        <p class="ref-section-eyebrow">04 — Containers</p>
+        <h2 class="ref-section-title">Container widths</h2>
+        <hr class="ref-divider">
+        <div id="space-containers-list"></div>
+      </section>
+
+      <section class="ref-section" id="space-ratios">
+        <p class="ref-section-eyebrow">05 — Aspect Ratios</p>
+        <h2 class="ref-section-title">Ratio tokens</h2>
+        <hr class="ref-divider">
+        <div class="ratio-grid" id="space-ratio-grid"></div>
+      </section>
+
+      <section class="ref-section" id="space-elevation">
+        <p class="ref-section-eyebrow">06 — Elevation</p>
+        <h2 class="ref-section-title">Surface elevation</h2>
+        <hr class="ref-divider">
+        <div id="space-elevation-rows"></div>
+      </section>
+
+      <section class="ref-section" id="space-easing">
+        <p class="ref-section-eyebrow">07 — Easing</p>
+        <h2 class="ref-section-title">Power easing</h2>
+        <hr class="ref-divider">
+        <div id="space-easing-content"></div>
+      </section>
+
+      <section class="ref-section" id="space-duration">
+        <p class="ref-section-eyebrow">08 — Duration</p>
+        <h2 class="ref-section-title">Duration tokens</h2>
+        <hr class="ref-divider">
+        <div id="space-duration-content"></div>
+      </section>
+
+      <section class="ref-section" id="space-radius">
+        <p class="ref-section-eyebrow">09 — Radius</p>
+        <h2 class="ref-section-title">Border radius</h2>
+        <hr class="ref-divider">
+        <div id="space-radius-content"></div>
+      </section>
+
+      <section class="ref-section" id="space-borders">
+        <p class="ref-section-eyebrow">10 — Borders</p>
+        <h2 class="ref-section-title">Border width</h2>
+        <hr class="ref-divider">
+        <div id="space-borders-content"></div>
+      </section>
+
+      <section class="ref-section" id="space-blur">
+        <p class="ref-section-eyebrow">11 — Blur</p>
+        <h2 class="ref-section-title">Backdrop blur</h2>
+        <hr class="ref-divider">
+        <div id="space-blur-content"></div>
+      </section>
+
+      <section class="ref-section" id="space-zindex">
+        <p class="ref-section-eyebrow">12 — Z-Index</p>
+        <h2 class="ref-section-title">Layer scale</h2>
+        <hr class="ref-divider">
+        <div id="space-zindex-content"></div>
+      </section>
+
+    </div><!-- /panel-space -->
+
+    <!-- ══ SEED TAB ═══════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="panel-seed" role="tabpanel" aria-labelledby="tab-seed">
+
+      <div class="page-header">
+        <p class="page-header-eyebrow">Reference Library</p>
+        <h1 class="page-header-title">Seed</h1>
+        <p class="page-header-desc">Organic, earth-toned system. Exo 2 · Inter · IBM Plex Mono. For nature-aligned, regenerative product contexts.</p>
+      </div>
+
+      <section class="ref-section" id="seed-colors">
+        <p class="ref-section-eyebrow">01 — Colors</p>
+        <h2 class="ref-section-title">Color tokens</h2>
+        <hr class="ref-divider">
+        <div class="color-group">
+          <p class="color-group-label">Brand</p>
+          <div class="color-swatches" id="seed-brand-swatches"></div>
+        </div>
+        <div class="color-group">
+          <p class="color-group-label">Primary scale</p>
+          <div class="color-swatches" id="seed-primary-swatches"></div>
+        </div>
+        <div class="color-group">
+          <p class="color-group-label">Secondary scale</p>
+          <div class="color-swatches" id="seed-secondary-swatches"></div>
+        </div>
+        <div class="color-group">
+          <p class="color-group-label">Accents — Elm</p>
+          <div class="color-swatches" id="seed-accent-swatches"></div>
+        </div>
+      </section>
+
+      <section class="ref-section" id="seed-typography">
+        <p class="ref-section-eyebrow">02 — Typography</p>
+        <h2 class="ref-section-title">Type scale</h2>
+        <hr class="ref-divider">
+        <div id="seed-type-specimens"></div>
+      </section>
+
+      <section class="ref-section" id="seed-scale">
+        <p class="ref-section-eyebrow">03 — Scale</p>
+        <h2 class="ref-section-title">Spatial scale</h2>
+        <hr class="ref-divider">
+        <p style="font-size:13px;color:var(--s-text-subtle);">Shared with Space — same geometric progression.</p>
+        <div id="seed-scale-bars" style="margin-top:20px;"></div>
+      </section>
+
+      <section class="ref-section" id="seed-containers">
+        <p class="ref-section-eyebrow">04 — Containers</p>
+        <h2 class="ref-section-title">Container widths</h2>
+        <hr class="ref-divider">
+        <p style="font-size:13px;color:var(--s-text-subtle);">Shared with Space — same container token system.</p>
+        <div id="seed-containers-list" style="margin-top:20px;"></div>
+      </section>
+
+      <section class="ref-section" id="seed-ratios">
+        <p class="ref-section-eyebrow">05 — Aspect Ratios</p>
+        <h2 class="ref-section-title">Ratio tokens</h2>
+        <hr class="ref-divider">
+        <div class="ratio-grid" id="seed-ratio-grid"></div>
+      </section>
+
+      <section class="ref-section" id="seed-easing">
+        <p class="ref-section-eyebrow">06 — Easing</p>
+        <h2 class="ref-section-title">Power easing</h2>
+        <hr class="ref-divider">
+        <div id="seed-easing-content"></div>
+      </section>
+
+      <section class="ref-section" id="seed-duration">
+        <p class="ref-section-eyebrow">07 — Duration</p>
+        <h2 class="ref-section-title">Duration tokens</h2>
+        <hr class="ref-divider">
+        <div id="seed-duration-content"></div>
+      </section>
+
+      <section class="ref-section" id="seed-radius">
+        <p class="ref-section-eyebrow">08 — Radius</p>
+        <h2 class="ref-section-title">Border radius</h2>
+        <hr class="ref-divider">
+        <div id="seed-radius-content"></div>
+      </section>
+
+      <section class="ref-section" id="seed-borders">
+        <p class="ref-section-eyebrow">09 — Borders</p>
+        <h2 class="ref-section-title">Border width</h2>
+        <hr class="ref-divider">
+        <div id="seed-borders-content"></div>
+      </section>
+
+      <section class="ref-section" id="seed-shadows">
+        <p class="ref-section-eyebrow">10 — Shadows</p>
+        <h2 class="ref-section-title">Shadow tokens</h2>
+        <hr class="ref-divider">
+        <div id="seed-shadows-content"></div>
+      </section>
+
+      <section class="ref-section" id="seed-blur">
+        <p class="ref-section-eyebrow">11 — Blur</p>
+        <h2 class="ref-section-title">Backdrop blur</h2>
+        <hr class="ref-divider">
+        <div id="seed-blur-content"></div>
+      </section>
+
+      <section class="ref-section" id="seed-zindex">
+        <p class="ref-section-eyebrow">12 — Z-Index</p>
+        <h2 class="ref-section-title">Layer scale</h2>
+        <hr class="ref-divider">
+        <div id="seed-zindex-content"></div>
+      </section>
+
+    </div><!-- /panel-seed -->
+
+  </main>
+</div><!-- /layout -->
+
+<script>
+// ── Token data ───────────────────────────────────────────────────────────────
+
+const SPACE = {
+  brand: [
+    { name: 'Photon',   value: '#ceff1a' },
+    { name: 'Ia Nova',  value: '#cc4325' },
+    { name: 'M-Type',   value: '#de6449' },
+    { name: 'Nebula',   value: '#54428e' },
+    { name: 'Ion Tail', value: '#087ca7' },
+    { name: 'Lunar',    value: '#fbfbfb' },
+    { name: 'Space',    value: '#0f0f0f' },
+  ],
+  primary: [
+    { name: '100', value: '#ceff1a' },
+    { name: '200', value: '#a1d11d' },
+    { name: '300', value: '#6f961a' },
+    { name: '400', value: '#4f7016' },
+    { name: '500', value: '#2e450e' },
+    { name: '600', value: '#0d1404' },
+  ],
+  neutralOnDark: [
+    { name: '100', value: '#141414' },
+    { name: '200', value: '#393939' },
+    { name: '300', value: '#666666' },
+    { name: '400', value: '#8a8a8a' },
+    { name: '500', value: '#bebebe' },
+    { name: '600', value: '#fbfbfb' },
+  ],
+  neutralOnBright: [
+    { name: '100', value: '#f2f2f2' },
+    { name: '200', value: '#c7c7c7' },
+    { name: '300', value: '#8a8a8a' },
+    { name: '400', value: '#666666' },
+    { name: '500', value: '#3e3e3e' },
+    { name: '600', value: '#0f0f0f' },
+  ],
+  type: [
+    { category: 'Display — Metropolis 500', token: 'display/4xl', family: 'Metropolis', weight: 500, size: 138, lh: 1.05, ls: -4.1, sample: 'Aa' },
+    { category: 'Display — Metropolis 500', token: 'display/5xl', family: 'Metropolis', weight: 500, size: 222, lh: 1.05, ls: -6.7, sample: 'Aa' },
+    { category: 'Title — Metropolis 600',   token: 'title/3xl',   family: 'Metropolis', weight: 600, size: 84,  lh: 1.05, ls: -2.1, sample: 'Aa' },
+    { category: 'Title — Metropolis 600',   token: 'title/2xl',   family: 'Metropolis', weight: 600, size: 54,  lh: 1.15, ls: -1.1, sample: 'Headline' },
+    { category: 'Title — Metropolis 600',   token: 'title/1xl',   family: 'Metropolis', weight: 600, size: 30,  lh: 1.395, ls: -0.45, sample: 'The quick brown fox' },
+    { category: 'Title — Metropolis 600',   token: 'title/lg',    family: 'Metropolis', weight: 600, size: 24,  lh: 1.475, ls: -0.2,  sample: 'The quick brown fox' },
+    { category: 'Title — Metropolis 600',   token: 'title/md',    family: 'Metropolis', weight: 600, size: 18,  lh: 1.62,  ls: -0.1,  sample: 'The quick brown fox jumps over the lazy dog' },
+    { category: 'Title — Metropolis 600',   token: 'title/sm',    family: 'Metropolis', weight: 600, size: 15,  lh: 1.62,  ls: 0,     sample: 'The quick brown fox jumps over the lazy dog' },
+    { category: 'Body — Inter 400',         token: 'body/1xl',    family: 'Inter',      weight: 400, size: 30,  lh: 1.395, ls: -0.45, sample: 'The quick brown fox' },
+    { category: 'Body — Inter 400',         token: 'body/lg',     family: 'Inter',      weight: 400, size: 24,  lh: 1.475, ls: -0.2,  sample: 'The quick brown fox jumps' },
+    { category: 'Body — Inter 400',         token: 'body/md',     family: 'Inter',      weight: 400, size: 18,  lh: 1.62,  ls: -0.1,  sample: 'The quick brown fox jumps over the lazy dog' },
+    { category: 'Body — Inter 400',         token: 'body/sm',     family: 'Inter',      weight: 400, size: 15,  lh: 1.62,  ls: 0,     sample: 'The quick brown fox jumps over the lazy dog' },
+    { category: 'Eye Brow — IBM Plex Mono 500', token: 'eye-brow/lg', family: 'IBM Plex Mono', weight: 500, size: 24, lh: 1.475, ls: -0.12, upper: true, sample: 'Eye brow label' },
+    { category: 'Eye Brow — IBM Plex Mono 500', token: 'eye-brow/md', family: 'IBM Plex Mono', weight: 500, size: 18, lh: 1.62,  ls: 0,     upper: true, sample: 'Eye brow label' },
+    { category: 'Eye Brow — IBM Plex Mono 500', token: 'eye-brow/sm', family: 'IBM Plex Mono', weight: 500, size: 15, lh: 1.62,  ls: 0.3,   upper: true, sample: 'Eye brow label' },
+    { category: 'Mono — IBM Plex Mono 500',     token: 'mono/lg',     family: 'IBM Plex Mono', weight: 500, size: 24, lh: 1.475, ls: -0.2,  sample: 'Monospace text sample' },
+    { category: 'Mono — IBM Plex Mono 500',     token: 'mono/md',     family: 'IBM Plex Mono', weight: 500, size: 18, lh: 1.62,  ls: -0.1,  sample: 'Monospace text sample running' },
+    { category: 'Mono — IBM Plex Mono 500',     token: 'mono/sm',     family: 'IBM Plex Mono', weight: 500, size: 15, lh: 1.62,  ls: 0,     sample: 'Monospace text sample running along here' },
+  ],
+  scale: [
+    { token: '--scale-1',  value: 2 },
+    { token: '--scale-2',  value: 4 },
+    { token: '--scale-3',  value: 6 },
+    { token: '--scale-4',  value: 8 },
+    { token: '--scale-5',  value: 12 },
+    { token: '--scale-6',  value: 15 },
+    { token: '--scale-7',  value: 18 },
+    { token: '--scale-8',  value: 24 },
+    { token: '--scale-9',  value: 30 },
+    { token: '--scale-10', value: 54 },
+    { token: '--scale-11', value: 84 },
+    { token: '--scale-12', value: 138 },
+    { token: '--scale-13', value: 180 },
+    { token: '--scale-14', value: 222 },
+    { token: '--scale-15', value: 360 },
+    { token: '--scale-16', value: 582 },
+    { token: '--scale-17', value: 942 },
+  ],
+  containers: {
+    natural: [
+      { label: 'container-xs',  value: 138,  note: 'Fragment, gutter accent' },
+      { label: 'container-sm',  value: 222,  note: 'Secondary narrow column' },
+      { label: 'container-md',  value: 360,  note: 'Focused reading, forms' },
+      { label: 'container-lg',  value: 582,  note: 'Main content column' },
+      { label: 'container-xl',  value: 942,  note: 'Wide — nav, hero' },
+    ],
+    composite: [
+      { label: 'layout-sm',    value: 1080, note: '3×md  or  xl + xs' },
+      { label: 'layout-md',    value: 1164, note: '2×lg  or  xl + sm' },
+      { label: 'layout-bleed', value: 1476, note: 'Edge-to-edge content' },
+      { label: 'layout-frame', value: 1524, note: 'Outer document frame' },
+    ],
+  },
+  ratios: [
+    { token: '--ratio-1-compact',   name: 'Compact',   value: 1.25 },
+    { token: '--ratio-2-classic',   name: 'Classic',   value: 1.33 },
+    { token: '--ratio-3-harmonic',  name: 'Harmonic',  value: 1.55 },
+    { token: '--ratio-4-golden',    name: 'Golden',    value: 1.62 },
+    { token: '--ratio-5-panoramic', name: 'Panoramic', value: 1.80 },
+    { token: '--ratio-6-super',     name: 'Super',     value: 3.00 },
+  ],
+  elevation: [
+    { token: '--surface-0', value: '#0f0f0f',              textColor: '#fbfbfb', desc: 'Page background — void' },
+    { token: '--surface-1', value: 'rgba(251,251,251,0.02)', textColor: '#fbfbfb', desc: 'Card, nav, component surface' },
+    { token: '--surface-2', value: 'rgba(251,251,251,0.18)', textColor: '#fbfbfb', desc: 'Elevated overlay — use most sparingly' },
+  ],
+  durations: {
+    ui: [
+      { token: '--duration-ui-xs',  ms: 84,    scale: '--scale-11', desc: 'Icon state, tooltip' },
+      { token: '--duration-ui-sm',  ms: 138,   scale: '--scale-12', desc: 'Button, chip, badge' },
+      { token: '--duration-ui-md',  ms: 180,   scale: '--scale-13', desc: 'Standard transition' },
+      { token: '--duration-ui-lg',  ms: 222,   scale: '--scale-14', desc: 'Panel, nav, tab' },
+      { token: '--duration-ui-xl',  ms: 360,   scale: '--scale-15', desc: 'Drawer, sheet' },
+      { token: '--duration-ui-2xl', ms: 582,   scale: '--scale-16', desc: 'Page section, modal' },
+      { token: '--duration-ui-3xl', ms: 942,   scale: '--scale-17', desc: 'Full overlay, ceremonial' },
+    ],
+    motion: [
+      { token: '--duration-mv-sm',  ms: 1524,  scale: '+1', desc: 'Quick title in' },
+      { token: '--duration-mv-md',  ms: 2466,  scale: '+2', desc: 'Short phrase hold' },
+      { token: '--duration-mv-lg',  ms: 3990,  scale: '+3', desc: 'Narration beat' },
+      { token: '--duration-mv-xl',  ms: 6456,  scale: '+4', desc: 'Sentence read' },
+      { token: '--duration-mv-2xl', ms: 10440, scale: '+5', desc: 'Chapter pause' },
+    ],
+  },
+  radius: [
+    { token: '--radius-sm',   value: 6,    note: 'Chip, badge, tag, input' },
+    { token: '--radius-md',   value: 12,   note: 'Button, card, panel' },
+    { token: '--radius-lg',   value: 24,   note: 'Sheet, modal, large card' },
+    { token: '--radius-full', value: 9999, note: 'Pill — fully rounded' },
+  ],
+  borders: [
+    { token: '--border-sm', value: 1, note: 'Default divider, subtle outline' },
+    { token: '--border-md', value: 2, note: 'Focus ring, active state' },
+    { token: '--border-lg', value: 4, note: 'Emphasis, selected' },
+  ],
+  blur: [
+    { token: '--blur-glass', value: 'blur(24px)', scale: '--scale-8', desc: 'Frosted glass — nav, modal, overlay', note: '24px = --scale-8. Only effective over sufficiently dark or coloured backgrounds.' },
+  ],
+  zIndex: [
+    { token: '--z-base',    value: 0,   scale: '—',           desc: 'Document flow — no stacking context' },
+    { token: '--z-raised',  value: 3,   scale: '3 × 1',       desc: 'Cards, badges, subtle lift' },
+    { token: '--z-sticky',  value: 12,  scale: '--scale-5',   desc: 'Nav bar, sticky headers' },
+    { token: '--z-overlay', value: 54,  scale: '--scale-10',  desc: 'Drawers, dialogs, full overlays' },
+    { token: '--z-float',   value: 138, scale: '--scale-12',  desc: 'Tooltips, toasts — must clear all' },
+  ],
+};
+
+const SEED = {
+  brand: [
+    { name: 'Sprout', value: '#ceff1a' },
+    { name: 'Fava',   value: '#47303d' },
+    { name: 'Elm',    value: '#216869' },
+    { name: 'Fern',   value: '#aaa95a' },
+    { name: 'Moss',   value: '#82816d' },
+    { name: 'Pampas', value: '#fcfcfa' },
+  ],
+  primary: [
+    { name: '100', value: '#ceff1a' },
+    { name: '200', value: '#a1d11d' },
+    { name: '300', value: '#6f961a' },
+    { name: '400', value: '#4f7016' },
+    { name: '500', value: '#2e450e' },
+    { name: '600', value: '#0d1404' },
+  ],
+  secondary: [
+    { name: '100', value: '#ffccde' },
+    { name: '200', value: '#d199af' },
+    { name: '300', value: '#a8748c' },
+    { name: '400', value: '#7a5468' },
+    { name: '500', value: '#47303d' },
+    { name: '600', value: '#1a1116' },
+  ],
+  accent: [
+    { name: '100', value: '#c0f1f2' },
+    { name: '200', value: '#b4e9ea' },
+    { name: '300', value: '#388c8d' },
+    { name: '400', value: '#216869' },
+    { name: '500', value: '#184546' },
+    { name: '600', value: '#0a1414' },
+  ],
+  type: [
+    { category: 'Display — Exo 2 500', token: 'display/6xl', family: 'Exo 2', weight: 500, size: 360, lh: 1.05, ls: -10.8, sample: 'Aa' },
+    { category: 'Display — Exo 2 500', token: 'display/7xl', family: 'Exo 2', weight: 500, size: 582, lh: 1.05, ls: -19.2, sample: 'Aa' },
+    { category: 'Title — Exo 2 500',   token: 'title/3xl',   family: 'Exo 2', weight: 500, size: 84,  lh: 1.05, ls: -2.1,  sample: 'Headline' },
+    { category: 'Title — Exo 2 500',   token: 'title/2xl',   family: 'Exo 2', weight: 500, size: 54,  lh: 1.15, ls: -1.1,  sample: 'Headline text' },
+    { category: 'Title — Exo 2 500',   token: 'title/1xl',   family: 'Exo 2', weight: 500, size: 30,  lh: 1.395, ls: -0.45, sample: 'The quick brown fox' },
+    { category: 'Title — Exo 2 500',   token: 'title/lg',    family: 'Exo 2', weight: 500, size: 24,  lh: 1.475, ls: -0.2,  sample: 'The quick brown fox jumps' },
+    { category: 'Title — Exo 2 500',   token: 'title/md',    family: 'Exo 2', weight: 500, size: 18,  lh: 1.62,  ls: -0.1,  sample: 'The quick brown fox jumps over the lazy dog' },
+    { category: 'Title — Exo 2 500',   token: 'title/sm',    family: 'Exo 2', weight: 500, size: 15,  lh: 1.62,  ls: 0,     sample: 'The quick brown fox jumps over the lazy dog' },
+  ],
+  shadows: [
+    {
+      token: '--shadow-indent',
+      css: 'inset 0 6px 24px 0 rgba(26, 17, 22, 0.22)',
+      companion: null,
+      desc: 'Pressed surface, recessed well, inset input',
+      note: 'Color tinted with Secondary 600 (Fava) — warm dark, not cold black',
+    },
+    {
+      token: '--shadow-drop',
+      css: '0 6px 12px 0 rgba(0, 0, 0, 0.12), 0 30px 84px 0 rgba(0, 0, 0, 0.30)',
+      companion: 'backdrop-filter: blur(84px)',
+      desc: 'Elevated card, floating panel, modal overlay',
+      note: 'Always paired with backdrop-filter: blur(84px) = --scale-11. Near layer (6px/12px) gives crispness; far layer (30px/84px) gives depth.',
+    },
+  ],
+  blur: [
+    { token: '--blur-nav',  value: 'blur(54px)', desc: 'Navigation glass surface', note: 'Used on the Faba Origin nav bar. --scale-10 = 54px.' },
+    { token: '--blur-drop', value: 'blur(84px)', desc: 'Drop shadow companion — see --shadow-drop', note: 'Always paired with --shadow-drop. --scale-11 = 84px.' },
+  ],
+};
+
+// ── Renderers ────────────────────────────────────────────────────────────────
+
+function luma(hex) {
+  if (!hex || hex.startsWith('rgba')) return 0;
+  const c = hex.replace('#', '');
+  const r = parseInt(c.slice(0,2),16);
+  const g = parseInt(c.slice(2,4),16);
+  const b = parseInt(c.slice(4,6),16);
+  return 0.299*r + 0.587*g + 0.114*b;
+}
+
+function textOn(bg) {
+  return luma(bg) > 135 ? '#0f0f0f' : '#fbfbfb';
+}
+
+function renderSwatches(items) {
+  return items.map(c => `
+    <div class="swatch">
+      <div class="swatch-box" style="background:${c.value};" role="img" aria-label="${c.name} — ${c.value}"></div>
+      <div class="swatch-name">${c.name}</div>
+      <div class="swatch-value">${c.value}</div>
+    </div>`).join('');
+}
+
+function renderNeutralStrip(stops, label) {
+  const cells = stops.map(s => {
+    const tc = textOn(s.value); /* full-opacity, no transparency — ensures 4.5:1 ratio */
+    return `<div class="neutral-cell" style="background:${s.value};" role="img" aria-label="Stop ${s.name}: ${s.value}">
+      <span class="neutral-cell-lbl" style="color:${tc};" aria-hidden="true">${s.name}</span>
+    </div>`;
+  }).join('');
+  return `<p class="neutral-strip-label">${label}</p>
+    <div class="neutral-strip" role="group" aria-label="${label}">${cells}</div>`;
+}
+
+function renderTypeSpecimens(items) {
+  let lastCat = null;
+  return items.map(s => {
+    const catHdr = s.category !== lastCat
+      ? `<div class="type-category-label">${s.category}</div>`
+      : '';
+    lastCat = s.category;
+    const capSize = Math.min(s.size, 96);
+    const style = [
+      `font-family:'${s.family}',sans-serif`,
+      `font-weight:${s.weight}`,
+      `font-size:${capSize}px`,
+      `line-height:${s.lh}`,
+      `letter-spacing:${s.ls}px`,
+      s.upper ? 'text-transform:uppercase' : '',
+    ].filter(Boolean).join(';');
+    return `${catHdr}
+    <div class="type-specimen">
+      <div>
+        <div class="type-spec-token">${s.token}</div>
+        <div class="type-spec-detail">${s.family}<br>weight ${s.weight}<br>${s.size}px / lh ${s.lh}<br>ls ${s.ls}px</div>
+      </div>
+      <div class="type-sample" style="${style}">${s.sample}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderScaleBars(items) {
+  const max = items[items.length - 1].value;
+  return items.map(s => `
+    <div class="scale-row">
+      <div class="scale-token">${s.token}</div>
+      <div class="scale-bar-track">
+        <div class="scale-bar-fill" style="width:${(s.value/max*100).toFixed(2)}%"></div>
+      </div>
+      <div class="scale-val">${s.value}px</div>
+    </div>`).join('');
+}
+
+function renderContainers(data) {
+  const MAX = 1524;
+  const MIN_BAR = 80; // px minimum visible bar
+  const TRACK = 560; // reference track width in px
+
+  function barW(val) {
+    const natural = (val / MAX * TRACK);
+    return Math.max(natural, MIN_BAR);
+  }
+
+  let html = `<div class="containers-group-label">Natural</div>`;
+  data.natural.forEach(c => {
+    html += `<div class="container-row">
+      <div class="container-bar" style="width:${barW(c.value)}px;">
+        <span class="container-bar-label">${c.label}</span>
+      </div>
+      <div class="container-meta">${c.value}px — ${c.note}</div>
+    </div>`;
+  });
+
+  html += `<div class="containers-group-label">Composite <span class="comp-badge">multi-column</span></div>`;
+  data.composite.forEach(c => {
+    html += `<div class="container-row">
+      <div class="container-bar composite" style="width:${barW(c.value)}px;">
+        <span class="container-bar-label">${c.label}</span>
+      </div>
+      <div class="container-meta">${c.value}px — ${c.note}</div>
+    </div>`;
+  });
+
+  return html;
+}
+
+function renderRatios(ratios) {
+  return ratios.map((r, i) => {
+    const pct = (1 / r.value * 100).toFixed(2);
+    return `<div class="ratio-card">
+      <div class="ratio-box" style="padding-top:${pct}%;"></div>
+      <div class="ratio-name">${r.name}</div>
+      <div class="ratio-detail">${r.token}<br>${r.value.toFixed(2)}:1</div>
+    </div>`;
+  }).join('');
+}
+
+function renderElevation(items) {
+  const rows = items.map(e => `
+    <div class="elevation-item">
+      <div>
+        <div class="elevation-spec-token">${e.token}</div>
+        <div class="elevation-spec-value">${e.value}</div>
+        <div class="elevation-spec-desc">${e.desc}</div>
+      </div>
+      <div style="background:#0f0f0f;border-radius:8px;padding:12px;">
+        <div style="background:${e.value};border-radius:6px;height:48px;"></div>
+      </div>
+    </div>`).join('');
+
+  const map = `
+    <div style="margin-top:32px;">
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:var(--s-text-subtle);margin-bottom:16px;">Elevation map</p>
+      <div style="background:#0f0f0f;border-radius:14px;padding:24px 24px 28px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(251,251,251,0.35);">--surface-0 · Canvas · #0f0f0f</span>
+        <div style="background:rgba(251,251,251,0.02);border:1px solid rgba(251,251,251,0.06);border-radius:10px;padding:18px 18px 22px;margin-top:14px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(251,251,251,0.35);">--surface-1 · Card / component · rgba(251,251,251,0.02)</span>
+          <div style="background:rgba(251,251,251,0.18);border-radius:7px;padding:14px 16px;margin-top:12px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(251,251,251,0.55);">--surface-2 · Elevated overlay · rgba(251,251,251,0.18) — use most sparingly</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  return rows + map;
+}
+
+// ── Easing data ──────────────────────────────────────────────────────────────
+
+const EASING = {
+  powers: [
+    { power: 18, name: 'Ultra',  bezierOut: 'cubic-bezier(0.04, 0.98, 0.02, 1.00)', bezierIn: 'cubic-bezier(0.90, 0.00, 0.96, 0.02)' },
+    { power: 10, name: 'Sharp',  bezierOut: 'cubic-bezier(0.08, 0.97, 0.05, 1.00)', bezierIn: 'cubic-bezier(0.80, 0.00, 0.90, 0.04)' },
+    { power: 6,  name: 'Expo',   bezierOut: 'cubic-bezier(0.19, 1.00, 0.22, 1.00)', bezierIn: 'cubic-bezier(0.70, 0.00, 0.84, 0.00)' },
+    { power: 3,  name: 'Cubic',  bezierOut: 'cubic-bezier(0.215, 0.61, 0.355, 1.00)', bezierIn: 'cubic-bezier(0.32, 0.00, 0.67, 0.00)' },
+    { power: 2,  name: 'Quad',   bezierOut: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', bezierIn: 'cubic-bezier(0.11, 0.00, 0.50, 0.00)' },
+    { power: 1,  name: 'Linear', bezierOut: 'linear',                               bezierIn: 'linear' },
+  ],
+  semantic: [
+    { token: '--easing-enter',   value: 'cubic-bezier(0.23, 1, 0.32, 1)',         desc: 'Elements entering the view — ease-out quint feel' },
+    { token: '--easing-exit',    value: 'cubic-bezier(0.55, 0.055, 0.675, 0.19)', desc: 'Elements leaving — ease-in cubic, accelerates out' },
+    { token: '--easing-move',    value: 'cubic-bezier(0.76, 0, 0.24, 1)',          desc: 'Repositioning — ease-in-out quart, balanced' },
+    { token: '--easing-palette', value: 'cubic-bezier(0.04, 0.98, 0.02, 1.00)',   desc: 'Palette scale distribution — power 18, most contrast at light end' },
+    { token: '--easing-linear',  value: 'linear',                                  desc: 'Progress bars, counters, data visualisation' },
+  ],
+};
+
+const SPRING_PRESETS = [
+  { id: 'slight', name: 'Slight', bezier: 'cubic-bezier(0.34, 1.40, 0.64, 1.00)', args: [0.34, 1.40, 0.64, 1.00] },
+  { id: 'medium', name: 'Medium', bezier: 'cubic-bezier(0.34, 1.70, 0.64, 1.00)', args: [0.34, 1.70, 0.64, 1.00] },
+  { id: 'hard',   name: 'Hard',   bezier: 'cubic-bezier(0.34, 2.00, 0.64, 1.00)', args: [0.34, 2.00, 0.64, 1.00] },
+];
+
+// ── Easing renderers ──────────────────────────────────────────────────────────
+
+// f(t) = 1 − (1 − t)^n
+function easeOutPower(t, n) { return n === 1 ? t : 1 - Math.pow(1 - t, n); }
+
+// SVG path for a power-easing curve in a w×h box (y-axis flipped)
+function easingPath(power, w, h) {
+  const pts = [];
+  for (let i = 0; i <= 80; i++) {
+    const t = i / 80;
+    pts.push(`${(t * w).toFixed(2)},${(h - easeOutPower(t, power) * h).toFixed(2)}`);
+  }
+  return 'M ' + pts.join(' L ');
+}
+
+// Parametric cubic-bezier path — plots the curve as (B_x(t), B_y(t)) in SVG space.
+// yMin/yMax: the y-domain shown (to accommodate overshoot above 1).
+function cubicBezierPath(x1, y1, x2, y2, W, H, yMin, yMax) {
+  const pts = [];
+  for (let i = 0; i <= 80; i++) {
+    const t = i / 80;
+    const mt = 1 - t;
+    const bx = 3*mt*mt*t*x1 + 3*mt*t*t*x2 + t*t*t;
+    const by = 3*mt*mt*t*y1 + 3*mt*t*t*y2 + t*t*t;
+    const sx = (bx * W).toFixed(2);
+    const sy = (H - ((by - yMin) / (yMax - yMin)) * H).toFixed(2);
+    pts.push(`${sx},${sy}`);
+  }
+  return 'M ' + pts.join(' L ');
+}
+
+// Render the spring SVG curve for a given preset
+function renderSpringCurve(preset, W, H) {
+  const yMin = -0.06, yMax = 1.36;
+  const y0 = (H - ((0 - yMin) / (yMax - yMin)) * H).toFixed(1);
+  const y1 = (H - ((1 - yMin) / (yMax - yMin)) * H).toFixed(1);
+  const path = cubicBezierPath(...preset.args, W, H, yMin, yMax);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block;overflow:visible;" aria-label="Spring curve: ${preset.name}">
+    <rect x="0" y="0" width="${W}" height="${y1}" fill="rgba(15,15,15,0.03)"/>
+    <line x1="0" y1="${y0}" x2="${W}" y2="${y0}" stroke="rgba(15,15,15,0.10)" stroke-width="1"/>
+    <line x1="0" y1="${y1}" x2="${W}" y2="${y1}" stroke="rgba(15,15,15,0.10)" stroke-width="1" stroke-dasharray="3 3"/>
+    <path d="${path}" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${W}" cy="${y1}" r="3" fill="#0f0f0f"/>
+  </svg>`;
+}
+
+// Palette stops: fixed x-axis positions (1–18 scale)
+const PALETTE_STOPS = [1, 2, 3, 6, 10, 18];
+const SCALE_MAX = 18;
+
+// f(x) for easeOut Quint over the 0–SCALE_MAX range
+function evalQuint(x, mode) {
+  const t = x / SCALE_MAX;
+  return mode === 'out' ? 1 - Math.pow(1 - t, 5) : Math.pow(t, 5);
+}
+
+function renderZIndex(items) {
+  const tableRows = items.map(item => `
+    <tr>
+      <td class="zindex-td-token">${item.token}</td>
+      <td class="zindex-td-value">${item.value}</td>
+      <td class="zindex-td-scale">${item.scale}</td>
+      <td class="zindex-td-desc">${item.desc}</td>
+    </tr>`).join('');
+
+  // Bar widths: logarithmic so base (0) and raised (3) are visible, tip (138) fills well
+  // Map: 0 → 8px min, 138 → 100%
+  function barWidth(v) {
+    if (v === 0) return 8;
+    return Math.max(8, Math.round((Math.log(v + 1) / Math.log(139)) * 100));
+  }
+
+  // Component examples for each layer
+  const examples = {
+    '--z-base':    'Page content, text, images',
+    '--z-raised':  'Card hover lift, inline badge',
+    '--z-sticky':  'Navigation bar, sticky table header',
+    '--z-overlay': 'Side drawer, dialog, lightbox, full overlay',
+    '--z-float':   'Tooltip, toast, dropdown, context menu',
+  };
+
+  const mapLayers = [...items].reverse().map(item => `
+    <div class="zindex-layer">
+      <div class="zindex-layer-bar-col">
+        <div class="zindex-layer-bar" style="width:${barWidth(item.value)}%;">
+          <span class="zindex-layer-bar-label">${item.value}</span>
+        </div>
+      </div>
+      <div class="zindex-layer-info">
+        <span class="zindex-layer-token">${item.token}</span>
+        <span class="zindex-layer-desc">${examples[item.token] || ''}</span>
+      </div>
+    </div>`).join('');
+
+  return `
+    <table class="zindex-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Scale</th>
+          <th>Use</th>
+        </tr>
+      </thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+    <p class="zindex-map-label">Layer map</p>
+    <div class="zindex-map">${mapLayers}</div>
+    <p class="zindex-note">
+      All values are drawn directly from the FOOO spatial scale — the same numbers that govern pixels and milliseconds also govern stack depth.
+      Use <code>isolation: isolate</code> on component roots to contain stacking contexts and prevent z-index leakage from third-party libraries.
+    </p>`;
+}
+
+function renderBlur(items, theme) {
+  const tokenRows = items.map(item => `
+    <div class="blur-token-row">
+      <span class="blur-token-name">${item.token}</span>
+      <span class="blur-token-value">${item.value}</span>
+      <div class="blur-token-meta">
+        <span class="blur-token-desc">${item.desc}</span>
+        <span class="blur-token-note">${item.note}</span>
+      </div>
+    </div>`).join('');
+
+  const spaceDemo = `
+    <div class="blur-space-demo">
+      <nav class="blur-space-nav" aria-label="Space nav — blur demo">
+        <div class="blur-space-nav-wordmark">
+          <div class="blur-space-nav-dot"></div>
+          FOOO DS
+        </div>
+        <div class="blur-space-nav-links" aria-hidden="true">
+          <span class="blur-space-nav-link">Tokens</span>
+          <span class="blur-space-nav-link">Scale</span>
+          <span class="blur-space-nav-link">Motion</span>
+        </div>
+      </nav>
+    </div>`;
+
+  // Faba Origin logomark — stylised faba plant with 3 leaves (SVG)
+  const logomarkSVG = `<svg class="blur-seed-logo-mark" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <line x1="14" y1="40" x2="14" y2="18" stroke="rgba(71,48,61,0.80)" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M14 36 C14 36 6 28 6 20 C6 20 14 20 14 28" fill="rgba(71,48,61,0.60)"/>
+    <path d="M14 30 C14 30 22 22 22 14 C22 14 14 14 14 22" fill="rgba(71,48,61,0.75)"/>
+    <path d="M14 24 C14 24 8 14 11 6 C11 6 19 10 16 20" fill="rgba(71,48,61,0.90)"/>
+  </svg>`;
+
+  const seedDemo = `
+    <div class="blur-seed-demo">
+      <nav class="blur-seed-nav" aria-label="Faba Origin nav — blur demo">
+        <div class="blur-seed-logo">
+          ${logomarkSVG}
+          <span class="blur-seed-logotype">Faba<br>Origin</span>
+        </div>
+        <div class="blur-seed-nav-links">
+          <span class="blur-seed-nav-link" aria-hidden="true">Home</span>
+          <span class="blur-seed-nav-link" aria-hidden="true">About</span>
+          <span class="blur-seed-nav-link" aria-hidden="true">Services</span>
+          <span class="blur-seed-cta" aria-hidden="true">Get in touch</span>
+        </div>
+      </nav>
+    </div>`;
+
+  return `
+    <div class="blur-token-list">${tokenRows}</div>
+    ${theme === 'seed' ? seedDemo : spaceDemo}`;
+}
+
+function renderShadows(items) {
+  return `<div class="shadow-list">` +
+    items.map(item => `
+      <div class="shadow-item">
+        <div class="shadow-swatch-wrap">
+          <div class="shadow-swatch" style="box-shadow:${item.css};${item.companion ? item.companion + ';' : ''}"></div>
+        </div>
+        <div>
+          <div class="shadow-token-name">${item.token}</div>
+          <div class="shadow-css">${item.css}</div>
+          ${item.companion ? `<div class="shadow-companion">${item.companion}</div>` : ''}
+          <div class="shadow-desc">${item.desc}</div>
+          <div class="shadow-note">${item.note}</div>
+        </div>
+      </div>`).join('') +
+    `</div>`;
+}
+
+function renderRadius(items) {
+  const swatches = items.map(item => {
+    const r = item.value;
+    const isFull = r === 9999;
+    // pill shows as wide rectangle; others scale with radius
+    const w = isFull ? 120 : Math.max(r * 2, 48);
+    const h = isFull ? 48  : Math.max(r * 2, 48);
+    const displayR = isFull ? '9999px' : `${r}px`;
+    return `
+      <div class="radius-item">
+        <div class="radius-box" style="width:${w}px;height:${h}px;border-radius:${displayR};"></div>
+        <div>
+          <div class="radius-token-name">${item.token}</div>
+          <div class="radius-token-value">${displayR}</div>
+          <div class="radius-token-note">${item.note}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="radius-grid">${swatches}</div>
+    <p class="radius-smoothing-note">
+      <strong>Corner smoothing (54%) —</strong> Figma's smoothing creates a superellipse (squircle) curve
+      that has no direct CSS equivalent. <code>border-radius</code> draws circular arcs and is the web baseline.
+      The visual gap is negligible at 6px, subtle at 12px, and most noticeable at 24px.
+      For native iOS/macOS targets the Figma values are the source of truth.
+      Web squircle rendering is possible via SVG <code>clip-path</code> (e.g. <em>figma-squircle</em> library)
+      if pixel-perfect parity matters.
+    </p>`;
+}
+
+function renderBorders(items) {
+  return `<div class="border-list">` +
+    items.map(item => `
+      <div class="border-row">
+        <div class="border-token-name">${item.token}</div>
+        <div class="border-token-value">${item.value}px</div>
+        <div class="border-swatch-track">
+          <div class="border-swatch-line" style="height:${item.value}px;"></div>
+        </div>
+      </div>`).join('') +
+    `</div>`;
+}
+
+function renderDuration(data) {
+  const allMs = [...data.ui, ...data.motion].map(d => d.ms);
+  const maxMs = Math.max(...allMs);
+
+  function barPct(ms) {
+    // Logarithmic scale — perceptually honest for 84ms → 10440ms range
+    return (Math.log(ms) / Math.log(maxMs) * 100).toFixed(2);
+  }
+
+  function durationRows(items) {
+    return items.map(d => `
+      <div class="duration-row">
+        <div class="duration-token-col">
+          <span class="duration-token-name">${d.token}</span>
+          <span class="duration-token-desc">${d.desc}</span>
+        </div>
+        <div class="duration-bar-track">
+          <div class="duration-bar-fill" style="width:${barPct(d.ms)}%"></div>
+        </div>
+        <span class="duration-ms">${d.ms}ms</span>
+      </div>`).join('');
+  }
+
+  // Live demo dots
+  const demoRows = [...data.ui, ...data.motion].map(d => `
+    <div class="duration-demo-row">
+      <span class="duration-demo-token">${d.token}</span>
+      <div class="duration-demo-track">
+        <div class="duration-demo-dot" data-duration="${d.ms}"></div>
+      </div>
+      <span class="duration-demo-ms">${d.ms >= 1000 ? (d.ms/1000).toFixed(2).replace(/\.?0+$/,'')+'s' : d.ms+'ms'}</span>
+    </div>`).join('');
+
+  return `
+    <div class="duration-group">
+      <p class="duration-group-label">UI motion — interface interactions</p>
+      ${durationRows(data.ui)}
+    </div>
+    <div class="duration-group">
+      <p class="duration-group-label">Motion / video — narrative time</p>
+      ${durationRows(data.motion)}
+    </div>
+    <div class="duration-demo-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <p class="duration-demo-label" style="margin-bottom:0;">Live — ease-out quint</p>
+        <button class="duration-play-btn" type="button">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 1.5L8.5 5L2 8.5V1.5Z" fill="currentColor"/>
+          </svg>
+          Play all
+        </button>
+      </div>
+      ${demoRows}
+    </div>`;
+}
+
+function renderEasing() {
+
+  // ── 1. Single Quint curve chart — x-axis is the 0–18 scale ──
+  const CW = 320, CH = 200, PAD = 12;
+  const iW = CW - PAD * 2, iH = CH - PAD * 2;
+
+  // Grid: 6 vertical divisions (one per scale-third) + 4 horizontal
+  let gridLines = '';
+  for (let i = 1; i <= 5; i++) {
+    const gx = (PAD + i / 6 * iW).toFixed(1);
+    gridLines += `<line x1="${gx}" y1="${PAD}" x2="${gx}" y2="${PAD + iH}" stroke="rgba(15,15,15,0.06)" stroke-width="1"/>`;
+  }
+  for (let i = 1; i <= 3; i++) {
+    const gy = (PAD + i / 4 * iH).toFixed(1);
+    gridLines += `<line x1="${PAD}" y1="${gy}" x2="${PAD + iW}" y2="${gy}" stroke="rgba(15,15,15,0.06)" stroke-width="1"/>`;
+  }
+  gridLines += `<rect x="${PAD}" y="${PAD}" width="${iW}" height="${iH}" fill="none" stroke="rgba(15,15,15,0.09)" stroke-width="1"/>`;
+
+  // Quint easeIn path (default)
+  const quintPts = [];
+  for (let s = 0; s <= 120; s++) {
+    const x = s / 120 * SCALE_MAX;
+    const y = evalQuint(x, 'in');
+    quintPts.push(`${(PAD + x / SCALE_MAX * iW).toFixed(2)},${(PAD + (1 - y) * iH).toFixed(2)}`);
+  }
+  const quintPath = `<path class="easing-chart-path" d="M ${quintPts.join(' L ')}" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+  // 6 palette reference dots (small, muted)
+  const refDots = PALETTE_STOPS.map(stop => {
+    const y = evalQuint(stop, 'in');
+    const sx = (PAD + stop / SCALE_MAX * iW).toFixed(2);
+    const sy = (PAD + (1 - y) * iH).toFixed(2);
+    return `<circle class="chart-ref-dot" data-stop="${stop}" cx="${sx}" cy="${sy}" r="3" fill="white" stroke="rgba(15,15,15,0.30)" stroke-width="1.2"/>`;
+  }).join('');
+
+  // Active dot — starts at stop 18 (x=18, y=1)
+  const activeDot = `<circle class="chart-active-dot" cx="${(PAD + iW).toFixed(2)}" cy="${PAD}" r="5.5" fill="#0f0f0f" stroke="white" stroke-width="1.5"/>`;
+
+  const chart = `
+    <div class="easing-chart-wrap">
+      <div class="easing-chart-header">
+        <span class="chart-formula-label easing-chart-formula">f(x) = (x/18)<sup style="font-size:10px">5</sup></span>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="spring-switch chart-mode-switch" role="group" aria-label="Easing direction">
+            <button class="spring-btn active" data-mode="in"  type="button">In</button>
+            <button class="spring-btn"        data-mode="out" type="button">Out</button>
+          </div>
+          <span class="easing-chart-subtitle">Quint · x = scale step</span>
+        </div>
+      </div>
+      <div class="chart-scale-row">
+        <span class="chart-scale-label">step</span>
+        <input type="number" class="chart-scale-input" min="1" max="18" value="18" aria-label="Scale step 1–18">
+        <div class="chart-preset-chips" role="group" aria-label="Palette stops">
+          ${PALETTE_STOPS.map(s => `<button class="chart-preset-chip${s === 18 ? ' active' : ''}" data-stop="${s}" type="button">${s}</button>`).join('')}
+        </div>
+        <span class="chart-scale-output">f(18) = 1.000</span>
+      </div>
+      <svg class="easing-chart-svg" viewBox="0 0 ${CW} ${CH}" style="width:100%;display:block;cursor:crosshair;" aria-label="easeIn Quint over scale 0–18">
+        ${gridLines}
+        ${quintPath}
+        ${refDots}
+        ${activeDot}
+        <g class="chart-hover-group">
+          <line class="chart-hover-vline" x1="0" y1="${PAD}" x2="0" y2="${PAD + iH}" stroke="#0f0f0f" stroke-width="1" stroke-dasharray="3 3" opacity="0.22" display="none"/>
+          <circle class="chart-hover-dot" r="4" fill="white" stroke="#0f0f0f" stroke-width="1.5" display="none"/>
+          <text class="chart-hover-tlabel" x="0" y="${PAD + iH + 9}" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(15,15,15,0.40)" text-anchor="middle" display="none"></text>
+        </g>
+        <rect class="chart-hit-area" x="${PAD}" y="${PAD}" width="${iW}" height="${iH}" fill="transparent"/>
+      </svg>
+      <div class="easing-chart-legend" style="margin-top:12px;">
+        <div class="easing-legend-item">
+          <div class="easing-legend-line"></div>
+          <span class="easing-legend-mode">easeIn Quint · n=5</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--s-text-subtle);margin-top:4px;">
+          Palette stops · x = ${PALETTE_STOPS.join(', ')}
+        </div>
+      </div>
+    </div>`;
+
+  // ── 2. Combined rationale accordion ──
+  const exactStops = [
+    { k: 0, exact: 1.000,  rounded: 1  },
+    { k: 1, exact: 1.783,  rounded: 2  },
+    { k: 2, exact: 3.178,  rounded: 3  },
+    { k: 3, exact: 5.663,  rounded: 6  },
+    { k: 4, exact: 10.093, rounded: 10 },
+    { k: 5, exact: 18.000, rounded: 18 },
+  ];
+  const stopRows = exactStops.map(s => `
+    <tr>
+      <td>${s.k}</td>
+      <td class="exact-val">18<sup>${s.k}/5</sup> = ${s.exact.toFixed(3)}</td>
+      <td class="rounded-val">${s.rounded}</td>
+    </tr>`).join('');
+
+  const rationale = `
+    <div class="easing-rationale-list">
+
+      <details class="easing-rationale-item">
+        <summary>Where this is used in FOOO DS</summary>
+        <div class="easing-rationale-section">
+          <ul class="easing-usage-list">
+            <li>
+              <span class="usage-context">Color palette</span>
+              <span>The 6 stops (x = 1, 2, 3, 6, 10, 18) are sampled from the Quint curve and used as contrast weights for every color scale — neutrals, primary, secondary, accents.</span>
+            </li>
+            <li>
+              <span class="usage-context">UI transitions</span>
+              <span><code>--ease-out</code> (easeOut Quint) is the default for all interface motion — buttons, panels, drawers, modals. Objects decelerate naturally into their resting position.</span>
+            </li>
+            <li>
+              <span class="usage-context">Motion / video</span>
+              <span>Title entrances, phrase holds, and chapter pauses use <code>--ease-out</code> combined with duration tokens drawn from the same geometric scale.</span>
+            </li>
+            <li>
+              <span class="usage-context">Spring (overshoot)</span>
+              <span>Reserved for deliberate moments — confirmations, selections, playful feedback. Never used for structural layout motion.</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="easing-rationale-item">
+        <summary>Where 1, 2, 3, 6, 10, 18 come from</summary>
+        <div class="easing-rationale-section">
+          <p class="easing-explainer-body">
+            The 6 palette stops are a <strong>geometric sequence</strong> that divides the range [1, 18]
+            into 5 logarithmically equal steps — the same structure as equal temperament in music,
+            but for contrast instead of pitch:
+          </p>
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--s-text);margin:10px 0 14px;letter-spacing:0.2px;">
+            x<sub>k</sub> = 18<sup>k/5</sup> &nbsp;·&nbsp; k = 0, 1, 2, 3, 4, 5
+          </p>
+          <table class="easing-stops-table">
+            <thead>
+              <tr><th>k</th><th>Exact value</th><th>Current (rounded)</th></tr>
+            </thead>
+            <tbody>${stopRows}</tbody>
+          </table>
+          <p class="easing-rounding-note" style="margin-top:14px;">
+            <strong>On rounding:</strong> The stops (1, 2, 3, 6, 10, 18) were found intuitively and sit
+            within 12% of the exact values. For color generation you could use the exact values as
+            percentage inputs to a color tool for fractionally tighter perceptual steps.
+            The difference is subtle; both options are correct.
+          </p>
+          <p class="easing-explainer-body" style="margin-top:12px;margin-bottom:0;">
+            The constant ratio between each step is <strong>18<sup>1/5</sup> ≈ 1.783</strong> —
+            close enough to φ (1.618) to feel natural, but tuned to this specific scale.
+          </p>
+        </div>
+      </details>
+
+      <details class="easing-rationale-item">
+        <summary>Why logarithmic? — Weber–Fechner law</summary>
+        <div class="easing-rationale-section">
+          <div class="easing-accordion-body">
+            <p>Human perception of contrast, brightness, and loudness is logarithmic, not linear.
+            A physical difference that feels significant at low intensity becomes imperceptible at high intensity
+            if the absolute gap stays the same. This is the <strong>Weber–Fechner law</strong>.</p>
+            <p>It follows that to produce steps that feel <em>perceptually equal</em> — where each swatch
+            looks clearly distinct from the last — the physical values must grow geometrically, not arithmetically.
+            1.783× each time: the ratio stays constant, so the perceived jump stays constant.</p>
+            <p>The same principle governs musical pitch (each octave doubles frequency),
+            audio decibels (10× power = +10 dB), photographic f-stops (each stop doubles light),
+            and the FOOO spatial scale itself (φ ratio from 54px upward).</p>
+            <p>You found these stops by eye. The law was already built into your intuition.</p>
+          </div>
+        </div>
+      </details>
+
+    </div>`;
+
+  // ── 3. Spring / natural physics bounce ──
+  const spring = `
+    <div class="easing-spring-wrap">
+      <div class="easing-spring-header">
+        <div>
+          <div class="easing-spring-title">Spring · Natural physics</div>
+          <div class="easing-spring-subtitle">cubic-bezier with y<sub>1</sub> &gt; 1 — overshoot then settle</div>
+        </div>
+        <div class="spring-switch" role="group" aria-label="Spring preset">
+          ${SPRING_PRESETS.map((p, i) => `<button class="spring-btn${i === 0 ? ' active' : ''}" data-spring="${p.id}" type="button">${p.name}</button>`).join('')}
+        </div>
+      </div>
+      <div class="spring-content">
+        <div class="spring-curve-box">
+          ${renderSpringCurve(SPRING_PRESETS[0], 160, 120)}
+        </div>
+        <div class="spring-info">
+          <div>
+            <div class="spring-info-label">Preset</div>
+            <div class="spring-info-name">${SPRING_PRESETS[0].name}</div>
+          </div>
+          <div>
+            <div class="spring-info-label">Token value</div>
+            <div class="spring-info-bezier">${SPRING_PRESETS[0].bezier}</div>
+          </div>
+          <div class="spring-demo-track" role="button" tabindex="0" aria-label="Spring animation — click to replay">
+            <div class="spring-demo-dot"></div>
+          </div>
+          <div style="font-size:11px;color:var(--s-text-subtle);">Click to replay</div>
+        </div>
+      </div>
+    </div>`;
+
+  // ── 4. Live animation demo (power curves) ──
+  const demo = `
+    <div class="easing-demo-wrap" role="button" tabindex="0" aria-label="Power easing demo — click to replay">
+      <p class="easing-demo-label">Live animation — click to replay</p>
+      ${EASING.powers.map(p => `
+        <div class="easing-demo-row">
+          <div class="easing-demo-name">${p.name}</div>
+          <div class="easing-demo-track">
+            <div class="easing-demo-dot" data-bezier-out="${p.bezierOut}" data-bezier-in="${p.bezierIn}"></div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+
+  // ── 5. Semantic tokens ──
+  const tokens = `
+    <div style="margin-top:40px;">
+      <p class="easing-demo-label" style="margin-bottom:16px;">Semantic tokens</p>
+      ${EASING.semantic.map(s => `
+        <div class="easing-token-row">
+          <div class="easing-token-name">${s.token}</div>
+          <div class="easing-token-value">${s.value}</div>
+          <div class="easing-token-desc">${s.desc}</div>
+        </div>`).join('')}
+    </div>`;
+
+  return chart + rationale + spring + demo + tokens;
+}
+
+// ── Easing interaction ────────────────────────────────────────────────────────
+
+function initEasingSection() {
+  // ── Chart: single Quint curve, scale input, Out/In toggle, hover ──
+  function initChartWrap(chartWrap) {
+    const CW = 320, CH = 200, PAD = 12;
+    const iW = CW - PAD * 2, iH = CH - PAD * 2;
+    let mode = 'in';
+
+    const scaleInput  = chartWrap.querySelector('.chart-scale-input');
+    const presetChips = chartWrap.querySelectorAll('.chart-preset-chip');
+    const scaleOutput = chartWrap.querySelector('.chart-scale-output');
+    const activeDot   = chartWrap.querySelector('.chart-active-dot');
+    const svg         = chartWrap.querySelector('.easing-chart-svg');
+    const vline       = chartWrap.querySelector('.chart-hover-vline');
+    const hoverDot    = chartWrap.querySelector('.chart-hover-dot');
+    const tlabel      = chartWrap.querySelector('.chart-hover-tlabel');
+
+    function xToSvg(x) { return PAD + (x / SCALE_MAX) * iW; }
+    function yToSvg(y) { return PAD + (1 - y) * iH; }
+
+    // Rebuild the quint path + reposition reference dots
+    function rebuildAll() {
+      // Path
+      const path = chartWrap.querySelector('.easing-chart-path');
+      if (path) {
+        const pts = [];
+        for (let s = 0; s <= 120; s++) {
+          const x = s / 120 * SCALE_MAX;
+          pts.push(`${xToSvg(x).toFixed(2)},${yToSvg(evalQuint(x, mode)).toFixed(2)}`);
+        }
+        path.setAttribute('d', 'M ' + pts.join(' L '));
+      }
+      // Reference dots
+      chartWrap.querySelectorAll('.chart-ref-dot').forEach(dot => {
+        const x = parseInt(dot.dataset.stop);
+        dot.setAttribute('cx', xToSvg(x).toFixed(2));
+        dot.setAttribute('cy', yToSvg(evalQuint(x, mode)).toFixed(2));
+      });
+      // Formula label
+      const label = chartWrap.querySelector('.chart-formula-label');
+      if (label) label.innerHTML = mode === 'out'
+        ? 'f(x) = 1 − (1 − x/18)<sup style="font-size:10px">5</sup>'
+        : 'f(x) = (x/18)<sup style="font-size:10px">5</sup>';
+      // Legend mode label
+      const legendMode = chartWrap.querySelector('.easing-legend-mode');
+      if (legendMode) legendMode.textContent = (mode === 'out' ? 'easeOut' : 'easeIn') + ' Quint · n=5';
+      // Refresh active dot
+      updateActive(parseFloat(scaleInput.value) || 18);
+    }
+
+    // Move active dot + update readout
+    function updateActive(x) {
+      x = Math.max(1, Math.min(SCALE_MAX, x));
+      const fx = evalQuint(x, mode);
+      activeDot.setAttribute('cx', xToSvg(x).toFixed(2));
+      activeDot.setAttribute('cy', yToSvg(fx).toFixed(2));
+      scaleOutput.textContent = `f(${x}) = ${fx.toFixed(3)}`;
+      presetChips.forEach(c => c.classList.toggle('active', parseFloat(c.dataset.stop) === x));
+    }
+
+    // Scale input
+    scaleInput.addEventListener('input', () => updateActive(parseFloat(scaleInput.value) || 18));
+
+    presetChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const v = parseFloat(chip.dataset.stop);
+        scaleInput.value = v;
+        updateActive(v);
+      });
+    });
+
+    // In / Out toggle
+    chartWrap.querySelectorAll('.chart-mode-switch .spring-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        mode = btn.dataset.mode;
+        chartWrap.querySelectorAll('.chart-mode-switch .spring-btn').forEach(b =>
+          b.classList.toggle('active', b === btn)
+        );
+        rebuildAll();
+        // Sync demo animation easing + store mode on section for click handler
+        const section = chartWrap.closest('.ref-section');
+        if (section) {
+          section.dataset.easingMode = mode;
+          const demoWrap = section.querySelector('.easing-demo-wrap');
+          if (demoWrap) playPowerDemo(demoWrap, mode);
+        }
+      });
+    });
+
+    // Hover crosshair (single dot on the quint curve)
+    function showHover(clientX) {
+      const rect = svg.getBoundingClientRect();
+      const svgX = (clientX - rect.left) * (CW / rect.width);
+      const x    = Math.max(0, Math.min(SCALE_MAX, (svgX - PAD) / iW * SCALE_MAX));
+      const fx   = evalQuint(x, mode);
+      const sx   = xToSvg(x).toFixed(2);
+      const sy   = yToSvg(fx).toFixed(2);
+
+      vline.setAttribute('x1', sx); vline.setAttribute('x2', sx);
+      vline.removeAttribute('display');
+      hoverDot.setAttribute('cx', sx); hoverDot.setAttribute('cy', sy);
+      hoverDot.removeAttribute('display');
+      tlabel.setAttribute('x', sx);
+      tlabel.textContent = `x=${x.toFixed(1)}`;
+      tlabel.removeAttribute('display');
+    }
+
+    function hideHover() {
+      [vline, hoverDot, tlabel].forEach(el => el.setAttribute('display', 'none'));
+    }
+
+    const hitArea = chartWrap.querySelector('.chart-hit-area');
+    hitArea.addEventListener('mousemove',  e => showHover(e.clientX));
+    hitArea.addEventListener('mouseleave', hideHover);
+    hitArea.addEventListener('touchmove',  e => { e.preventDefault(); showHover(e.touches[0].clientX); }, { passive: false });
+    hitArea.addEventListener('touchend',   hideHover);
+
+    // Init
+    updateActive(18);
+  }
+
+  document.querySelectorAll('.easing-chart-wrap').forEach(initChartWrap);
+
+  // ── Play all power-easing dots within a given wrap using Web Animations API ──
+  function playPowerDemo(wrap, mode) {
+    const m = mode || wrap.closest('.ref-section')?.dataset.easingMode || 'in';
+    wrap.querySelectorAll('.easing-demo-dot').forEach(dot => {
+      const easing = (m === 'in' ? dot.dataset.bezierIn : dot.dataset.bezierOut) || 'linear';
+      dot.style.left = '4px';
+      void dot.offsetWidth; // force reflow — ensures animation restarts cleanly
+      dot.animate(
+        [{ left: '4px' }, { left: 'calc(100% - 24px)' }],
+        { duration: 900, easing, fill: 'forwards' }
+      );
+    });
+  }
+
+  // Tag all easing sections with initial mode so click handler can read it
+  document.querySelectorAll('.ref-section').forEach(s => { s.dataset.easingMode = 'in'; });
+
+  document.querySelectorAll('.easing-demo-wrap').forEach(wrap => {
+    wrap.style.cursor = 'pointer';
+    wrap.addEventListener('click', () => playPowerDemo(wrap));
+    wrap.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playPowerDemo(wrap); }
+    });
+  });
+
+  // Spring section — scoped per wrap (there are two: Space + Seed)
+  function initSpringWrap(springWrap) {
+    let current = SPRING_PRESETS[0];
+    const curveBox = springWrap.querySelector('.spring-curve-box');
+    const infoName = springWrap.querySelector('.spring-info-name');
+    const infoBez  = springWrap.querySelector('.spring-info-bezier');
+    const dot      = springWrap.querySelector('.spring-demo-dot');
+
+    function playSpring() {
+      dot.style.left = '4px';
+      void dot.offsetWidth;
+      dot.animate(
+        [{ left: '4px' }, { left: 'calc(100% - 26px)' }],
+        { duration: 720, easing: current.bezier, fill: 'forwards' }
+      );
+    }
+
+    function setPreset(preset) {
+      current = preset;
+      infoName.textContent = preset.name;
+      infoBez.textContent  = preset.bezier;
+      curveBox.innerHTML   = renderSpringCurve(preset, 160, 120);
+      springWrap.querySelectorAll('.spring-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.spring === preset.id)
+      );
+      playSpring();
+    }
+
+    springWrap.querySelectorAll('.spring-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const preset = SPRING_PRESETS.find(p => p.id === btn.dataset.spring);
+        if (preset) setPreset(preset);
+      });
+    });
+
+    const track = springWrap.querySelector('.spring-demo-track');
+    track.addEventListener('click', e => { e.stopPropagation(); playSpring(); });
+    track.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSpring(); }
+    });
+
+    // Auto-play after a short delay
+    setTimeout(playSpring, 900);
+  }
+
+  document.querySelectorAll('.easing-spring-wrap').forEach(initSpringWrap);
+
+  // Auto-play power demos (only the visible active tab panel) — initial mode is 'in'
+  setTimeout(() => {
+    document.querySelectorAll('.tab-panel.active .easing-demo-wrap').forEach(w => playPowerDemo(w, 'in'));
+  }, 600);
+}
+
+function initDurationSection() {
+  const EASING_OUT = 'cubic-bezier(0.22, 1, 0.36, 1)'; // easeOutQuint approximation
+
+  function playDemoWrap(wrap) {
+    wrap.querySelectorAll('.duration-demo-dot').forEach(dot => {
+      const ms = parseInt(dot.dataset.duration);
+      dot.style.left = '4px';
+      void dot.offsetWidth; // force reflow for reliable replay
+      dot.animate(
+        [{ left: '4px' }, { left: 'calc(100% - 22px)' }],
+        { duration: ms, easing: EASING_OUT, fill: 'forwards' }
+      );
+    });
+  }
+
+  document.querySelectorAll('.duration-demo-wrap').forEach(wrap => {
+    const btn = wrap.querySelector('.duration-play-btn');
+    if (btn) btn.addEventListener('click', () => playDemoWrap(wrap));
+  });
+}
+
+// ── Mount all Space ──────────────────────────────────────────────────────────
+document.getElementById('space-brand-swatches').innerHTML     = renderSwatches(SPACE.brand);
+document.getElementById('space-primary-swatches').innerHTML   = renderSwatches(SPACE.primary);
+document.getElementById('space-neutral-dark').innerHTML       = renderNeutralStrip(SPACE.neutralOnDark, 'on-dark opaque stops 100→600');
+document.getElementById('space-neutral-bright').innerHTML     = renderNeutralStrip(SPACE.neutralOnBright, 'on-bright opaque stops 100→600');
+document.getElementById('space-type-specimens').innerHTML     = renderTypeSpecimens(SPACE.type);
+document.getElementById('space-scale-bars').innerHTML         = renderScaleBars(SPACE.scale);
+document.getElementById('space-containers-list').innerHTML    = renderContainers(SPACE.containers);
+document.getElementById('space-ratio-grid').innerHTML         = renderRatios(SPACE.ratios);
+document.getElementById('space-elevation-rows').innerHTML     = renderElevation(SPACE.elevation);
+document.getElementById('space-easing-content').innerHTML     = renderEasing();
+document.getElementById('space-duration-content').innerHTML   = renderDuration(SPACE.durations);
+document.getElementById('space-radius-content').innerHTML   = renderRadius(SPACE.radius);
+document.getElementById('space-borders-content').innerHTML  = renderBorders(SPACE.borders);
+document.getElementById('space-blur-content').innerHTML     = renderBlur(SPACE.blur, 'space');
+document.getElementById('space-zindex-content').innerHTML    = renderZIndex(SPACE.zIndex);
+
+// ── Mount all Seed ───────────────────────────────────────────────────────────
+document.getElementById('seed-brand-swatches').innerHTML      = renderSwatches(SEED.brand);
+document.getElementById('seed-primary-swatches').innerHTML    = renderSwatches(SEED.primary);
+document.getElementById('seed-secondary-swatches').innerHTML  = renderSwatches(SEED.secondary);
+document.getElementById('seed-accent-swatches').innerHTML     = renderSwatches(SEED.accent);
+document.getElementById('seed-type-specimens').innerHTML      = renderTypeSpecimens(SEED.type);
+document.getElementById('seed-scale-bars').innerHTML          = renderScaleBars(SPACE.scale);
+document.getElementById('seed-containers-list').innerHTML     = renderContainers(SPACE.containers);
+document.getElementById('seed-ratio-grid').innerHTML          = renderRatios(SPACE.ratios);
+document.getElementById('seed-easing-content').innerHTML      = renderEasing();
+document.getElementById('seed-duration-content').innerHTML    = renderDuration(SPACE.durations);
+document.getElementById('seed-radius-content').innerHTML    = renderRadius(SPACE.radius);
+document.getElementById('seed-borders-content').innerHTML   = renderBorders(SPACE.borders);
+document.getElementById('seed-shadows-content').innerHTML   = renderShadows(SEED.shadows);
+document.getElementById('seed-blur-content').innerHTML      = renderBlur(SEED.blur, 'seed');
+document.getElementById('seed-zindex-content').innerHTML     = renderZIndex(SPACE.zIndex);
+
+// Init easing interactions
+initEasingSection();
+
+// Init duration demo
+initDurationSection();
+
+// ── Sidebar ──────────────────────────────────────────────────────────────────
+
+const SIDEBAR_SECTIONS = {
+  space: [
+    { id: 'space-colors',     num: '01', label: 'Colors' },
+    { id: 'space-typography', num: '02', label: 'Typography' },
+    { id: 'space-scale',      num: '03', label: 'Scale' },
+    { id: 'space-containers', num: '04', label: 'Containers' },
+    { id: 'space-ratios',     num: '05', label: 'Aspect Ratios' },
+    { id: 'space-elevation',  num: '06', label: 'Elevation' },
+    { id: 'space-easing',     num: '07', label: 'Easing' },
+    { id: 'space-duration',   num: '08', label: 'Duration' },
+    { id: 'space-radius',   num: '09', label: 'Radius' },
+    { id: 'space-borders',  num: '10', label: 'Borders' },
+    { id: 'space-blur',     num: '11', label: 'Blur' },
+    { id: 'space-zindex',   num: '12', label: 'Z-Index' },
+  ],
+  seed: [
+    { id: 'seed-colors',      num: '01', label: 'Colors' },
+    { id: 'seed-typography',  num: '02', label: 'Typography' },
+    { id: 'seed-scale',       num: '03', label: 'Scale' },
+    { id: 'seed-containers',  num: '04', label: 'Containers' },
+    { id: 'seed-ratios',      num: '05', label: 'Aspect Ratios' },
+    { id: 'seed-easing',      num: '06', label: 'Easing' },
+    { id: 'seed-duration',    num: '07', label: 'Duration' },
+    { id: 'seed-radius',    num: '08', label: 'Radius' },
+    { id: 'seed-borders',   num: '09', label: 'Borders' },
+    { id: 'seed-shadows',   num: '10', label: 'Shadows' },
+    { id: 'seed-blur',      num: '11', label: 'Blur' },
+    { id: 'seed-zindex',    num: '12', label: 'Z-Index' },
+  ],
+};
+
+function buildSidebar(tab) {
+  const sections = SIDEBAR_SECTIONS[tab];
+  document.getElementById('sidebar').innerHTML = `
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">${tab === 'space' ? 'Space' : 'Seed'} Library</div>
+      ${sections.map(s => `
+        <a class="sidebar-link" href="#${s.id}">
+          <span class="sidebar-link-num">${s.num}</span>
+          ${s.label}
+        </a>`).join('')}
+    </div>`;
+}
+
+buildSidebar('space');
+
+// ── Tab switching ────────────────────────────────────────────────────────────
+
+const tabBtns = Array.from(document.querySelectorAll('.tab-btn[role="tab"]'));
+
+function activateTab(btn) {
+  const tab = btn.dataset.tab;
+  tabBtns.forEach(b => {
+    const isActive = b === btn;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', String(isActive));
+    b.setAttribute('tabindex', isActive ? '0' : '-1');
+  });
+  document.querySelectorAll('.tab-panel').forEach(p =>
+    p.classList.toggle('active', p.id === `panel-${tab}`)
+  );
+  buildSidebar(tab);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  closeSidebar();
+}
+
+tabBtns.forEach(btn => btn.addEventListener('click', () => activateTab(btn)));
+
+// Arrow key navigation within tablist — WCAG §2.1.1
+document.querySelector('[role="tablist"]').addEventListener('keydown', e => {
+  const idx = tabBtns.indexOf(document.activeElement);
+  if (idx === -1) return;
+  if (e.key === 'ArrowRight') {
+    const next = tabBtns[(idx + 1) % tabBtns.length];
+    activateTab(next);
+    next.focus();
+  } else if (e.key === 'ArrowLeft') {
+    const prev = tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length];
+    activateTab(prev);
+    prev.focus();
+  }
+});
+
+// Init tabindex
+tabBtns.forEach((b, i) => b.setAttribute('tabindex', i === 0 ? '0' : '-1'));
+
+// ── Mobile sidebar drawer ────────────────────────────────────────────────────
+
+const menuToggle   = document.getElementById('menu-toggle');
+const sidebarEl    = document.getElementById('sidebar');
+const backdropEl   = document.getElementById('sidebar-backdrop');
+
+function openSidebar() {
+  sidebarEl.classList.add('open');
+  backdropEl.classList.add('visible');
+  menuToggle.textContent = 'Close';
+  menuToggle.setAttribute('aria-expanded', 'true');
+}
+
+function closeSidebar() {
+  sidebarEl.classList.remove('open');
+  backdropEl.classList.remove('visible');
+  menuToggle.textContent = 'Menu';
+  menuToggle.setAttribute('aria-expanded', 'false');
+}
+
+menuToggle.setAttribute('aria-expanded', 'false');
+menuToggle.setAttribute('aria-controls', 'sidebar');
+
+menuToggle.addEventListener('click', () => {
+  sidebarEl.classList.contains('open') ? closeSidebar() : openSidebar();
+});
+
+backdropEl.addEventListener('click', closeSidebar);
+
+// Close drawer when a sidebar link is tapped
+sidebarEl.addEventListener('click', e => {
+  if (e.target.closest('.sidebar-link')) closeSidebar();
+});
+
+// Close drawer on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSidebar();
+});
+</script>
+</body>
+</html>
