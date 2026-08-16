@@ -2969,12 +2969,12 @@
           it — <code>138+222=360</code>, <code>360+582=942</code>, <code>582+942=1524</code>,
           <code>942+1524=2466</code>. That run is also the proof the 9xl label was the typo
           and not its value: 942+1524 lands exactly on 2466, and 942+1542 would not.
-          <br><strong>10xl has no container alias.</strong> It is a size rung, not yet a
-          sanctioned container. gabrielkroll.com already builds against it —
-          <code>.work-panels</code> is <code>min(2466px, 100%)</code>, so the panel runs
-          full-bleed with square corners until the viewport clears 2466 and it becomes a
-          rounded object. Promoting it to <code>Container/Natural/3xl [2466]</code> in Figma
-          is your call.
+          <br><strong>10xl is now a container.</strong>
+          <code>Container/Natural/3xl [2466]</code> aliases the rung in Figma, so the set no
+          longer stops at the frame. gabrielkroll.com already built against it —
+          <code>.work-panels</code> is <code>min(2466px, 100%)</code>, running full-bleed with
+          square corners until the viewport clears 2466, where it rounds and becomes an object.
+          See <a href="#space-alignment">05 — Alignment</a> for how the stage centres the frame.
         </div>
       </section>
 
@@ -3003,6 +3003,34 @@
 
         <p class="align-caption">The full stop set. Each pair mirrors about the centre at 762.</p>
         <div id="space-align-stops"></div>
+
+        <p class="spec-block-title" style="margin-top:40px;">Above the frame — the display stage</p>
+        <p class="align-caption">
+          <code>C-3xl · 2466</code> is not a container inside the frame; it is the stage the
+          frame sits on. Its stops cannot come from <code>(1524 − W) ÷ 2</code> — that goes
+          negative — so the display tier centres the frame instead.
+        </p>
+        <div id="space-align-stage"></div>
+
+        <div class="derive-row">
+          <div class="derive-key">Stage margin</div>
+          <div class="derive-val">
+            <strong>2466 − 1524 = 942, so the frame sits on exactly one container-xl of
+            margin</strong>, split evenly: <code>471</code> either side. The margin is not an
+            arbitrary gutter — it is the next rung down, which is why the stage reads as part
+            of the same system rather than as letterboxing.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">What grows</div>
+          <div class="derive-val">
+            <strong>Full-bleed objects grow to 2466. Content does not.</strong> The reading
+            field stays at 1164 and the frame at 1524 no matter how wide the display gets —
+            gabrielkroll.com caps its hero illustration at 1524 for exactly this reason, so the
+            picture never outgrows the page it sits on. Only edge-to-edge surfaces claim the
+            stage, and at 2466 they stop bleeding and become objects.
+          </div>
+        </div>
 
         <p class="spec-block-title" style="margin-top:40px;">Building against the map</p>
         <p class="align-caption">
@@ -3534,7 +3562,7 @@ const SPACE = {
       { label: 'layout-frame', value: 1524, note: 'Outer document frame' },
     ],
     display: [
-      { label: '10xl', value: 2466, note: 'Widest rung — no alias yet' },
+      { label: 'C-3xl', value: 2466, note: 'Display stage — the frame sits on it' },
     ],
   },
   ratios: [
@@ -4726,6 +4754,31 @@ function renderAlignComposites() {
   return `<div class="align-map">${alignLines()}${rows}</div>`;
 }
 
+// The display stage sits above the frame, so its stops cannot come from
+// (FRAME - W)/2 — the frame is the thing being centered, not the container.
+const STAGE = 2466;
+
+function renderAlignStage() {
+  const pct = x => (x / STAGE * 100).toFixed(4);
+  const margin = (STAGE - ALIGN.frame) / 2;          // 471 — half a container-xl
+  const stops = [0, margin, STAGE / 2, STAGE - margin, STAGE];
+  const lines = stops.map(x => {
+    const cls = (x === 0 || x === STAGE) ? 'align-line align-line-edge'
+      : x === STAGE / 2 ? 'align-line align-line-centre'
+      : 'align-line';
+    return `<div class="${cls}" style="left:${pct(x)}%"></div>`;
+  }).join('');
+  const rows = [
+    { w: STAGE,        name: `display stage · ${STAGE}`, soft: true },
+    { w: ALIGN.frame,  name: `layout-frame · ${ALIGN.frame}` },
+    { w: 1164,         name: 'field · 1164' },
+  ].map(r => `
+    <div class="align-row${r.soft ? ' align-row-soft' : ''}" style="width:${pct(r.w)}%">
+      <div class="align-seg" style="flex:1"><span class="align-tag">${r.name}</span></div>
+    </div>`).join('');
+  return `<div class="align-map">${lines}${rows}</div>`;
+}
+
 function renderAlignStops() {
   const stops = alignStops();
   const rows = stops.filter(s => s.x <= ALIGN.frame / 2).map(s => {
@@ -4747,6 +4800,7 @@ function renderAlignStops() {
 document.getElementById('space-align-map').innerHTML        = renderAlignMap();
 document.getElementById('space-align-composites').innerHTML = renderAlignComposites();
 document.getElementById('space-align-stops').innerHTML      = renderAlignStops();
+document.getElementById('space-align-stage').innerHTML      = renderAlignStage();
 
 // ── Agōn — derived theme tokens (worn by Meso+) ──────────────────────────────
 // Source: mesoplus-site/DESIGN.md front-matter. Not yet in the FOOO token build.
