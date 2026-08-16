@@ -2988,6 +2988,59 @@
         <p class="align-caption">The full stop set. Each pair mirrors about the centre at 762.</p>
         <div id="space-align-stops"></div>
 
+        <p class="spec-block-title" style="margin-top:40px;">Building against the map</p>
+        <p class="align-caption">
+          Four things the geometry does not tell you, each one learned the expensive way on
+          gabrielkroll.com. The map is a drawing; these are what it costs to build from it.
+        </p>
+
+        <div class="derive-row">
+          <div class="derive-key">Gutters</div>
+          <div class="derive-val">
+            <strong>The map's seams are zero-width. Real rows have a gap.</strong>
+            A composite specified straight off the drawing loses the gutter to one of its
+            segments. <code>C-360 + C-942</code> was built at 1302 — the drawn total — so with
+            a 24 gap the still collapsed to <b>918</b> and never reached the token it was
+            specified at. The row is <code>360 + 24 + 942 = 1326</code>. Add the gutters to
+            the composite, or accept that a segment lands off-scale.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Field, not frame</div>
+          <div class="derive-val">
+            <strong>Content aligns to 1164, not 1524.</strong> The frame is the display
+            container; the field is what content actually sees —
+            <code>min(1164px, 100vw − 48px)</code>, centered, 24 outer padding. The map is
+            drawn at frame width because that is where the stops are derived, not because
+            anything is built there.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Step, don't scale</div>
+          <div class="derive-val">
+            <strong>Sizes on screen are tokens, never percentages of them.</strong> Between
+            breakpoints, drop a rung instead of interpolating. The scale is a Fibonacci run,
+            so 582→360 carries 942→582 and 360→222 with it and every pair stays golden.
+            Interpolation lands between rungs and breaks the alignment it was supposed to keep.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Floor</div>
+          <div class="derive-val">
+            <strong>On the scale is not the same as usable.</strong> C-138 exists and is a
+            valid stop generator, but a 138 card is below the smallest size worth showing a
+            client. Roles carry their own floor — for gallery cards it is 222. Below it,
+            let content bleed and scroll rather than shrinking to a rung that cannot do its job.
+          </div>
+        </div>
+
+        <div class="brand-note">
+          <strong>Not yet derived.</strong> Every stop above is the 1524 tier. Responsive
+          behaviour below it — the 1164 and 942 container tiers, and mobile — has no
+          alignment model yet. Until it does, sub-1524 layouts are being decided per build
+          rather than by the system.
+        </div>
+
         <div class="brand-note">
           <strong>Why this exists.</strong> Snapping widths to the scale is not enough — two
           sections can both be on-scale and still fail to line up, which is the “unintentional
