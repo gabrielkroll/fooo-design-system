@@ -451,6 +451,156 @@
       margin-bottom: 8px;
     }
 
+    /* ── Alignment map ── */
+    .align-formula {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      color: var(--s-text);
+      background: var(--s-surface);
+      border: 1px solid var(--s-border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      margin-bottom: 34px;
+    }
+
+    .align-formula-sep { color: var(--s-text-subtle); }
+    .align-formula sub { font-size: 9px; color: var(--s-text-subtle); }
+
+    .align-caption {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--s-text-subtle);
+      margin-bottom: 14px;
+      max-width: 620px;
+    }
+
+    .align-map {
+      position: relative;
+      padding: 4px 0;
+      margin-bottom: 34px;
+    }
+
+    .align-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      margin-left: -0.5px;
+      background: var(--s-border-mid);
+    }
+
+    .align-line-edge { background: var(--s-text); }
+
+    .align-line-centre {
+      background: linear-gradient(var(--s-border-mid) 60%, transparent 0);
+      background-size: 1px 10px;
+    }
+
+    .align-line-soft {
+      background: linear-gradient(var(--s-border) 50%, transparent 0);
+      background-size: 1px 6px;
+    }
+
+    .align-row {
+      position: relative;
+      height: 32px;
+      margin: 0 auto 7px;
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--s-text);
+      border-radius: 3px;
+    }
+
+    .align-row-soft { border-color: var(--s-border-mid); }
+
+    .align-seg {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      border-right: 1px solid var(--s-text);
+    }
+
+    .align-seg:last-child { border-right: none; }
+
+    .align-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3px;
+      color: var(--s-text-muted);
+      padding-left: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .align-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--s-text-subtle);
+      margin: 22px 0 8px;
+    }
+
+    .align-group-label:first-child { margin-top: 0; }
+
+    .align-verdict {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3px;
+      margin: 0 auto 16px;
+      padding-left: 7px;
+      color: var(--s-text-subtle);
+    }
+
+    .align-verdict.is-full { color: #4f7016; }
+    .align-verdict.is-part { color: var(--s-text-muted); }
+    .align-verdict.is-none { color: var(--s-text-subtle); }
+
+    .stops-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .stops-table th {
+      text-align: left;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--s-text-subtle);
+      padding: 0 12px 8px 0;
+      border-bottom: 1px solid var(--s-border);
+    }
+
+    .stops-table td {
+      padding: 9px 12px 9px 0;
+      border-bottom: 1px solid var(--s-border);
+      color: var(--s-text-muted);
+      vertical-align: top;
+    }
+
+    .stops-table .is-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--s-text);
+    }
+
+    .stops-table tr.is-soft td,
+    .stops-table tr.is-soft .is-num { color: var(--s-text-subtle); }
+
+    @media (max-width: 600px) {
+      .align-map { overflow-x: auto; }
+      .stops-table { font-size: 12px; }
+    }
+
     /* ── Usage-rule specimens ── */
     .spec-pair {
       display: grid;
@@ -2812,57 +2962,95 @@
         <div id="space-containers-list"></div>
       </section>
 
+      <section class="ref-section" id="space-alignment">
+        <p class="ref-section-eyebrow">05 — Alignment</p>
+        <h2 class="ref-section-title">Alignment map</h2>
+        <hr class="ref-divider">
+
+        <p class="brand-lede">
+          Containers answer how wide. This answers where the edges land. Every sanctioned
+          width, centered in the 1524 frame, generates two alignment stops — and content
+          only ever aligns to a stop.
+        </p>
+
+        <div class="align-formula">
+          <span>stop<sub>left</sub> = (1524 − W) ÷ 2</span>
+          <span class="align-formula-sep">·</span>
+          <span>stop<sub>right</sub> = (1524 + W) ÷ 2</span>
+        </div>
+
+        <p class="align-caption">Every container width, centered in the frame. Lines are the stops it generates.</p>
+        <div id="space-align-map"></div>
+
+        <p class="align-caption">A composite is centered, so its outer edges always land on stops by construction. Internal seams do not follow automatically — the decompositions marked below are the ones that also align inside, and those are the ones to reach for first.</p>
+        <div id="space-align-composites"></div>
+
+        <p class="align-caption">The full stop set. Each pair mirrors about the centre at 762.</p>
+        <div id="space-align-stops"></div>
+
+        <div class="brand-note">
+          <strong>Why this exists.</strong> Snapping widths to the scale is not enough — two
+          sections can both be on-scale and still fail to line up, which is the “unintentional
+          across breakpoints” problem named in <code>DESIGN-DIRECTION.md</code>. Alignment is a
+          property of the system only when edges are shared.
+          <br><strong>Two classes of stop.</strong> Solid lines are <em>edge stops</em> — a
+          centered container's own edges. The faint pair at 360 and 1164 are <em>seam
+          stops</em>: no container edge lands there, but composite seams do, so content may
+          align to them. The centre axis at 762 is drawn here and is not in the Figma map.
+        </div>
+      </section>
+
       <section class="ref-section" id="space-ratios">
-        <p class="ref-section-eyebrow">05 — Aspect Ratios</p>
+        <p class="ref-section-eyebrow">06 — Aspect Ratios</p>
         <h2 class="ref-section-title">Ratio tokens</h2>
         <hr class="ref-divider">
         <div class="ratio-grid" id="space-ratio-grid"></div>
       </section>
 
       <section class="ref-section" id="space-elevation">
-        <p class="ref-section-eyebrow">06 — Elevation</p>
+        <p class="ref-section-eyebrow">07 — Elevation</p>
         <h2 class="ref-section-title">Surface elevation</h2>
         <hr class="ref-divider">
         <div id="space-elevation-rows"></div>
       </section>
 
       <section class="ref-section" id="space-easing">
-        <p class="ref-section-eyebrow">07 — Easing</p>
+        <p class="ref-section-eyebrow">08 — Easing</p>
         <h2 class="ref-section-title">Power easing</h2>
         <hr class="ref-divider">
         <div id="space-easing-content"></div>
       </section>
 
       <section class="ref-section" id="space-duration">
-        <p class="ref-section-eyebrow">08 — Duration</p>
+        <p class="ref-section-eyebrow">09 — Duration</p>
         <h2 class="ref-section-title">Duration tokens</h2>
         <hr class="ref-divider">
         <div id="space-duration-content"></div>
       </section>
 
       <section class="ref-section" id="space-radius">
-        <p class="ref-section-eyebrow">09 — Radius</p>
+        <p class="ref-section-eyebrow">10 — Radius</p>
         <h2 class="ref-section-title">Border radius</h2>
         <hr class="ref-divider">
         <div id="space-radius-content"></div>
       </section>
 
       <section class="ref-section" id="space-borders">
-        <p class="ref-section-eyebrow">10 — Borders</p>
+        <p class="ref-section-eyebrow">11 — Borders</p>
         <h2 class="ref-section-title">Border width</h2>
         <hr class="ref-divider">
         <div id="space-borders-content"></div>
       </section>
 
       <section class="ref-section" id="space-blur">
-        <p class="ref-section-eyebrow">11 — Blur</p>
+        <p class="ref-section-eyebrow">12 — Blur</p>
         <h2 class="ref-section-title">Backdrop blur</h2>
         <hr class="ref-divider">
         <div id="space-blur-content"></div>
       </section>
 
       <section class="ref-section" id="space-zindex">
-        <p class="ref-section-eyebrow">12 — Z-Index</p>
+        <p class="ref-section-eyebrow">13 — Z-Index</p>
         <h2 class="ref-section-title">Layer scale</h2>
         <hr class="ref-divider">
         <div id="space-zindex-content"></div>
@@ -4357,6 +4545,124 @@ initEasingSection();
 // Init duration demo
 initDurationSection();
 
+// ── Alignment map ────────────────────────────────────────────────────────────
+// Source: Figma Core System, "Alignment Map — 1524 Container" (node 99:92).
+// Every stop is a centered container edge: (FRAME ∓ W) / 2.
+
+const ALIGN = {
+  frame: 1524,
+  // Centered widths, widest first. `soft` = reference only, not a container.
+  widths: [
+    { w: 1524, name: 'layout-frame', note: 'Outer document frame' },
+    { w: 1476, name: 'layout-bleed', note: 'Edge-to-edge content' },
+    { w: 1164, name: 'layout-md',    note: '2×lg  or  xl + sm' },
+    { w: 1080, name: 'layout-sm',    note: '3×md  or  xl + xs' },
+    { w:  942, name: 'container-xl', note: 'Wide — nav, hero' },
+    { w:  582, name: 'container-lg', note: 'Main content column' },
+    { w:  360, name: 'container-md', note: 'Focused reading, forms' },
+  ],
+  // Secondary stops, drawn faint: generated by composite seams, not container
+  // edges. Mirror pair — 1524 − 1164 = 360. Verified against the Figma export:
+  // the 942+138 and 582+360+138 seams both land on 1164.
+  seams: [360, 1164],
+  // Composite decompositions. Each seam must land on a stop.
+  composites: [
+    { total: 942,  parts: [582, 360] },
+    { total: 1080, parts: [360, 360, 360] },
+    { total: 1080, parts: [582, 360, 138] },
+    { total: 1080, parts: [942, 138] },
+    { total: 1164, parts: [582, 582] },
+    { total: 1164, parts: [942, 222] },
+    { total: 1164, parts: [582, 360, 222] },
+  ],
+};
+
+function alignStops() {
+  const seen = new Map();
+  ALIGN.widths.forEach(({ w, name }) => {
+    const left = (ALIGN.frame - w) / 2;
+    const right = ALIGN.frame - left;
+    [left, right].forEach(x => { if (!seen.has(x)) seen.set(x, { x, w, name }); });
+  });
+  const centre = ALIGN.frame / 2;
+  if (!seen.has(centre)) seen.set(centre, { x: centre, centre: true });
+  ALIGN.seams.forEach(x => { if (!seen.has(x)) seen.set(x, { x, soft: true }); });
+  return [...seen.values()].sort((a, b) => a.x - b.x);
+}
+
+function alignLines() {
+  return alignStops().map(s => {
+    const cls = s.soft ? 'align-line align-line-soft'
+      : s.centre ? 'align-line align-line-centre'
+      : (s.x === 0 || s.x === ALIGN.frame) ? 'align-line align-line-edge'
+      : 'align-line';
+    return `<div class="${cls}" style="left:${(s.x / ALIGN.frame * 100).toFixed(4)}%"></div>`;
+  }).join('');
+}
+
+function renderAlignMap() {
+  const rows = ALIGN.widths.map(({ w, name }) => `
+    <div class="align-row" style="width:${(w / ALIGN.frame * 100).toFixed(4)}%">
+      <div class="align-seg" style="flex:1"><span class="align-tag">${name} · ${w}</span></div>
+    </div>`).join('');
+  return `<div class="align-map">${alignLines()}${rows}</div>`;
+}
+
+// A seam is "on the grid" only if it coincides with a generated stop (soft
+// reference lines do not count). Computed, never asserted — the 942 = 582+360
+// seam lands at 873, which is not a stop.
+function seamVerdict(total, parts) {
+  const hard = new Set(alignStops().map(s => s.x));
+  const left = (ALIGN.frame - total) / 2;
+  let x = left;
+  const seams = parts.slice(0, -1).map(p => (x += p));
+  const hits = seams.filter(s => hard.has(s));
+  if (!seams.length) return null;
+  if (hits.length === seams.length) return { cls: 'is-full', text: 'every seam on a stop' };
+  if (hits.length) return { cls: 'is-part', text: `${hits.length} of ${seams.length} seams on a stop` };
+  return { cls: 'is-none', text: 'edges only' };
+}
+
+function renderAlignComposites() {
+  let lastTotal = null;
+  const rows = ALIGN.composites.map(({ total, parts }) => {
+    const hdr = total !== lastTotal
+      ? `<p class="align-group-label">${total} composite</p>` : '';
+    lastTotal = total;
+    const segs = parts.map(p => `
+      <div class="align-seg" style="width:${(p / total * 100).toFixed(4)}%">
+        <span class="align-tag">${p}</span>
+      </div>`).join('');
+    const v = seamVerdict(total, parts);
+    return `${hdr}
+      <div class="align-row" style="width:${(total / ALIGN.frame * 100).toFixed(4)}%">${segs}</div>
+      <p class="align-verdict ${v.cls}" style="width:${(total / ALIGN.frame * 100).toFixed(4)}%">${parts.join(' + ')} — ${v.text}</p>`;
+  }).join('');
+  return `<div class="align-map">${alignLines()}${rows}</div>`;
+}
+
+function renderAlignStops() {
+  const stops = alignStops();
+  const rows = stops.filter(s => s.x <= ALIGN.frame / 2).map(s => {
+    const mirror = ALIGN.frame - s.x;
+    return `<tr class="${s.soft ? 'is-soft' : ''}">
+      <td class="is-num">${s.x}</td>
+      <td class="is-num">${mirror === s.x ? '—' : mirror}</td>
+      <td>${s.soft ? 'Seam stop — composite decomposition'
+            : s.centre ? 'Centre axis — not drawn in the Figma map'
+            : `Edge stop — ${s.name} · ${s.w}`}</td>
+    </tr>`;
+  }).join('');
+  return `<table class="stops-table">
+    <thead><tr><th>Stop</th><th>Mirror</th><th>Generated by</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+document.getElementById('space-align-map').innerHTML        = renderAlignMap();
+document.getElementById('space-align-composites').innerHTML = renderAlignComposites();
+document.getElementById('space-align-stops').innerHTML      = renderAlignStops();
+
 // ── Agōn — derived theme tokens (worn by Meso+) ──────────────────────────────
 // Source: mesoplus-site/DESIGN.md front-matter. Not yet in the FOOO token build.
 
@@ -4404,14 +4710,15 @@ const SIDEBAR_SECTIONS = {
     { id: 'space-typography', num: '02', label: 'Typography' },
     { id: 'space-scale',      num: '03', label: 'Scale' },
     { id: 'space-containers', num: '04', label: 'Containers' },
-    { id: 'space-ratios',     num: '05', label: 'Aspect Ratios' },
-    { id: 'space-elevation',  num: '06', label: 'Elevation' },
-    { id: 'space-easing',     num: '07', label: 'Easing' },
-    { id: 'space-duration',   num: '08', label: 'Duration' },
-    { id: 'space-radius',   num: '09', label: 'Radius' },
-    { id: 'space-borders',  num: '10', label: 'Borders' },
-    { id: 'space-blur',     num: '11', label: 'Blur' },
-    { id: 'space-zindex',   num: '12', label: 'Z-Index' },
+    { id: 'space-alignment',  num: '05', label: 'Alignment' },
+    { id: 'space-ratios',     num: '06', label: 'Aspect Ratios' },
+    { id: 'space-elevation',  num: '07', label: 'Elevation' },
+    { id: 'space-easing',     num: '08', label: 'Easing' },
+    { id: 'space-duration',   num: '09', label: 'Duration' },
+    { id: 'space-radius',     num: '10', label: 'Radius' },
+    { id: 'space-borders',    num: '11', label: 'Borders' },
+    { id: 'space-blur',       num: '12', label: 'Blur' },
+    { id: 'space-zindex',     num: '13', label: 'Z-Index' },
     ],
   },
   agon: {
