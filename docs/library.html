@@ -200,11 +200,16 @@
       flex: 1;
       min-width: 0;           /* prevent flex child overflow */
       padding: 52px 56px 96px;
-      max-width: 900px;       /* content width only, sidebar not included */
     }
 
     /* ── Tab panels ── */
-    .tab-panel { display: none; }
+    /* Centred on the same 942 measure the landing page uses, rather than
+       hugging the rail. */
+    .tab-panel {
+      display: none;
+      width: min(942px, 100%);
+      margin-inline: auto;
+    }
     .tab-panel.active { display: block; }
 
     /* ── Page header ── */
