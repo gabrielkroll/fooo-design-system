@@ -493,6 +493,9 @@
     .contrast-cell.is-pass  { color: #3f5a12; }
     .contrast-cell.is-large { color: #8a5a1a; }
     .contrast-cell.is-fail  { color: #a8331c; font-weight: 500; }
+    .contrast-cell.is-target { color: #3f5a12; font-weight: 500; }
+    .contrast-cell.is-tol    { color: #8a5a1a; }
+    .contrast-cell.is-out    { color: var(--s-text-subtle); }
 
     .contrast-swatch { white-space: nowrap; }
 
@@ -2620,9 +2623,10 @@
     </a>
 
     <div class="sidebar-group">
-      <div class="sidebar-group-label">Brands</div>
+      <div class="sidebar-group-label">Libraries</div>
       <div class="brand-switch" role="tablist" aria-label="Brand">
-        <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="panel-space" id="tab-space" data-tab="space"><span class="tab-btn-dot" style="background:#ceff1a"></span>Space</button>
+        <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="panel-core"  id="tab-core"  data-tab="core"><span class="tab-btn-dot" style="background:#0f0f0f"></span>Core</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-space" id="tab-space" data-tab="space"><span class="tab-btn-dot" style="background:#ceff1a"></span>Space</button>
         <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-agon"  id="tab-agon"  data-tab="agon"><span class="tab-btn-dot" style="background:#779632"></span>Agōn</button>
         <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-seed"  id="tab-seed"  data-tab="seed"><span class="tab-btn-dot" style="background:#216869"></span>Seed</button>
       </div>
@@ -2634,8 +2638,146 @@
   <!-- Main -->
   <main class="main" id="main-content" tabindex="-1">
 
+    <!-- ══ CORE TAB ═══════════════════════════════════════════════════════════ -->
+    <div class="tab-panel active" id="panel-core" role="tabpanel" aria-labelledby="tab-core">
+
+      <div class="page-header">
+        <p class="page-header-eyebrow">Shared by every brand</p>
+        <h1 class="page-header-title">Core</h1>
+        <p class="page-header-desc">The layer no brand owns. Geometry, and the rules for setting words in it. Space, Agōn and Seed each dress this differently; none of them change it.</p>
+      </div>
+
+      <section class="ref-section" id="core-readability">
+        <p class="ref-section-eyebrow">01 — Readability</p>
+        <h2 class="ref-section-title">Measure</h2>
+        <hr class="ref-divider">
+
+        <p class="brand-lede">
+          A container has a width. Text in it has a <em>measure</em> — how many characters
+          land on a line — and the two are only the same number by accident. Every figure
+          below is measured from the loaded fonts at render time, so it follows the type
+          rather than a rule of thumb.
+        </p>
+
+        <div class="align-formula">
+          <span>characters = width ÷ (size × average advance)</span>
+        </div>
+
+        <p class="spec-block-title">Body — target 60–72</p>
+        <p class="align-caption">
+          Tolerance 50–75; below 40 line breaks start splitting phrases. The 75 ceiling is not
+          taste: <b>WCAG 1.4.8 Visual Presentation (AAA)</b> caps width at 80 characters. Space
+          and Agōn are dark, and light-on-dark blooms — a long line tires the eye sooner there
+          than it would on paper, so this system sits at the lower end of any published range.
+        </p>
+        <div id="core-measure-body"></div>
+
+        <p class="spec-block-title" style="margin-top:40px;">Titles — target 20–40</p>
+        <p class="align-caption">
+          Headlines are scanned, not read, so the prose range does not apply. Past roughly 50
+          characters a headline stops arriving as one unit. Note that 30px reads as legal body
+          at 942 and as a bad title at the same width — the job decides, not the size.
+        </p>
+        <div id="core-measure-title"></div>
+
+        <p class="spec-block-title" style="margin-top:40px;">Agōn runs narrower</p>
+        <p class="align-caption">
+          Mono advances are uniform at 0.6em against Inter's ~0.48, so the same container holds
+          roughly a quarter fewer characters. Agōn's legal widths are its own.
+        </p>
+        <div id="core-measure-mono"></div>
+
+        <div class="derive-row" style="margin-top:36px;">
+          <div class="derive-key">The nesting rule</div>
+          <div class="derive-val">
+            <strong>Text never sits directly in a container wider than its legal measure.</strong>
+            It nests in the widest container that is legal for its size — so a 942 block holds
+            prose in a 582, not across the full width. This is not a second rule: <b>942 = 582 + 360
+            is already in the alignment map</b>. The 582 takes the prose, the 360 takes a sidenote,
+            a caption, or nothing. Readability and the composite decomposition are one rule seen
+            from two sides. See <a href="#space-alignment">Alignment</a>.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Why not columns</div>
+          <div class="derive-val">
+            Splitting 942 into two columns gives <code>(942 − 24) ÷ 2 = 459</code> each. 459 is not
+            a rung. <strong>Two columns at 942 break the scale, so nesting wins on constraint rather
+            than preference.</strong>
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Paragraph length</div>
+          <div class="derive-val">
+            <strong>Four to five lines, then break.</strong> Paragraph length is a layout value,
+            not only a writing one — it decides how much unbroken grey the reader faces. A correct
+            measure does not rescue a fifteen-line paragraph.
+          </div>
+        </div>
+
+        <div class="brand-note">
+          <strong>Also an accessibility contract.</strong> 1.4.8 caps measure at 80 characters,
+          asks line spacing of at least 1.5 within paragraphs — body runs 1.62, already passing —
+          paragraph spacing of at least 1.5× line spacing, and no justified text.
+          <br><strong>1.4.12 Text Spacing (AA)</strong> is the one to test: layout must not break
+          when a reader forces line-height 1.5, letter-spacing 0.12em, word-spacing 0.16em and
+          paragraph spacing 2em. Fixed-height cards are where this fails. See
+          <a href="#space-contrast">Space → Accessibility</a>.
+        </div>
+      </section>
+
+      <section class="ref-section" id="core-editorial">
+        <p class="ref-section-eyebrow">02 — Editorial</p>
+        <h2 class="ref-section-title">Writing that survives the measure</h2>
+        <hr class="ref-divider">
+
+        <p class="brand-lede">
+          Measure is a budget. What follows is how it gets spent. A 66-character line of clutter
+          reads worse than an 80-character line of clean prose — the tables above make good
+          writing legible, they do not rescue bad writing. After Zinsser, <em>On Writing Well</em>,
+          kept to the principles that change a layout.
+        </p>
+
+        <div class="derive-row">
+          <div class="derive-key">Clutter is the disease</div>
+          <div class="derive-val"><strong>Strip every sentence to its cleanest components.</strong> Every word that carries no weight is a word the reader pays for and a character spent against the measure. Cutting is not tidying — it is the work.</div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Short paragraphs</div>
+          <div class="derive-val"><strong>This is a layout instruction.</strong> Four to five lines. A paragraph is the unit the eye commits to; make the commitment small and the reader keeps going.</div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">The lead earns its own setting</div>
+          <div class="derive-val"><strong>The opening sentence decides whether the second one is read.</strong> It gets a different size or measure — a lede, not a paragraph. This system already does it: the standfirst under every section title.</div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Active verbs</div>
+          <div class="derive-val"><strong>The verb does the work; adverbs admit it did not.</strong> Active constructions are shorter, so they physically ease the measure. Passive voice costs characters and hides who acted.</div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">No qualifiers</div>
+          <div class="derive-val"><strong>“A bit”, “sort of”, “kind of”, “rather”, “quite”.</strong> Zinsser calls them weasel words. They dilute the sentence and spend the line on nothing. Same defect as an over-long measure — both weaken what is there.</div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Trust the reader</div>
+          <div class="derive-val"><strong>Say it once.</strong> Restating a point is the writer reassuring themselves. It is also the fastest way to turn four legible lines into twelve.</div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Rewriting is the writing</div>
+          <div class="derive-val">First drafts run long by default. <strong>A paragraph that will not fit its measure is usually not a layout problem.</strong></div>
+        </div>
+
+        <div class="brand-note">
+          <strong>This is not Voice.</strong> Each brand's Voice section says what it sounds like —
+          Space direct and spacefaring, Agōn precise and physical. Editorial is how any of them is
+          written well. A brand can be perfectly in voice and still unreadable.
+        </div>
+      </section>
+
+    </div><!-- /panel-core -->
+
     <!-- ══ SPACE TAB ══════════════════════════════════════════════════════════ -->
-    <div class="tab-panel active" id="panel-space" role="tabpanel" aria-labelledby="tab-space">
+    <div class="tab-panel" id="panel-space" role="tabpanel" aria-labelledby="tab-space">
 
       <div class="page-header">
         <p class="page-header-eyebrow">Reference Library</p>
@@ -4877,6 +5019,72 @@ initEasingSection();
 // Init duration demo
 initDurationSection();
 
+// ── Measure ──────────────────────────────────────────────────────────────────
+// Character counts come from the loaded fonts, not from the 0.5em rule of thumb:
+// Inter averages ~0.476em and the monos are exactly 0.6em, which is a quarter
+// narrower for the same container. Fonts must be loaded before measuring —
+// canvas silently falls back to a substitute otherwise, which reads as a
+// plausible wrong number rather than an error.
+
+const MEASURE = {
+  containers: [222, 360, 582, 942, 1080, 1164, 1476],
+  prose: { target: [60, 72], tolerance: [50, 75] },
+  title: { target: [20, 40], tolerance: [16, 50] },
+  sets: [
+    { id: 'core-measure-body',  font: '400 %dpx Inter',        label: 'Inter',      sizes: [15, 18, 24, 30],      band: 'prose' },
+    { id: 'core-measure-title', font: '600 %dpx Metropolis',   font2: '600 100px Metropolis', sizes: [30, 54, 84, 138], band: 'title' },
+    { id: 'core-measure-mono',  font: '400 %dpx \'DM Mono\'',  sizes: [15, 18],              band: 'prose' },
+  ],
+};
+
+const SAMPLE = 'The quick brown fox jumps over the lazy dog. Progress is a signal read across '
+  + 'sessions, readiness and training blocks, not a streak of consecutive days. Alignment is a '
+  + 'property of the system only when edges are shared.';
+
+function avgAdvanceEm(fontSpec) {
+  const cv = document.createElement('canvas').getContext('2d');
+  cv.font = fontSpec;
+  return cv.measureText(SAMPLE).width / SAMPLE.length / 100;
+}
+
+function measureVerdict(n, band) {
+  const b = MEASURE[band];
+  if (n >= b.target[0] && n <= b.target[1]) return ['is-target', 'target'];
+  if (n >= b.tolerance[0] && n <= b.tolerance[1]) return ['is-tol', 'ok'];
+  return ['is-out', n < b.tolerance[0] ? 'short' : 'long'];
+}
+
+function renderMeasureTable(set) {
+  const probe = set.font.replace('%dpx', '100px');
+  const em = avgAdvanceEm(probe);
+  const head = MEASURE.containers.map(c => `<th>${c}</th>`).join('');
+  const rows = set.sizes.map(size => {
+    const cells = MEASURE.containers.map(w => {
+      const n = Math.round(w / (size * em));
+      const [cls, word] = measureVerdict(n, set.band);
+      return `<td class="contrast-cell ${cls}" title="${word}">${n}</td>`;
+    }).join('');
+    return `<tr><td class="is-num">${size}px</td>${cells}</tr>`;
+  }).join('');
+  return `<table class="stops-table contrast-table">
+    <thead><tr><th>Size</th>${head}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <p class="align-caption" style="margin-top:10px;">Average advance ${em.toFixed(4)}em, measured from the loaded face. Figures are characters per line.</p>`;
+}
+
+async function renderMeasure() {
+  // Load every face first — an unloaded font measures as its fallback.
+  await Promise.all(MEASURE.sets.map(s => document.fonts.load(s.font.replace('%dpx', '100px'))));
+  await document.fonts.ready;
+  MEASURE.sets.forEach(set => {
+    const el = document.getElementById(set.id);
+    if (el) el.innerHTML = renderMeasureTable(set);
+  });
+}
+
+renderMeasure();
+
 // ── WCAG 2.2 contrast ────────────────────────────────────────────────────────
 // Ratios are computed from the palette so the table cannot drift from the tokens.
 
@@ -5157,6 +5365,12 @@ document.getElementById('agon-type-specimens').innerHTML   = renderTypeSpecimens
 // ── Sidebar ──────────────────────────────────────────────────────────────────
 
 const SIDEBAR_SECTIONS = {
+  core: {
+    Foundations: [
+      { id: 'core-readability', num: '01', label: 'Readability' },
+      { id: 'core-editorial',   num: '02', label: 'Editorial' },
+    ],
+  },
   space: {
     'Brand definition': [
       { id: 'space-brand',    num: 'A', label: 'Positioning' },
@@ -5231,7 +5445,7 @@ function buildSidebar(tab) {
     </div>`).join('');
 }
 
-buildSidebar('space');
+buildSidebar('core');
 
 // ── Tab switching ────────────────────────────────────────────────────────────
 
