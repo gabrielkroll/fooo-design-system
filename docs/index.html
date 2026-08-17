@@ -81,16 +81,18 @@
       width: var(--s-sidebar-w);
       flex-shrink: 0;
       position: fixed; top: 0; bottom: 0;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       border-right: 1px solid var(--s-border);
       background: var(--s-surface);
-      padding: 26px 0 40px;
+      padding: 26px 0 0;
       z-index: 150;
     }
 
-    .sidebar::-webkit-scrollbar { width: 4px; }
-    .sidebar::-webkit-scrollbar-track { background: transparent; }
-    .sidebar::-webkit-scrollbar-thumb { background: rgba(15,15,15,0.12); border-radius: 2px; }
+    .rail-scroll::-webkit-scrollbar { width: 4px; }
+    .rail-scroll::-webkit-scrollbar-track { background: transparent; }
+    .rail-scroll::-webkit-scrollbar-thumb { background: rgba(15,15,15,0.12); border-radius: 2px; }
 
     .sidebar-head {
       display: flex; align-items: center; gap: 10px;
@@ -205,10 +207,20 @@
       box-shadow: 0 1px 2px rgba(15,15,15,0.07);
     }
 
+    /* Scrolling region — long section lists stay inside this, so the Source
+       footer below is never pushed out of view. */
+    .rail-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
     .rail-source {
-      margin-top: 26px;
-      padding-top: 14px;
+      flex: none;
+      margin-top: 0;
+      padding: 14px 0 20px;
       border-top: 1px solid var(--s-border);
+      background: var(--s-surface);
     }
 
     .rail-source .sidebar-link { font-size: 13px; }
@@ -504,6 +516,7 @@
     <a class="seg-item" href="library.html">Library</a>
   </div>
 
+  <div class="rail-scroll">
   <div class="sidebar-group">
     <div class="sidebar-group-label">On this page</div>
     <a class="sidebar-link is-here" href="#top"><span class="sidebar-link-num">00</span>Introduction</a>
@@ -511,6 +524,8 @@
     <a class="sidebar-link" href="#start"><span class="sidebar-link-num">02</span>Start here</a>
     <a class="sidebar-link" href="#contents"><span class="sidebar-link-num">03</span>Contents</a>
     <a class="sidebar-link" href="#state"><span class="sidebar-link-num">04</span>State</a>
+  </div>
+
   </div>
 
   <div class="sidebar-group rail-source">
