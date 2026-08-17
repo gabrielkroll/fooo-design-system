@@ -3443,12 +3443,12 @@
             <div class="derive-val"><strong>Green is information, never atmosphere.</strong> One primary action, active state, or progression signal at a time. No decorative glows, no gradients, no broad mood lighting in green.</div>
           </div>
           <div class="derive-row">
-            <div class="derive-key"><span class="accent-dot" style="background:#fec600"></span>Rest rule</div>
+            <div class="derive-key"><span class="accent-dot" style="background:#f5c842"></span>Rest rule</div>
             <div class="derive-val"><strong>Gold is rest; green is work. They are mutually exclusive, never adjacent.</strong> The athlete is training or recovering, never both, so a view carries one or the other — which is why a second signal does not break “one signal at a time”, it completes it. Gold must never appear in a training view, and green must never appear in the breathing sheet. They are also 2.15:1 against each other, so they could not be told apart if they did sit together.</div>
           </div>
           <div class="derive-row">
             <div class="derive-key">The glow carve-out</div>
-            <div class="derive-val"><strong>The breathing orb is the one glow Agōn permits.</strong> “No decorative glows” stands everywhere else. The orb is exempt because the glow is not lighting the interface — it <em>is</em> the interface: a metronome the athlete watches to pace a breath. The moment a glow stops being the thing you are looking at and starts being the mood behind it, the rule applies again.</div>
+            <div class="derive-val"><strong>The breathing orb is the one glow — and the one gradient — Agōn permits.</strong> “No decorative glows, no gradients” stands everywhere else. The orb is exempt because neither is decorating the interface: the glow <em>is</em> the interface, a metronome the athlete watches to pace a breath, and the gradient is what makes a flat circle read as a sphere. The moment a glow stops being the thing you are looking at, or a gradient stops describing a form, the rule applies again.</div>
           </div>
           <div class="derive-row">
             <div class="derive-key">Two registers</div>
@@ -3517,7 +3517,7 @@
         </div>
 
         <div class="color-group">
-          <p class="color-group-label">Rest — the breathing orb</p>
+          <p class="color-group-label">Rest — the breathing orb, core to edge</p>
           <div class="color-swatches" id="agon-rest-swatches"></div>
         </div>
 
@@ -3528,17 +3528,15 @@
 
         <div class="brand-note">
           <strong>Rest is the second signal, and the only one that is not green.</strong>
-          <code>#fec600</code> is 11.66:1 on gym black — it clears AA and AAA as text. It reads
-          against the ground, not against Signal: <b>gold to green is 2.15:1</b>, under the 3:1
-          that 1.4.11 asks of adjacent meaningful colours, so the two must never sit edge to
-          edge as the only thing telling two states apart. They never need to — see the rule in
-          <a href="#agon-rules">D — Standing rules</a>.
-          <br><strong>Drift to reconcile.</strong> Meso+ ships the orb as a gradient from
-          <code>#ffe8a0</code> to <code>#f5c842</code>, with <code>#c8c2a8</code> on the phase
-          label. <code>#fec600</code> is not in the app yet. Either it supersedes
-          <code>#f5c842</code> as the canonical edge — a purer, darker gold, 100% saturation
-          against 89.9% — or the app is right and the token should follow it. Named here as
-          requested; the app has not been touched.
+          Two stops, because the orb is a sphere and a single flat gold cannot describe it:
+          <code>#ffe8a0</code> at the lit core, <code>#f5c842</code> at the edge. Both are read
+          from the running app rather than specified at it — <b>the orb was designed in code,
+          so the code is the source.</b>
+          <br><strong>Contrast.</strong> 15.18:1 and 11.60:1 on gym black; both clear AA and
+          AAA as text. They read against the ground, not against Signal: <b>gold to green is
+          2.14:1</b>, under the 3:1 that 1.4.11 asks of adjacent meaningful colours, so the two
+          must never sit edge to edge as the only thing telling two states apart. They never
+          need to — see the rule in <a href="#agon-rules">D — Standing rules</a>.
         </div>
       </section>
 
@@ -5119,10 +5117,10 @@ const AGON = {
     { name: 'Signal Bright', value: '#bed18a' },
     { name: 'Signal Deep',   value: '#2e450e' },
   ],
+  // The orb's two gradient stops, taken from the app rather than specified at it.
   rest: [
-    { name: 'Rest',       value: '#fec600' },
-    { name: 'Rest Core',  value: '#ffe8a0' },
-    { name: 'Rest Quiet', value: '#c8c2a8' },
+    { name: 'Rest Core', value: '#ffe8a0' },
+    { name: 'Rest',      value: '#f5c842' },
   ],
   neutrals: [
     { name: 'Chalk',      value: '#f6f6f6' },
