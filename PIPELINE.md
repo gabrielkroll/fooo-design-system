@@ -147,7 +147,8 @@ public API, and the build emits them. Doing this is what unblocks the consumer s
 ### Sequence
 
 1. Rename the three collections `Core` / `Space` / `Seed` so the picker is unambiguous.
-2. **Decide alpha vs flattened for the Text ramp** — the one blocking question, see below.
+2. **Repair Core's `transperent/600 98`** to carry alpha (`#fbfbfbfa`, matching Space)
+   before aliasing anything to it, or every brand inherits the flattened value.
 3. In Space, replace each duplicated Neutrals/Text row with an alias to Core, one group at
    a time, checking bindings survive. 39 of 40 are byte-identical, so nothing should move
    visually; any shift that appears is drift worth catching.
@@ -163,18 +164,26 @@ public API, and the build emits them. Doing this is what unblocks the consumer s
 40.** The ramps agree almost entirely, and every disagreement sits in the same place — the
 brightest on-dark text rung.
 
-| Row | Core | Brand | Nature |
-|---|---|---|---|
-| `Text/on-dark/transperent/600 98` | `#f6f6f6` | Space `#fbfbfbfa` | **Representation, not value.** Lunar at 98% composited over `#0f0f0f` is exactly `#f6f6f6`. Core stores the flattened result; Space stores the alpha. Identical on the page ground, divergent on any other surface. |
-| `Text/on-dark/opaque/600` | `#f6f6f6` | Seed `#fbfbfb` | **Genuine difference.** Five values lighter. Too small to matter for contrast — both clear 17:1 — but it is a real fork. |
-| `Text/on-dark/transperent/600 100` | *absent* | Seed `#fbfbfb` | Seed has a row Core does not. |
+**The opaque and translucent ramps are a deliberate pair, not a duplication.** They do
+different jobs and both stay:
 
-The first is the more interesting one: it is the same surface-dependency trap the DS site
-documents under Space → Accessibility. An alpha token and a flattened token are only
-interchangeable against the surface they were flattened for. Aliasing one to the other
-silently changes behaviour on `surface-1` and `surface-2`, so this row needs a decision —
-**does Core hold alpha or flattened values?** — before any aliasing, and the answer applies
-to the whole Text ramp, not just this row.
+- **Translucent** — carries alpha so the surface beneath shines through. For overlays and
+  anything that has to sit on varying ground. Its rendered colour, and therefore its
+  contrast, is a function of what is behind it.
+- **Opaque** — a solid value, true-tone grey. Renders identically on any surface. Use it
+  when the tone must not shift.
+
+Read against that rule, the drift is narrower and more specific than a value mismatch:
+
+| Row | Core | Space | Seed | Reading |
+|---|---|---|---|---|
+| `Text/on-dark/opaque/600` | `#f6f6f6` | `#f6f6f6` | `#fbfbfb` | Seed forks. Which is the intended true tone? |
+| `Text/on-dark/transperent/600 98` | **`#f6f6f6`** | `#fbfbfbfa` | absent | **Core's bug.** A translucent row holding an opaque value — `#f6f6f6` has no alpha, so nothing shines through it. Space is correct. |
+| `Text/on-dark/transperent/600 100` | absent | absent | `#fbfbfb` | Seed's top-of-ramp at full alpha. Harmless; Core and Space simply stop at 98. |
+
+So there is no alpha-vs-flattened decision to make — the system already answers it by
+having both ramps. What there is, is one row in Core that was flattened by mistake and now
+cannot do the job its name promises.
 
 The `transperent` typo is present in all three libraries. Consistent, at least; fold the
 rename into this migration rather than doing it separately.
@@ -194,7 +203,9 @@ rename into this migration rather than doing it separately.
 - Name ownership: rename in Figma, or alias layer here? (leaning alias layer)
 - Distribution: option 1 or 2 above?
 - ~~Do the three copies of the neutral ramp still agree?~~ **Measured 2026-08-17: yes, 39/40
-  and 38/40.** Replaced by the real question — does Core hold alpha or flattened text values?
+  and 38/40.** The three exceptions all sit on the brightest on-dark text rung.
+- Which is the intended true tone for `Text/on-dark/opaque/600` — Core and Space's
+  `#f6f6f6`, or Seed's `#fbfbfb`? One of the three has to move.
 - Does Agōn become a Figma library, or stay code-first and get emitted from the DS site?
 
 ## Adoption cost

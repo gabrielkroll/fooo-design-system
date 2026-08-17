@@ -3031,11 +3031,19 @@
         <div id="space-contrast-table"></div>
 
         <div class="brand-note">
-          <strong>Opacity makes contrast conditional.</strong> The text ladder is Lunar over
-          Space, so what a token is legible against depends on what sits behind it. text-3
-          passes on the page ground at 5.34 and fails on <code>surface-2</code> at 3.35 — same
-          token, opposite verdict. A text token is only certified against the surfaces marked
-          above; on <code>surface-2</code>, step up one rung.
+          <strong>There are two text ramps, and the choice is the accessibility decision.</strong>
+          <br><b>Translucent</b> carries alpha so the surface beneath shines through — for
+          overlays and anything sitting on varying ground. Its rendered colour, and therefore
+          its contrast, is a function of what is behind it: text-3 passes at 5.34 on the page
+          ground and fails at 3.35 on <code>surface-2</code>. Same token, opposite verdict.
+          That is the ramp behaving correctly, not a defect — but it means a translucent token
+          is only certified against the surfaces measured above.
+          <br><b>Opaque</b> is a solid true-tone value that renders identically on any surface,
+          so its contrast is fixed and can be checked once.
+          <br><strong>The rule.</strong> Reach for translucent when the tone should pick up
+          what is behind it. Reach for opaque when it must not shift. If a translucent token
+          lands on a surface it was not certified against, either step up a rung or use the
+          opaque equivalent — do not assume the ratio travelled with it.
         </div>
 
         <div class="brand-note">
