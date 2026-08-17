@@ -73,6 +73,23 @@ async function buildSingleSource() {
 
   await sd.buildAllPlatforms();
   writeCleanJsonFile(singleFileSource, "dist/clean/tokens.json");
+
+  // Same source, prefixed. Brands inherit these names rather than copying the
+  // values, so the ramp exists once.
+  const core = new StyleDictionary({
+    source: [singleFileSource],
+    preprocessors: ["tokens-studio"],
+    platforms: {
+      css: {
+        transformGroup: "tokens-studio",
+        transforms: ["name/kebab"],
+        prefix: "core",
+        buildPath: "dist/css/",
+        files: [{ destination: "core.css", format: "css/variables" }]
+      }
+    }
+  });
+  await core.buildAllPlatforms();
 }
 
 async function buildTheme(themeName) {
@@ -122,36 +139,37 @@ const SEMANTIC = {
     "accent-commerce":  "color-brand-ia-nova",
     "accent-editorial": "color-brand-m-type",
     "surface-0":        "color-brand-space",
-    "surface-1":        "color-neutrals-on-dark-transperent-100-2",
-    "surface-2":        "color-neutrals-on-dark-transperent-200-18",
-    "text-1":           "color-text-on-dark-transperent-600-98",
-    "text-2":           "color-text-on-dark-transperent-500-74",
-    "text-3":           "color-text-on-dark-transperent-400-52",
-    line:               "color-neutrals-on-dark-transperent-200-18"
+    "surface-1":        "core:color-neutrals-on-dark-transperent-100-2",
+    "surface-2":        "core:color-neutrals-on-dark-transperent-200-18",
+    "text-1":           "core:color-text-on-dark-transperent-600-98",
+    "text-2":           "core:color-text-on-dark-transperent-500-74",
+    "text-3":           "core:color-text-on-dark-transperent-400-52",
+    line:               "core:color-neutrals-on-dark-transperent-200-18"
   },
   agon: {
     accent:         "color-brand-signal",
     "accent-quiet": "color-brand-signal-deep",
     "accent-rest":  "color-brand-rest",
     "surface-0":    "color-brand-steel-black",
-    "surface-1":    "color-neutrals-on-dark-opaque-100",
-    "surface-2":    "color-neutrals-on-dark-opaque-200",
+    "surface-1":    "core:color-neutrals-on-dark-opaque-100",
+    "surface-2":    "core:color-neutrals-on-dark-opaque-200",
+    // Agōn's text tops out at Chalk, not Lunar — one of its three overrides.
     "text-1":       "color-text-on-dark-opaque-600",
-    "text-2":       "color-text-on-dark-opaque-500",
-    "text-3":       "color-text-on-dark-opaque-400",
-    line:           "color-neutrals-on-dark-opaque-200"
+    "text-2":       "core:color-text-on-dark-opaque-500",
+    "text-3":       "core:color-text-on-dark-opaque-400",
+    line:           "core:color-neutrals-on-dark-opaque-200"
   },
   seed: {
     accent:         "color-brand-sprout",
     "accent-quiet": "color-accents-elm-200",
     "accent-deep":  "color-brand-elm",
     "surface-0":    "color-brand-pampas",
-    "surface-1":    "color-neutrals-on-bright-transparent-100-4",
-    "surface-2":    "color-neutrals-on-bright-transparent-200-22",
-    "text-1":       "color-text-on-bright-transperent-550-98",
-    "text-2":       "color-text-on-bright-transperent-500-80",
-    "text-3":       "color-text-on-bright-transperent-400-63",
-    line:           "color-neutrals-on-bright-transparent-200-22"
+    "surface-1":    "core:color-neutrals-on-bright-transparent-100-4",
+    "surface-2":    "core:color-neutrals-on-bright-transparent-200-22",
+    "text-1":       "core:color-text-on-bright-transperent-550-98",
+    "text-2":       "core:color-text-on-bright-transperent-500-80",
+    "text-3":       "core:color-text-on-bright-transperent-400-63",
+    line:           "core:color-neutrals-on-bright-transparent-200-22"
   }
 };
 
@@ -167,8 +185,11 @@ function writeSemanticLayer(brand) {
   const map = SEMANTIC[brand];
   if (!map) return false;
 
-  const rows = Object.entries(map)
-    .map(([slot, generated]) => `  --${brand}-${slot}: var(--${brand}-${generated});`);
+  const rows = Object.entries(map).map(([slot, generated]) => {
+    const fromCore = generated.startsWith("core:");
+    const name = fromCore ? generated.slice(5) : generated;
+    return `  --${brand}-${slot}: var(--${fromCore ? "core" : brand}-${name});`;
+  });
 
   rows.push(`  --${brand}-focus-ring: var(--${brand}-accent);`);
   for (const [slot, value] of Object.entries(SEMANTIC_LITERALS)) {
@@ -178,13 +199,14 @@ function writeSemanticLayer(brand) {
   const out = `/**\n * ${brand} — semantic layer. Hand-mapped, generated file.\n *\n`
     + ` * This is the public API. Import this, not ${brand}.css: the names below are\n`
     + ` * stable, the ones they point at are Figma's and move when Figma moves.\n`
-    + ` */\n\n@import "./${brand}.css";\n\n:root {\n${rows.join("\n")}\n}\n`;
+    + ` */\n\n@import "./core.css";\n@import "./${brand}.css";\n\n:root {\n${rows.join("\n")}\n}\n`;
 
   writeFileSync(`dist/css/${brand}.public.css`, out);
 
   // A mistyped generated name yields a var() that resolves to nothing and fails
   // silently in the browser. Fail the build instead.
-  const generated = readFileSync(`dist/css/${brand}.css`, "utf8");
+  const generated = readFileSync(`dist/css/${brand}.css`, "utf8")
+    + readFileSync("dist/css/core.css", "utf8");
   const defined = new Set([...generated.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]));
   const declared = new Set([...out.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]));
   const dangling = [...out.matchAll(/var\((--[\w-]+)\)/g)]
