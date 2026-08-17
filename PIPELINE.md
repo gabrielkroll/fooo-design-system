@@ -100,16 +100,19 @@ Three separate Figma libraries, not one file with modes:
 | Library | Collection | Vars | Holds |
 |---|---|---|---|
 | Core System (`gmFVm1cc…`) | `Primitives` | 102 | Neutrals 24 · Text 16 · Functional 30 · Size & Space 19 · Container 9 · Aspect Ratio 6. Plus 22 local text styles. |
-| Space System | `Primitives` | 85 | All under `Space/Color`. **7 rows are brand** — Photon, Ia Nova, M-Type, Nebula, Ion Tail, Lunar, Space. |
-| Seed System | `Primitives` | 64 | All under `Seed/Color`. **6 rows are brand** — Sprout, Fava, Elm, Fern, Moss, Pampas. |
+| Space System | `Primitives` | 85 | All colour. Neutrals 24 · Text 16 · **Primary 26 · Brand 7 · Accents 6 · Secondary 6**. |
+| Seed System | `Primitives` | 64 | All colour. Neutrals 24 · Text 16 · **Brand 6 · Primary 6 · Accents 6 · Secondary 6**. |
 | Agōn | — | 0 | No Figma presence. It grew in code and is documented only on the DS site. |
 
 ### The problem, stated precisely
 
-**The duplication is entirely in colour.** Space and Seed carry no sizes, containers or
-ratios — those exist only in Core — so the geometric skeleton is already shared correctly
-and is not what needs fixing. What is copied is the neutral and text ramps: roughly 78 of
-Space's 85 rows and 58 of Seed's 64 are values Core already owns.
+**The duplication is entirely in colour, and it is exactly the Neutrals and Text ramps.**
+Space and Seed carry no sizes, containers or ratios — those exist only in Core — so the
+geometric skeleton is already shared correctly and is not what needs fixing.
+
+The shared portion is **40 rows in each brand** (Neutrals 24 + Text 16). Everything else is
+genuinely brand-owned: 45 rows in Space, 24 in Seed. So the migration is 80 rows total, not
+a rebuild — and Space's 26-row Primary scale is real content that stays where it is.
 
 Three consequences:
 
@@ -144,22 +147,44 @@ public API, and the build emits them. Doing this is what unblocks the consumer s
 ### Sequence
 
 1. Rename the three collections `Core` / `Space` / `Seed` so the picker is unambiguous.
-2. In Space, replace each duplicated neutral/text row with an alias to Core, one group at
-   a time, checking bindings survive. Values are identical today, so nothing should move
-   visually — any shift is a pre-existing drift and worth catching.
-3. Repeat for Seed.
-4. Add the semantic slot rows to both.
-5. Create the Agōn library last, from the values on the DS site, aliasing Core from the
+2. **Decide alpha vs flattened for the Text ramp** — the one blocking question, see below.
+3. In Space, replace each duplicated Neutrals/Text row with an alias to Core, one group at
+   a time, checking bindings survive. 39 of 40 are byte-identical, so nothing should move
+   visually; any shift that appears is drift worth catching.
+4. Repeat for Seed, resolving its two exceptions as they come up.
+5. Add the semantic slot rows to both.
+6. Create the Agōn library last, from the values on the DS site, aliasing Core from the
    start so it never accrues a duplicate set.
-6. Only then wire the build to emit the semantic layer.
+7. Only then wire the build to emit the semantic layer.
+
+### Drift, measured 2026-08-17
+
+40 shared rows compared per brand, against Core. **Space: 39 of 40 identical. Seed: 38 of
+40.** The ramps agree almost entirely, and every disagreement sits in the same place — the
+brightest on-dark text rung.
+
+| Row | Core | Brand | Nature |
+|---|---|---|---|
+| `Text/on-dark/transperent/600 98` | `#f6f6f6` | Space `#fbfbfbfa` | **Representation, not value.** Lunar at 98% composited over `#0f0f0f` is exactly `#f6f6f6`. Core stores the flattened result; Space stores the alpha. Identical on the page ground, divergent on any other surface. |
+| `Text/on-dark/opaque/600` | `#f6f6f6` | Seed `#fbfbfb` | **Genuine difference.** Five values lighter. Too small to matter for contrast — both clear 17:1 — but it is a real fork. |
+| `Text/on-dark/transperent/600 100` | *absent* | Seed `#fbfbfb` | Seed has a row Core does not. |
+
+The first is the more interesting one: it is the same surface-dependency trap the DS site
+documents under Space → Accessibility. An alpha token and a flattened token are only
+interchangeable against the surface they were flattened for. Aliasing one to the other
+silently changes behaviour on `surface-1` and `surface-2`, so this row needs a decision —
+**does Core hold alpha or flattened values?** — before any aliasing, and the answer applies
+to the whole Text ramp, not just this row.
+
+The `transperent` typo is present in all three libraries. Consistent, at least; fold the
+rename into this migration rather than doing it separately.
 
 ### Risks
 
 - **Step 2 is the one that can break published bindings.** Aliasing is safe in principle,
   but these are published libraries with consumers. One group first, verify, then continue.
-- Values may already have drifted between the three copies. The migration should diff
-  before aliasing rather than assume they match — if Space's neutral 400 differs from
-  Core's, that is a decision, not a merge conflict.
+- **Drift is now measured — see below.** Three rows need a decision before aliasing; the
+  other 77 are byte-identical and safe.
 - Agōn's palette currently has no authority outside the DS site. Creating it in Figma makes
   the site the source that seeds Figma, which is the reverse of every other flow here and
   should be a deliberate choice.
@@ -168,7 +193,8 @@ public API, and the build emits them. Doing this is what unblocks the consumer s
 
 - Name ownership: rename in Figma, or alias layer here? (leaning alias layer)
 - Distribution: option 1 or 2 above?
-- Do the three copies of the neutral ramp still agree? Unmeasured — diff before aliasing.
+- ~~Do the three copies of the neutral ramp still agree?~~ **Measured 2026-08-17: yes, 39/40
+  and 38/40.** Replaced by the real question — does Core hold alpha or flattened text values?
 - Does Agōn become a Figma library, or stay code-first and get emitted from the DS site?
 
 ## Adoption cost
