@@ -109,6 +109,97 @@ async function buildTheme(themeName) {
   await sd.buildAllPlatforms();
 }
 
+// ── Semantic layer ───────────────────────────────────────────────────────────
+// The public API. Consumers use only these names; the generated ones underneath
+// are Figma's and change whenever Figma does. A slot a brand does not have is
+// omitted rather than aliased to something plausible — an empty slot invites
+// misuse, which is how Space ended up with five sibling accents.
+
+const SEMANTIC = {
+  space: {
+    accent:             "color-brand-photon",
+    "accent-quiet":     "color-accents-photon-600-22",
+    "accent-commerce":  "color-brand-ia-nova",
+    "accent-editorial": "color-brand-m-type",
+    "surface-0":        "color-brand-space",
+    "surface-1":        "color-neutrals-on-dark-transperent-100-2",
+    "surface-2":        "color-neutrals-on-dark-transperent-200-18",
+    "text-1":           "color-text-on-dark-transperent-600-98",
+    "text-2":           "color-text-on-dark-transperent-500-74",
+    "text-3":           "color-text-on-dark-transperent-400-52",
+    line:               "color-neutrals-on-dark-transperent-200-18"
+  },
+  agon: {
+    accent:         "color-brand-signal",
+    "accent-quiet": "color-brand-signal-deep",
+    "accent-rest":  "color-brand-rest",
+    "surface-0":    "color-brand-steel-black",
+    "surface-1":    "color-neutrals-on-dark-opaque-100",
+    "surface-2":    "color-neutrals-on-dark-opaque-200",
+    "text-1":       "color-text-on-dark-opaque-600",
+    "text-2":       "color-text-on-dark-opaque-500",
+    "text-3":       "color-text-on-dark-opaque-400",
+    line:           "color-neutrals-on-dark-opaque-200"
+  },
+  seed: {
+    accent:         "color-brand-sprout",
+    "accent-quiet": "color-accents-elm-200",
+    "accent-deep":  "color-brand-elm",
+    "surface-0":    "color-brand-pampas",
+    "surface-1":    "color-neutrals-on-bright-transparent-100-4",
+    "surface-2":    "color-neutrals-on-bright-transparent-200-22",
+    "text-1":       "color-text-on-bright-transperent-550-98",
+    "text-2":       "color-text-on-bright-transperent-500-80",
+    "text-3":       "color-text-on-bright-transperent-400-63",
+    line:           "color-neutrals-on-bright-transparent-200-22"
+  }
+};
+
+// Not colour, and not in Figma: the interaction floors the DS documents.
+const SEMANTIC_LITERALS = {
+  "focus-width": "2px",
+  "focus-offset": "2px",
+  "target-min": "24px",
+  "target-touch": "44px"
+};
+
+function writeSemanticLayer(brand) {
+  const map = SEMANTIC[brand];
+  if (!map) return false;
+
+  const rows = Object.entries(map)
+    .map(([slot, generated]) => `  --${brand}-${slot}: var(--${brand}-${generated});`);
+
+  rows.push(`  --${brand}-focus-ring: var(--${brand}-accent);`);
+  for (const [slot, value] of Object.entries(SEMANTIC_LITERALS)) {
+    rows.push(`  --${brand}-${slot}: ${value};`);
+  }
+
+  const out = `/**\n * ${brand} — semantic layer. Hand-mapped, generated file.\n *\n`
+    + ` * This is the public API. Import this, not ${brand}.css: the names below are\n`
+    + ` * stable, the ones they point at are Figma's and move when Figma moves.\n`
+    + ` */\n\n@import "./${brand}.css";\n\n:root {\n${rows.join("\n")}\n}\n`;
+
+  writeFileSync(`dist/css/${brand}.public.css`, out);
+
+  // A mistyped generated name yields a var() that resolves to nothing and fails
+  // silently in the browser. Fail the build instead.
+  const generated = readFileSync(`dist/css/${brand}.css`, "utf8");
+  const defined = new Set([...generated.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]));
+  const declared = new Set([...out.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]));
+  const dangling = [...out.matchAll(/var\((--[\w-]+)\)/g)]
+    .map((m) => m[1])
+    .filter((name) => !defined.has(name) && !declared.has(name));
+
+  if (dangling.length) {
+    throw new Error(
+      `${brand}.public.css references ${dangling.length} undefined token(s): ${dangling.join(", ")}. ` +
+      `The generated name probably changed in Figma — update SEMANTIC in build-tokens.js.`
+    );
+  }
+  return true;
+}
+
 async function buildBrand(brand) {
   const source = `tokens/${brand}.json`;
   const sd = new StyleDictionary({
@@ -132,6 +223,7 @@ async function buildBrand(brand) {
 
   await sd.buildAllPlatforms();
   writeCleanJsonFile(source, `dist/clean/${brand}.json`);
+  writeSemanticLayer(brand);
 }
 
 if (existsSync(singleFileSource)) {
@@ -144,5 +236,5 @@ if (existsSync(singleFileSource)) {
 const presentBrands = brands.filter((b) => existsSync(`tokens/${b}.json`));
 await Promise.all(presentBrands.map(buildBrand));
 if (presentBrands.length) {
-  console.log(`\nbrands\n${presentBrands.map((b) => `✔︎ dist/css/${b}.css`).join("\n")}`);
+  console.log(`\nbrands\n${presentBrands.map((b) => `✔︎ dist/css/${b}.css  +  ${b}.public.css`).join("\n")}`);
 }
