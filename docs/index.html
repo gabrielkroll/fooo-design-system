@@ -307,6 +307,33 @@
     .btn.is-ghost:hover { background: rgba(15,15,15,0.05); border-color: var(--s-text); }
 
     /* ── Brand band — the system demonstrating itself ── */
+    /* Core sits above the brands it holds up: full width, uncoloured. */
+    .band-core {
+      display: block;
+      border: 1px solid var(--s-border-mid);
+      border-radius: 12px;
+      padding: var(--scale-8);
+      margin-bottom: var(--scale-5);
+      text-decoration: none;
+      background: var(--s-surface);
+      transition: border-color 180ms ease;
+    }
+
+    .band-core:hover { border-color: var(--s-text); }
+
+    .band-core-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--scale-8);
+      flex-wrap: wrap;
+    }
+
+    .band-chips-core { margin-top: 4px; }
+
+    /* The ramp runs to Lunar, which is invisible on a white card without one. */
+    .band-chips-core .band-chip { border: 1px solid rgba(15,15,15,0.12); }
+
     .band {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -583,10 +610,31 @@
       voice and anti-references. Nothing structural moves.
     </p>
 
+    <a class="band-core" href="library.html#core">
+      <div class="band-core-head">
+        <div>
+          <p class="band-role" style="color:var(--s-text-subtle)">Shared by all three</p>
+          <p class="band-name" style="color:var(--s-text)">Core</p>
+        </div>
+        <div class="band-chips band-chips-core">
+          <span class="band-chip" style="background:#0f0f0f"></span>
+          <span class="band-chip" style="background:#393939"></span>
+          <span class="band-chip" style="background:#666666"></span>
+          <span class="band-chip" style="background:#8a8a8a"></span>
+          <span class="band-chip" style="background:#bebebe"></span>
+          <span class="band-chip" style="background:#fbfbfb"></span>
+        </div>
+      </div>
+      <p class="band-body" style="color:var(--s-text-muted);max-width:62ch;">
+        Scale, containers, alignment, aspect ratios, easing, duration, radius, borders, blur
+        and layering — plus the neutral and text ramps above. Owned once, inherited by every
+        brand. No colour of its own, which is the point.
+      </p>
+    </a>
+
     <div class="band">
       <a class="band-panel" href="library.html#space" style="background:#0f0f0f;color:#fbfbfb;">
         <div>
-          <p class="band-role" style="color:rgba(251,251,251,0.52)">Primary</p>
           <p class="band-name">Space</p>
           <p class="band-body" style="color:rgba(251,251,251,0.74)">Dark-mode, near-black ground, one signal accent. Metropolis · Inter · IBM Plex Mono.</p>
         </div>
@@ -607,7 +655,6 @@
 
       <a class="band-panel" href="library.html#agon" style="background:#141414;color:#f6f6f6;">
         <div>
-          <p class="band-role" style="color:rgba(246,246,246,0.52)">Instrument</p>
           <p class="band-name">Agōn</p>
           <p class="band-body" style="color:rgba(246,246,246,0.74)">Instrument register. Mono type, one green signal, one gold rest signal, flat construction. DM Mono · Instrument Serif.</p>
         </div>
@@ -628,7 +675,6 @@
 
       <a class="band-panel" href="library.html#seed" style="background:#47303d;color:#fcfcfa;">
         <div>
-          <p class="band-role" style="color:rgba(252,252,250,0.56)">Organic</p>
           <p class="band-name">Seed</p>
           <p class="band-body" style="color:rgba(252,252,250,0.78)">Organic and earth-toned, for nature-aligned and regenerative contexts. Exo 2 · Inter · IBM Plex Mono.</p>
         </div>
