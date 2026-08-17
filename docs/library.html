@@ -451,6 +451,40 @@
       margin-bottom: 8px;
     }
 
+    /* ── Contrast table ── */
+    .contrast-table td, .contrast-table th { padding-right: 10px; }
+
+    .contrast-cell {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .contrast-cell.is-pass  { color: #3f5a12; }
+    .contrast-cell.is-large { color: #8a5a1a; }
+    .contrast-cell.is-fail  { color: #a8331c; font-weight: 500; }
+
+    .contrast-swatch { white-space: nowrap; }
+
+    .contrast-swatch span {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+      vertical-align: -1px;
+      margin-right: 8px;
+      border: 1px solid rgba(15,15,15,0.14);
+    }
+
+    .contrast-divider td {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--s-text-subtle);
+      padding-top: 18px;
+    }
+
     /* ── Alignment map ── */
     .align-formula {
       display: flex;
@@ -2938,8 +2972,58 @@
         </div>
       </section>
 
+      <section class="ref-section" id="space-contrast">
+        <p class="ref-section-eyebrow">02 — Contrast</p>
+        <h2 class="ref-section-title">WCAG 2.2 contrast</h2>
+        <hr class="ref-divider">
+
+        <p class="brand-lede">
+          Every ratio below is computed from the token values on this page, not typed in.
+          Change a hex and the verdicts change with it — a contrast table that can be edited
+          independently of the palette is a table that will eventually be wrong.
+        </p>
+
+        <div class="align-formula">
+          <span>AA body ≥ 4.5</span>
+          <span class="align-formula-sep">·</span>
+          <span>AA large (24px+, or 18.66px bold) ≥ 3</span>
+          <span class="align-formula-sep">·</span>
+          <span>UI component &amp; graphics ≥ 3</span>
+        </div>
+
+        <div id="space-contrast-table"></div>
+
+        <div class="brand-note">
+          <strong>Opacity makes contrast conditional.</strong> The text ladder is Lunar over
+          Space, so what a token is legible against depends on what sits behind it. text-3
+          passes on the page ground at 5.34 and fails on <code>surface-2</code> at 3.35 — same
+          token, opposite verdict. A text token is only certified against the surfaces marked
+          above; on <code>surface-2</code>, step up one rung.
+        </div>
+
+        <div class="brand-note">
+          <strong>Ia Nova and M-Type are one colour at two lightnesses.</strong>
+          <code>#cc4325</code> is hue 10.8° / sat 69.3% / light 47.3%;
+          <code>#de6449</code> is hue 10.9° / sat 69.3% / light 57.8%. Identical hue and
+          saturation to a rounding error. That matters because Ia Nova is 4.01 and fails AA as
+          body text, while M-Type is 5.50 and passes — <b>the text-safe commercial accent
+          already exists in the palette.</b> It is currently documented as “warm editorial
+          support, never an interactive state”, which is the rule that has to give if a
+          commercial accent ever needs to be small text.
+          <br><strong>Needs sign-off:</strong> promote the pair to one ramp — Ia Nova 400 for
+          fills, 500 for text — or keep two names and change M-Type's role.
+        </div>
+
+        <div class="brand-note">
+          <strong>Nebula at 2.32 is the doctrine's evidence.</strong> It fails every threshold,
+          including the 3:1 floor for non-text UI. “Illustration and orbital artwork only” was
+          written from taste in <a href="#space-accent">D — Accent doctrine</a>; the arithmetic
+          independently arrives at the same restriction.
+        </div>
+      </section>
+
       <section class="ref-section" id="space-typography">
-        <p class="ref-section-eyebrow">02 — Typography</p>
+        <p class="ref-section-eyebrow">03 — Typography</p>
         <h2 class="ref-section-title">Type scale</h2>
         <hr class="ref-divider">
         <div class="brand-note" style="margin-top:0;margin-bottom:28px;">
@@ -2952,14 +3036,14 @@
       </section>
 
       <section class="ref-section" id="space-scale">
-        <p class="ref-section-eyebrow">03 — Scale</p>
+        <p class="ref-section-eyebrow">04 — Scale</p>
         <h2 class="ref-section-title">Spatial scale</h2>
         <hr class="ref-divider">
         <div id="space-scale-bars"></div>
       </section>
 
       <section class="ref-section" id="space-containers">
-        <p class="ref-section-eyebrow">04 — Containers</p>
+        <p class="ref-section-eyebrow">05 — Containers</p>
         <h2 class="ref-section-title">Container widths</h2>
         <hr class="ref-divider">
         <div id="space-containers-list"></div>
@@ -2979,7 +3063,7 @@
       </section>
 
       <section class="ref-section" id="space-alignment">
-        <p class="ref-section-eyebrow">05 — Alignment</p>
+        <p class="ref-section-eyebrow">06 — Alignment</p>
         <h2 class="ref-section-title">Alignment map</h2>
         <hr class="ref-divider">
 
@@ -3098,56 +3182,56 @@
       </section>
 
       <section class="ref-section" id="space-ratios">
-        <p class="ref-section-eyebrow">06 — Aspect Ratios</p>
+        <p class="ref-section-eyebrow">07 — Aspect Ratios</p>
         <h2 class="ref-section-title">Ratio tokens</h2>
         <hr class="ref-divider">
         <div class="ratio-grid" id="space-ratio-grid"></div>
       </section>
 
       <section class="ref-section" id="space-elevation">
-        <p class="ref-section-eyebrow">07 — Elevation</p>
+        <p class="ref-section-eyebrow">08 — Elevation</p>
         <h2 class="ref-section-title">Surface elevation</h2>
         <hr class="ref-divider">
         <div id="space-elevation-rows"></div>
       </section>
 
       <section class="ref-section" id="space-easing">
-        <p class="ref-section-eyebrow">08 — Easing</p>
+        <p class="ref-section-eyebrow">09 — Easing</p>
         <h2 class="ref-section-title">Power easing</h2>
         <hr class="ref-divider">
         <div id="space-easing-content"></div>
       </section>
 
       <section class="ref-section" id="space-duration">
-        <p class="ref-section-eyebrow">09 — Duration</p>
+        <p class="ref-section-eyebrow">10 — Duration</p>
         <h2 class="ref-section-title">Duration tokens</h2>
         <hr class="ref-divider">
         <div id="space-duration-content"></div>
       </section>
 
       <section class="ref-section" id="space-radius">
-        <p class="ref-section-eyebrow">10 — Radius</p>
+        <p class="ref-section-eyebrow">11 — Radius</p>
         <h2 class="ref-section-title">Border radius</h2>
         <hr class="ref-divider">
         <div id="space-radius-content"></div>
       </section>
 
       <section class="ref-section" id="space-borders">
-        <p class="ref-section-eyebrow">11 — Borders</p>
+        <p class="ref-section-eyebrow">12 — Borders</p>
         <h2 class="ref-section-title">Border width</h2>
         <hr class="ref-divider">
         <div id="space-borders-content"></div>
       </section>
 
       <section class="ref-section" id="space-blur">
-        <p class="ref-section-eyebrow">12 — Blur</p>
+        <p class="ref-section-eyebrow">13 — Blur</p>
         <h2 class="ref-section-title">Backdrop blur</h2>
         <hr class="ref-divider">
         <div id="space-blur-content"></div>
       </section>
 
       <section class="ref-section" id="space-zindex">
-        <p class="ref-section-eyebrow">13 — Z-Index</p>
+        <p class="ref-section-eyebrow">14 — Z-Index</p>
         <h2 class="ref-section-title">Layer scale</h2>
         <hr class="ref-divider">
         <div id="space-zindex-content"></div>
@@ -4658,6 +4742,103 @@ initEasingSection();
 // Init duration demo
 initDurationSection();
 
+// ── WCAG 2.2 contrast ────────────────────────────────────────────────────────
+// Ratios are computed from the palette so the table cannot drift from the tokens.
+
+function srgbToLinear(c) {
+  c /= 255;
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+function relLuminance([r, g, b]) {
+  return 0.2126 * srgbToLinear(r) + 0.7152 * srgbToLinear(g) + 0.0722 * srgbToLinear(b);
+}
+
+function hexToRgb(hex) {
+  const h = hex.replace('#', '');
+  return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16));
+}
+
+function contrast(a, b) {
+  const [hi, lo] = [relLuminance(a), relLuminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+// Composite a colour at alpha over an opaque background — the text ladder is
+// opacity-based, so its real contrast depends on the surface underneath.
+function composite(fg, bg, alpha) {
+  const f = hexToRgb(fg), b = hexToRgb(bg);
+  return f.map((c, i) => Math.round(alpha * c + (1 - alpha) * b[i]));
+}
+
+const CONTRAST = {
+  ground: '#0f0f0f',
+  lunar: '#fbfbfb',
+  surfaces: [
+    { name: 'surface-0', alpha: 0 },
+    { name: 'surface-1', alpha: 0.02 },
+    { name: 'surface-2', alpha: 0.18 },
+  ],
+  text: [
+    { name: 'text-1', alpha: 0.98 },
+    { name: 'text-2', alpha: 0.74 },
+    { name: 'text-3', alpha: 0.52 },
+    { name: 'text-4', alpha: 0.37 },
+  ],
+  accents: [
+    { name: 'Photon',   hex: '#ceff1a' },
+    { name: 'M-Type',   hex: '#de6449' },
+    { name: 'Ia Nova',  hex: '#cc4325' },
+    { name: 'Ion Tail', hex: '#087ca7' },
+    { name: 'Nebula',   hex: '#54428e' },
+  ],
+};
+
+function verdictClass(r) {
+  return r >= 4.5 ? 'is-pass' : r >= 3 ? 'is-large' : 'is-fail';
+}
+
+function renderContrast() {
+  const surfaces = CONTRAST.surfaces.map(s => ({
+    ...s, rgb: composite(CONTRAST.lunar, CONTRAST.ground, s.alpha),
+  }));
+
+  const cell = fg => surfaces.map(s => {
+    const r = contrast(fg, s.rgb);
+    return `<td class="contrast-cell ${verdictClass(r)}">${r.toFixed(2)}</td>`;
+  }).join('');
+
+  const textRows = CONTRAST.text.map(t => {
+    const rgb = composite(CONTRAST.lunar, CONTRAST.ground, t.alpha);
+    return `<tr>
+      <td class="contrast-swatch"><span style="background:rgb(${rgb.join(',')})"></span>${t.name}</td>
+      <td class="is-num">Lunar ${Math.round(t.alpha * 100)}%</td>
+      ${cell(rgb)}
+    </tr>`;
+  }).join('');
+
+  const accentRows = CONTRAST.accents.map(a => `
+    <tr>
+      <td class="contrast-swatch"><span style="background:${a.hex}"></span>${a.name}</td>
+      <td class="is-num">${a.hex}</td>
+      ${cell(hexToRgb(a.hex))}
+    </tr>`).join('');
+
+  return `<table class="stops-table contrast-table">
+    <thead><tr>
+      <th>Token</th><th>Value</th>
+      ${surfaces.map(s => `<th>${s.name}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${textRows}
+      <tr class="contrast-divider"><td colspan="${2 + surfaces.length}">Accents</td></tr>
+      ${accentRows}
+    </tbody>
+  </table>`;
+}
+
+document.getElementById('space-contrast-table').innerHTML = renderContrast();
+
 // ── Alignment map ────────────────────────────────────────────────────────────
 // Source: Figma Core System, "Alignment Map — 1524 Container" (node 99:92).
 // Every stop is a centered container edge: (FRAME ∓ W) / 2.
@@ -4846,18 +5027,19 @@ const SIDEBAR_SECTIONS = {
     ],
     Foundations: [
     { id: 'space-colors',     num: '01', label: 'Colors' },
-    { id: 'space-typography', num: '02', label: 'Typography' },
-    { id: 'space-scale',      num: '03', label: 'Scale' },
-    { id: 'space-containers', num: '04', label: 'Containers' },
-    { id: 'space-alignment',  num: '05', label: 'Alignment' },
-    { id: 'space-ratios',     num: '06', label: 'Aspect Ratios' },
-    { id: 'space-elevation',  num: '07', label: 'Elevation' },
-    { id: 'space-easing',     num: '08', label: 'Easing' },
-    { id: 'space-duration',   num: '09', label: 'Duration' },
-    { id: 'space-radius',     num: '10', label: 'Radius' },
-    { id: 'space-borders',    num: '11', label: 'Borders' },
-    { id: 'space-blur',       num: '12', label: 'Blur' },
-    { id: 'space-zindex',     num: '13', label: 'Z-Index' },
+    { id: 'space-contrast',   num: '02', label: 'Contrast' },
+    { id: 'space-typography', num: '03', label: 'Typography' },
+    { id: 'space-scale',      num: '04', label: 'Scale' },
+    { id: 'space-containers', num: '05', label: 'Containers' },
+    { id: 'space-alignment',  num: '06', label: 'Alignment' },
+    { id: 'space-ratios',     num: '07', label: 'Aspect Ratios' },
+    { id: 'space-elevation',  num: '08', label: 'Elevation' },
+    { id: 'space-easing',     num: '09', label: 'Easing' },
+    { id: 'space-duration',   num: '10', label: 'Duration' },
+    { id: 'space-radius',     num: '11', label: 'Radius' },
+    { id: 'space-borders',    num: '12', label: 'Borders' },
+    { id: 'space-blur',       num: '13', label: 'Blur' },
+    { id: 'space-zindex',     num: '14', label: 'Z-Index' },
     ],
   },
   agon: {
