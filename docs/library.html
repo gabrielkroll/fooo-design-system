@@ -2843,17 +2843,21 @@
           <p class="spec-block-title">Three roles that are not the same role</p>
           <p class="spec-block-lede">
             Mono became the default for everything small because the type rule said what an
-            Eye Brow must look like and never when it may be used. Small labels do three
-            different jobs. Only one of them is mono.
+            Eye Brow must look like and never when it may be used. Small labels do several
+            different jobs, and — since Core 2.0 — none of the common ones is mono.
           </p>
 
           <div class="derive-row">
             <div class="derive-key">Eye brow</div>
-            <div class="derive-val"><strong>IBM Plex Mono 500, uppercase, +0.3px, <code>--space-text-3</code>.</strong> Names the section the reader is entering. Sits above the <code>h2</code> that opens a section — nowhere else. <b>Budget: one per section, and never two visible at once.</b> If a second mono label shares the viewport, one of them is not an eye brow.</div>
+            <div class="derive-val"><strong>Inter 500, uppercase, +0.3px, <code>--space-text-3</code>.</strong> Names the section the reader is entering. Sits above the <code>h2</code> that opens a section — nowhere else. <b>Budget: one per section.</b> <br><b>Changed in Core 2.0:</b> the eye brow was IBM Plex Mono and is not any more. At eye-brow size the mono made compositions read clunky and heavy — mono's wide, even rhythm fights a label whose whole job is to sit quietly above a heading. Inter carries the same uppercase tracking without the weight.</div>
           </div>
           <div class="derive-row">
             <div class="derive-key">Index</div>
             <div class="derive-val"><strong>Metropolis 500, sentence case, <code>--space-text-3</code>.</strong> 01 / 02 / 03 when the order itself is information the reader needs. Never mono, never accented, never one colour per item.</div>
+          </div>
+          <div class="derive-row">
+            <div class="derive-key">Mono</div>
+            <div class="derive-val"><strong>IBM Plex Mono 500.</strong> Code snippets, data-visualisation labels and numeric readouts — anywhere character alignment or the machine register is the point. Decorative use is allowed when it is deliberate and rare. <b>Never an eye brow.</b></div>
           </div>
           <div class="derive-row">
             <div class="derive-key">Meta</div>
@@ -2861,9 +2865,9 @@
           </div>
 
           <div class="brand-note">
-            <strong>Standing rule.</strong> Mono is never coloured. An eye brow is
-            <code>--space-text-3</code> and nothing else — which removes the whole class of
-            small accented uppercase labels at the root.
+            <strong>Standing rule.</strong> Mono is never coloured, and never an eye brow.
+            An eye brow is <code>--space-text-3</code> and nothing else — which removes the
+            whole class of small accented uppercase labels at the root.
           </div>
         </div>
 
@@ -3047,20 +3051,18 @@
         </div>
 
         <div class="brand-note">
-          <strong>Ia Nova and M-Type are one colour at two lightnesses.</strong>
-          <code>#cc4325</code> is hue 10.8° / sat 69.3% / light 47.3%;
-          <code>#de6449</code> is hue 10.9° / sat 69.3% / light 57.8%. Identical hue and
-          saturation to a rounding error. That matters because Ia Nova is 4.01 and fails AA as
-          body text, while M-Type is 5.50 and passes — <b>the text-safe commercial accent
-          already exists in the palette.</b> It is currently documented as “warm editorial
-          support, never an interactive state”, which is the rule that has to give if a
-          commercial accent ever needs to be small text.
-          <br><strong>Needs sign-off:</strong> promote the pair to one ramp — Ia Nova 400 for
-          fills, 500 for text — or keep two names and change M-Type's role.
+          <strong>Ia Nova and M-Type are different colours that measure alike.</strong>
+          Hue 10.8° and 10.9°, saturation 69.3% both — but lightness 47.3% against 57.8%,
+          and lightness is what decides the name. Ia Nova reads as a dark red; M-Type reads
+          salmon-orange. <b>They are not a ramp and must not be merged into one.</b>
+          <br>What the numbers do settle is a usage limit: Ia Nova is 4.01 and fails AA as
+          body text; M-Type is 5.50 and passes. So <b>Ia Nova is a fill and large-text colour,
+          never small text on dark</b> — which costs nothing, since it is the commercial
+          accent and lives on buttons and CTAs. M-Type keeps its own role as warm editorial
+          support. Neither hex changes.
         </div>
 
-        <div class="brand-note">
-          <strong>Nebula at 2.32 is the doctrine's evidence.</strong> It fails every threshold,
+        <strong>Nebula at 2.32 is the doctrine's evidence.</strong> It fails every threshold,
           including the 3:1 floor for non-text UI. “Illustration and orbital artwork only” was
           written from taste in <a href="#space-accent">D — Accent doctrine</a>; the arithmetic
           independently arrives at the same restriction.

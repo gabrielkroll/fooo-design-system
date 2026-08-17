@@ -2,7 +2,7 @@
 
 > **Stack:** Next.js App Router · TypeScript · Tailwind CSS v4  
 > **Theme:** Space (dark)  
-> **Last updated:** 2026-04-13
+> **Core:** 2.0 · **Last updated:** 2026-08-17
 
 ---
 
@@ -12,7 +12,7 @@
 |------|----------|-------|------------|
 | Display / Title | `--font-display` → `--font-metropolis` | Metropolis, sans-serif | `next/font/local` in `layout.tsx` |
 | Body | `--font-body` | Inter, sans-serif | Google Fonts (Inter 400) |
-| Mono / Eye Brow | `--font-mono` | IBM Plex Mono, monospace | Google Fonts (IBM Plex Mono 500) |
+| Mono / code / data | `--font-mono` | IBM Plex Mono, monospace | Google Fonts (IBM Plex Mono 500) |
 
 **Weights in use:**
 
@@ -21,7 +21,7 @@
 | Metropolis Medium | Title text | `font-weight: 500` |
 | Metropolis SemiBold | Display / hero | `font-weight: 600` |
 | Inter Regular | Body copy | `font-weight: 400` |
-| IBM Plex Mono Medium | Eye Brow / mono labels | `font-weight: 500` |
+| IBM Plex Mono Medium | Code, data labels | `font-weight: 500` |
 
 ---
 
@@ -156,7 +156,10 @@ all breakpoints: 15px · lh 1.50 · ls +0.30px · IBM Plex Mono 500 · uppercase
 2. **No inline font-size on headings.** Always apply a `.type-*` class or DS token.
 3. **Letter spacing must track size.** Larger size = tighter tracking (more negative). See table above.
 4. **Line height must track size.** Larger display sizes use tighter line height (1.05 at 84px).
-5. **Eye Brow is always uppercase and mono — and rationed.** Never set an Eye Brow in Metropolis or Inter. But the reverse is the rule that actually gets broken: **mono is not the default for everything small.** An Eye Brow names the section the reader is entering, sits above the `h2` that opens it, and appears **once per section, never twice in one viewport**. Index numbers (01/02/03) are Metropolis, sentence case. Dates, ranges, captions and statuses are Inter, sentence case. **Mono is never coloured** — an Eye Brow is `--text-subtle` and nothing else.
+5. **Eye Brow is uppercase Inter, not mono.** *Changed in Core 2.0.* At eye-brow size IBM Plex Mono made compositions read clunky and heavy — mono's wide, even rhythm fights a label whose job is to sit quietly above a heading. Eye Brow is now Inter 500, uppercase, +0.3px tracking, `--text-subtle`. **Budget: one per section.** Index numbers (01/02/03) are Metropolis, sentence case. Dates, ranges, captions and statuses are Inter, sentence case. **Mono is never coloured, and never an eye brow.**
+
+5a. **IBM Plex Mono is for code, data and deliberate decoration.** Code snippets, data-visualisation labels, numeric readouts — anywhere character alignment or the machine register is the point. Decorative use is allowed when it is deliberate and rare.
+
 6. **Body copy uses Inter, not Metropolis.** Metropolis is Title + Display only.
 7. **Minimum body size is 15px (Body/sm).** Do not set body text at 12px or 13px — DS violation.
 8. **Responsive classes live in JSX `<style>` tag.** Do not put responsive class rules in `globals.css` — they will be silently dropped by Tailwind v4.
