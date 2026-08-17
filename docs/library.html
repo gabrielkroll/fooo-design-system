@@ -3443,6 +3443,14 @@
             <div class="derive-val"><strong>Green is information, never atmosphere.</strong> One primary action, active state, or progression signal at a time. No decorative glows, no gradients, no broad mood lighting in green.</div>
           </div>
           <div class="derive-row">
+            <div class="derive-key"><span class="accent-dot" style="background:#fec600"></span>Rest rule</div>
+            <div class="derive-val"><strong>Gold is rest; green is work. They are mutually exclusive, never adjacent.</strong> The athlete is training or recovering, never both, so a view carries one or the other — which is why a second signal does not break “one signal at a time”, it completes it. Gold must never appear in a training view, and green must never appear in the breathing sheet. They are also 2.15:1 against each other, so they could not be told apart if they did sit together.</div>
+          </div>
+          <div class="derive-row">
+            <div class="derive-key">The glow carve-out</div>
+            <div class="derive-val"><strong>The breathing orb is the one glow Agōn permits.</strong> “No decorative glows” stands everywhere else. The orb is exempt because the glow is not lighting the interface — it <em>is</em> the interface: a metronome the athlete watches to pace a breath. The moment a glow stops being the thing you are looking at and starts being the mood behind it, the rule applies again.</div>
+          </div>
+          <div class="derive-row">
             <div class="derive-key">Two registers</div>
             <div class="derive-val"><strong>Mono is the instrument; serif is the athlete’s handwritten note.</strong> DM Mono turns headline and data into one instrument panel. Instrument Serif Italic appears only for brief human annotations, the wordmark, and product-native moments. Never build an editorial magazine composition out of the pairing.</div>
           </div>
@@ -3509,8 +3517,28 @@
         </div>
 
         <div class="color-group">
+          <p class="color-group-label">Rest — the breathing orb</p>
+          <div class="color-swatches" id="agon-rest-swatches"></div>
+        </div>
+
+        <div class="color-group">
           <p class="color-group-label">Neutrals — chalk, steel, rubber</p>
           <div class="color-swatches" id="agon-neutral-swatches"></div>
+        </div>
+
+        <div class="brand-note">
+          <strong>Rest is the second signal, and the only one that is not green.</strong>
+          <code>#fec600</code> is 11.66:1 on gym black — it clears AA and AAA as text. It reads
+          against the ground, not against Signal: <b>gold to green is 2.15:1</b>, under the 3:1
+          that 1.4.11 asks of adjacent meaningful colours, so the two must never sit edge to
+          edge as the only thing telling two states apart. They never need to — see the rule in
+          <a href="#agon-rules">D — Standing rules</a>.
+          <br><strong>Drift to reconcile.</strong> Meso+ ships the orb as a gradient from
+          <code>#ffe8a0</code> to <code>#f5c842</code>, with <code>#c8c2a8</code> on the phase
+          label. <code>#fec600</code> is not in the app yet. Either it supersedes
+          <code>#f5c842</code> as the canonical edge — a purer, darker gold, 100% saturation
+          against 89.9% — or the app is right and the token should follow it. Named here as
+          requested; the app has not been touched.
         </div>
       </section>
 
@@ -5091,6 +5119,11 @@ const AGON = {
     { name: 'Signal Bright', value: '#bed18a' },
     { name: 'Signal Deep',   value: '#2e450e' },
   ],
+  rest: [
+    { name: 'Rest',       value: '#fec600' },
+    { name: 'Rest Core',  value: '#ffe8a0' },
+    { name: 'Rest Quiet', value: '#c8c2a8' },
+  ],
   neutrals: [
     { name: 'Chalk',      value: '#f6f6f6' },
     { name: 'Quiet',      value: '#bebebe' },
@@ -5109,6 +5142,7 @@ const AGON = {
 };
 
 document.getElementById('agon-signal-swatches').innerHTML  = renderSwatches(AGON.signal);
+document.getElementById('agon-rest-swatches').innerHTML    = renderSwatches(AGON.rest);
 document.getElementById('agon-neutral-swatches').innerHTML = renderSwatches(AGON.neutrals);
 document.getElementById('agon-type-specimens').innerHTML   = renderTypeSpecimens(AGON.type);
 
