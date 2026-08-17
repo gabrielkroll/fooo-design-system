@@ -2767,7 +2767,7 @@
             prose in a 582, not across the full width. This is not a second rule: <b>942 = 582 + 360
             is already in the alignment map</b>. The 582 takes the prose, the 360 takes a sidenote,
             a caption, or nothing. Readability and the composite decomposition are one rule seen
-            from two sides. See <a href="#space-alignment">Alignment</a>.
+            from two sides. See <a href="#core-alignment">Alignment</a>.
           </div>
         </div>
         <div class="derive-row">
@@ -2844,6 +2844,201 @@
           Space direct and spacefaring, Agōn precise and physical. Editorial is how any of them is
           written well. A brand can be perfectly in voice and still unreadable.
         </div>
+      </section>
+
+      <section class="ref-section" id="core-scale">
+        <p class="ref-section-eyebrow">03 — Scale</p>
+        <h2 class="ref-section-title">Spatial scale</h2>
+        <hr class="ref-divider">
+        <div id="core-scale-bars"></div>
+      </section>
+
+      <section class="ref-section" id="core-containers">
+        <p class="ref-section-eyebrow">04 — Containers</p>
+        <h2 class="ref-section-title">Container widths</h2>
+        <hr class="ref-divider">
+        <div id="core-containers-list"></div>
+
+        <div class="brand-note">
+          <strong>The scale closes on itself.</strong> Each rung is the sum of the two before
+          it — <code>138+222=360</code>, <code>360+582=942</code>, <code>582+942=1524</code>,
+          <code>942+1524=2466</code>. That run is also the proof the 9xl label was the typo
+          and not its value: 942+1524 lands exactly on 2466, and 942+1542 would not.
+          <br><strong>10xl is now a container.</strong>
+          <code>Container/Natural/3xl [2466]</code> aliases the rung in Figma, so the set no
+          longer stops at the frame. gabrielkroll.com already built against it —
+          <code>.work-panels</code> is <code>min(2466px, 100%)</code>, running full-bleed with
+          square corners until the viewport clears 2466, where it rounds and becomes an object.
+          See <a href="#core-alignment">05 — Alignment</a> for how the stage centres the frame.
+        </div>
+      </section>
+
+      <section class="ref-section" id="core-alignment">
+        <p class="ref-section-eyebrow">05 — Alignment</p>
+        <h2 class="ref-section-title">Alignment map</h2>
+        <hr class="ref-divider">
+
+        <p class="brand-lede">
+          Containers answer how wide. This answers where the edges land. Every sanctioned
+          width, centered in the 1524 frame, generates two alignment stops — and content
+          only ever aligns to a stop.
+        </p>
+
+        <div class="align-formula">
+          <span>stop<sub>left</sub> = (1524 − W) ÷ 2</span>
+          <span class="align-formula-sep">·</span>
+          <span>stop<sub>right</sub> = (1524 + W) ÷ 2</span>
+        </div>
+
+        <p class="align-caption">Every container width, centered in the frame. Lines are the stops it generates.</p>
+        <div id="core-align-map"></div>
+
+        <p class="align-caption">A composite is centered, so its outer edges always land on stops by construction. Internal seams do not follow automatically — the decompositions marked below are the ones that also align inside, and those are the ones to reach for first.</p>
+        <div id="core-align-composites"></div>
+
+        <p class="align-caption">The full stop set. Each pair mirrors about the centre at 762.</p>
+        <div id="core-align-stops"></div>
+
+        <p class="spec-block-title" style="margin-top:40px;">Above the frame — the display stage</p>
+        <p class="align-caption">
+          <code>C-3xl · 2466</code> is not a container inside the frame; it is the stage the
+          frame sits on. Its stops cannot come from <code>(1524 − W) ÷ 2</code> — that goes
+          negative — so the display tier centres the frame instead.
+        </p>
+        <div id="core-align-stage"></div>
+
+        <div class="derive-row">
+          <div class="derive-key">Stage margin</div>
+          <div class="derive-val">
+            <strong>2466 − 1524 = 942, so the frame sits on exactly one container-xl of
+            margin</strong>, split evenly: <code>471</code> either side. The margin is not an
+            arbitrary gutter — it is the next rung down, which is why the stage reads as part
+            of the same system rather than as letterboxing.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">What grows</div>
+          <div class="derive-val">
+            <strong>Full-bleed objects grow to 2466. Content does not.</strong> The reading
+            field stays at 1164 and the frame at 1524 no matter how wide the display gets —
+            gabrielkroll.com caps its hero illustration at 1524 for exactly this reason, so the
+            picture never outgrows the page it sits on. Only edge-to-edge surfaces claim the
+            stage, and at 2466 they stop bleeding and become objects.
+          </div>
+        </div>
+
+        <p class="spec-block-title" style="margin-top:40px;">Building against the map</p>
+        <p class="align-caption">
+          Four things the geometry does not tell you, each one learned the expensive way on
+          gabrielkroll.com. The map is a drawing; these are what it costs to build from it.
+        </p>
+
+        <div class="derive-row">
+          <div class="derive-key">Gutters</div>
+          <div class="derive-val">
+            <strong>The map's seams are zero-width. Real rows have a gap.</strong>
+            A composite specified straight off the drawing loses the gutter to one of its
+            segments. <code>C-360 + C-942</code> was built at 1302 — the drawn total — so with
+            a 24 gap the still collapsed to <b>918</b> and never reached the token it was
+            specified at. The row is <code>360 + 24 + 942 = 1326</code>. Add the gutters to
+            the composite, or accept that a segment lands off-scale.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Field, not frame</div>
+          <div class="derive-val">
+            <strong>Content aligns to 1164, not 1524.</strong> The frame is the display
+            container; the field is what content actually sees —
+            <code>min(1164px, 100vw − 48px)</code>, centered, 24 outer padding. The map is
+            drawn at frame width because that is where the stops are derived, not because
+            anything is built there.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Step, don't scale</div>
+          <div class="derive-val">
+            <strong>Sizes on screen are tokens, never percentages of them.</strong> Between
+            breakpoints, drop a rung instead of interpolating. The scale is a Fibonacci run,
+            so 582→360 carries 942→582 and 360→222 with it and every pair stays golden.
+            Interpolation lands between rungs and breaks the alignment it was supposed to keep.
+          </div>
+        </div>
+        <div class="derive-row">
+          <div class="derive-key">Floor</div>
+          <div class="derive-val">
+            <strong>On the scale is not the same as usable.</strong> C-138 exists and is a
+            valid stop generator, but a 138 card is below the smallest size worth showing a
+            client. Roles carry their own floor — for gallery cards it is 222. Below it,
+            let content bleed and scroll rather than shrinking to a rung that cannot do its job.
+          </div>
+        </div>
+
+        <div class="brand-note">
+          <strong>Not yet derived.</strong> Every stop above is the 1524 tier. Responsive
+          behaviour below it — the 1164 and 942 container tiers, and mobile — has no
+          alignment model yet. Until it does, sub-1524 layouts are being decided per build
+          rather than by the system.
+        </div>
+
+        <div class="brand-note">
+          <strong>Why this exists.</strong> Snapping widths to the scale is not enough — two
+          sections can both be on-scale and still fail to line up, which is the “unintentional
+          across breakpoints” problem named in <code>DESIGN-DIRECTION.md</code>. Alignment is a
+          property of the system only when edges are shared.
+          <br><strong>Two classes of stop.</strong> Solid lines are <em>edge stops</em> — a
+          centered container's own edges. The faint pair at 360 and 1164 are <em>seam
+          stops</em>: no container edge lands there, but composite seams do, so content may
+          align to them. The centre axis at 762 is drawn here and is not in the Figma map.
+        </div>
+      </section>
+
+      <section class="ref-section" id="core-ratios">
+        <p class="ref-section-eyebrow">06 — Aspect Ratios</p>
+        <h2 class="ref-section-title">Ratio tokens</h2>
+        <hr class="ref-divider">
+        <div class="ratio-grid" id="core-ratio-grid"></div>
+      </section>
+
+      <section class="ref-section" id="core-easing">
+        <p class="ref-section-eyebrow">07 — Easing</p>
+        <h2 class="ref-section-title">Power easing</h2>
+        <hr class="ref-divider">
+        <div id="core-easing-content"></div>
+      </section>
+
+      <section class="ref-section" id="core-duration">
+        <p class="ref-section-eyebrow">08 — Duration</p>
+        <h2 class="ref-section-title">Duration tokens</h2>
+        <hr class="ref-divider">
+        <div id="core-duration-content"></div>
+      </section>
+
+      <section class="ref-section" id="core-radius">
+        <p class="ref-section-eyebrow">09 — Radius</p>
+        <h2 class="ref-section-title">Border radius</h2>
+        <hr class="ref-divider">
+        <div id="core-radius-content"></div>
+      </section>
+
+      <section class="ref-section" id="core-borders">
+        <p class="ref-section-eyebrow">10 — Borders</p>
+        <h2 class="ref-section-title">Border width</h2>
+        <hr class="ref-divider">
+        <div id="core-borders-content"></div>
+      </section>
+
+      <section class="ref-section" id="core-blur">
+        <p class="ref-section-eyebrow">11 — Blur</p>
+        <h2 class="ref-section-title">Backdrop blur</h2>
+        <hr class="ref-divider">
+        <div id="core-blur-content"></div>
+      </section>
+
+      <section class="ref-section" id="core-zindex">
+        <p class="ref-section-eyebrow">12 — Z-Index</p>
+        <h2 class="ref-section-title">Layer scale</h2>
+        <hr class="ref-divider">
+        <div id="core-zindex-content"></div>
       </section>
 
     </div><!-- /panel-core -->
@@ -3276,7 +3471,8 @@
           support. Neither hex changes.
         </div>
 
-        <strong>Nebula at 2.32 is the doctrine's evidence.</strong> It fails every threshold,
+        <div class="brand-note">
+          <strong>Nebula at 2.32 is the doctrine's evidence.</strong> It fails every threshold,
           including the 3:1 floor for non-text UI. “Illustration and orbital artwork only” was
           written from taste in <a href="#space-accent">D — Accent doctrine</a>; the arithmetic
           independently arrives at the same restriction.
@@ -3358,207 +3554,22 @@
         <div id="space-type-specimens"></div>
       </section>
 
-      <section class="ref-section" id="space-scale">
-        <p class="ref-section-eyebrow">04 — Scale</p>
-        <h2 class="ref-section-title">Spatial scale</h2>
-        <hr class="ref-divider">
-        <div id="space-scale-bars"></div>
-      </section>
 
-      <section class="ref-section" id="space-containers">
-        <p class="ref-section-eyebrow">05 — Containers</p>
-        <h2 class="ref-section-title">Container widths</h2>
-        <hr class="ref-divider">
-        <div id="space-containers-list"></div>
 
-        <div class="brand-note">
-          <strong>The scale closes on itself.</strong> Each rung is the sum of the two before
-          it — <code>138+222=360</code>, <code>360+582=942</code>, <code>582+942=1524</code>,
-          <code>942+1524=2466</code>. That run is also the proof the 9xl label was the typo
-          and not its value: 942+1524 lands exactly on 2466, and 942+1542 would not.
-          <br><strong>10xl is now a container.</strong>
-          <code>Container/Natural/3xl [2466]</code> aliases the rung in Figma, so the set no
-          longer stops at the frame. gabrielkroll.com already built against it —
-          <code>.work-panels</code> is <code>min(2466px, 100%)</code>, running full-bleed with
-          square corners until the viewport clears 2466, where it rounds and becomes an object.
-          See <a href="#space-alignment">05 — Alignment</a> for how the stage centres the frame.
-        </div>
-      </section>
 
-      <section class="ref-section" id="space-alignment">
-        <p class="ref-section-eyebrow">06 — Alignment</p>
-        <h2 class="ref-section-title">Alignment map</h2>
-        <hr class="ref-divider">
-
-        <p class="brand-lede">
-          Containers answer how wide. This answers where the edges land. Every sanctioned
-          width, centered in the 1524 frame, generates two alignment stops — and content
-          only ever aligns to a stop.
-        </p>
-
-        <div class="align-formula">
-          <span>stop<sub>left</sub> = (1524 − W) ÷ 2</span>
-          <span class="align-formula-sep">·</span>
-          <span>stop<sub>right</sub> = (1524 + W) ÷ 2</span>
-        </div>
-
-        <p class="align-caption">Every container width, centered in the frame. Lines are the stops it generates.</p>
-        <div id="space-align-map"></div>
-
-        <p class="align-caption">A composite is centered, so its outer edges always land on stops by construction. Internal seams do not follow automatically — the decompositions marked below are the ones that also align inside, and those are the ones to reach for first.</p>
-        <div id="space-align-composites"></div>
-
-        <p class="align-caption">The full stop set. Each pair mirrors about the centre at 762.</p>
-        <div id="space-align-stops"></div>
-
-        <p class="spec-block-title" style="margin-top:40px;">Above the frame — the display stage</p>
-        <p class="align-caption">
-          <code>C-3xl · 2466</code> is not a container inside the frame; it is the stage the
-          frame sits on. Its stops cannot come from <code>(1524 − W) ÷ 2</code> — that goes
-          negative — so the display tier centres the frame instead.
-        </p>
-        <div id="space-align-stage"></div>
-
-        <div class="derive-row">
-          <div class="derive-key">Stage margin</div>
-          <div class="derive-val">
-            <strong>2466 − 1524 = 942, so the frame sits on exactly one container-xl of
-            margin</strong>, split evenly: <code>471</code> either side. The margin is not an
-            arbitrary gutter — it is the next rung down, which is why the stage reads as part
-            of the same system rather than as letterboxing.
-          </div>
-        </div>
-        <div class="derive-row">
-          <div class="derive-key">What grows</div>
-          <div class="derive-val">
-            <strong>Full-bleed objects grow to 2466. Content does not.</strong> The reading
-            field stays at 1164 and the frame at 1524 no matter how wide the display gets —
-            gabrielkroll.com caps its hero illustration at 1524 for exactly this reason, so the
-            picture never outgrows the page it sits on. Only edge-to-edge surfaces claim the
-            stage, and at 2466 they stop bleeding and become objects.
-          </div>
-        </div>
-
-        <p class="spec-block-title" style="margin-top:40px;">Building against the map</p>
-        <p class="align-caption">
-          Four things the geometry does not tell you, each one learned the expensive way on
-          gabrielkroll.com. The map is a drawing; these are what it costs to build from it.
-        </p>
-
-        <div class="derive-row">
-          <div class="derive-key">Gutters</div>
-          <div class="derive-val">
-            <strong>The map's seams are zero-width. Real rows have a gap.</strong>
-            A composite specified straight off the drawing loses the gutter to one of its
-            segments. <code>C-360 + C-942</code> was built at 1302 — the drawn total — so with
-            a 24 gap the still collapsed to <b>918</b> and never reached the token it was
-            specified at. The row is <code>360 + 24 + 942 = 1326</code>. Add the gutters to
-            the composite, or accept that a segment lands off-scale.
-          </div>
-        </div>
-        <div class="derive-row">
-          <div class="derive-key">Field, not frame</div>
-          <div class="derive-val">
-            <strong>Content aligns to 1164, not 1524.</strong> The frame is the display
-            container; the field is what content actually sees —
-            <code>min(1164px, 100vw − 48px)</code>, centered, 24 outer padding. The map is
-            drawn at frame width because that is where the stops are derived, not because
-            anything is built there.
-          </div>
-        </div>
-        <div class="derive-row">
-          <div class="derive-key">Step, don't scale</div>
-          <div class="derive-val">
-            <strong>Sizes on screen are tokens, never percentages of them.</strong> Between
-            breakpoints, drop a rung instead of interpolating. The scale is a Fibonacci run,
-            so 582→360 carries 942→582 and 360→222 with it and every pair stays golden.
-            Interpolation lands between rungs and breaks the alignment it was supposed to keep.
-          </div>
-        </div>
-        <div class="derive-row">
-          <div class="derive-key">Floor</div>
-          <div class="derive-val">
-            <strong>On the scale is not the same as usable.</strong> C-138 exists and is a
-            valid stop generator, but a 138 card is below the smallest size worth showing a
-            client. Roles carry their own floor — for gallery cards it is 222. Below it,
-            let content bleed and scroll rather than shrinking to a rung that cannot do its job.
-          </div>
-        </div>
-
-        <div class="brand-note">
-          <strong>Not yet derived.</strong> Every stop above is the 1524 tier. Responsive
-          behaviour below it — the 1164 and 942 container tiers, and mobile — has no
-          alignment model yet. Until it does, sub-1524 layouts are being decided per build
-          rather than by the system.
-        </div>
-
-        <div class="brand-note">
-          <strong>Why this exists.</strong> Snapping widths to the scale is not enough — two
-          sections can both be on-scale and still fail to line up, which is the “unintentional
-          across breakpoints” problem named in <code>DESIGN-DIRECTION.md</code>. Alignment is a
-          property of the system only when edges are shared.
-          <br><strong>Two classes of stop.</strong> Solid lines are <em>edge stops</em> — a
-          centered container's own edges. The faint pair at 360 and 1164 are <em>seam
-          stops</em>: no container edge lands there, but composite seams do, so content may
-          align to them. The centre axis at 762 is drawn here and is not in the Figma map.
-        </div>
-      </section>
-
-      <section class="ref-section" id="space-ratios">
-        <p class="ref-section-eyebrow">07 — Aspect Ratios</p>
-        <h2 class="ref-section-title">Ratio tokens</h2>
-        <hr class="ref-divider">
-        <div class="ratio-grid" id="space-ratio-grid"></div>
-      </section>
 
       <section class="ref-section" id="space-elevation">
-        <p class="ref-section-eyebrow">08 — Elevation</p>
+        <p class="ref-section-eyebrow">04 — Elevation</p>
         <h2 class="ref-section-title">Surface elevation</h2>
         <hr class="ref-divider">
         <div id="space-elevation-rows"></div>
       </section>
 
-      <section class="ref-section" id="space-easing">
-        <p class="ref-section-eyebrow">09 — Easing</p>
-        <h2 class="ref-section-title">Power easing</h2>
-        <hr class="ref-divider">
-        <div id="space-easing-content"></div>
-      </section>
 
-      <section class="ref-section" id="space-duration">
-        <p class="ref-section-eyebrow">10 — Duration</p>
-        <h2 class="ref-section-title">Duration tokens</h2>
-        <hr class="ref-divider">
-        <div id="space-duration-content"></div>
-      </section>
 
-      <section class="ref-section" id="space-radius">
-        <p class="ref-section-eyebrow">11 — Radius</p>
-        <h2 class="ref-section-title">Border radius</h2>
-        <hr class="ref-divider">
-        <div id="space-radius-content"></div>
-      </section>
 
-      <section class="ref-section" id="space-borders">
-        <p class="ref-section-eyebrow">12 — Borders</p>
-        <h2 class="ref-section-title">Border width</h2>
-        <hr class="ref-divider">
-        <div id="space-borders-content"></div>
-      </section>
 
-      <section class="ref-section" id="space-blur">
-        <p class="ref-section-eyebrow">13 — Blur</p>
-        <h2 class="ref-section-title">Backdrop blur</h2>
-        <hr class="ref-divider">
-        <div id="space-blur-content"></div>
-      </section>
 
-      <section class="ref-section" id="space-zindex">
-        <p class="ref-section-eyebrow">14 — Z-Index</p>
-        <h2 class="ref-section-title">Layer scale</h2>
-        <hr class="ref-divider">
-        <div id="space-zindex-content"></div>
-      </section>
 
     </div><!-- /panel-space -->
 
@@ -3827,77 +3838,21 @@
         <div id="seed-type-specimens"></div>
       </section>
 
-      <section class="ref-section" id="seed-scale">
-        <p class="ref-section-eyebrow">03 — Scale</p>
-        <h2 class="ref-section-title">Spatial scale</h2>
-        <hr class="ref-divider">
-        <p style="font-size:13px;color:var(--s-text-subtle);">Shared with Space — same geometric progression.</p>
-        <div id="seed-scale-bars" style="margin-top:20px;"></div>
-      </section>
 
-      <section class="ref-section" id="seed-containers">
-        <p class="ref-section-eyebrow">04 — Containers</p>
-        <h2 class="ref-section-title">Container widths</h2>
-        <hr class="ref-divider">
-        <p style="font-size:13px;color:var(--s-text-subtle);">Shared with Space — same container token system.</p>
-        <div id="seed-containers-list" style="margin-top:20px;"></div>
-      </section>
 
-      <section class="ref-section" id="seed-ratios">
-        <p class="ref-section-eyebrow">05 — Aspect Ratios</p>
-        <h2 class="ref-section-title">Ratio tokens</h2>
-        <hr class="ref-divider">
-        <div class="ratio-grid" id="seed-ratio-grid"></div>
-      </section>
 
-      <section class="ref-section" id="seed-easing">
-        <p class="ref-section-eyebrow">06 — Easing</p>
-        <h2 class="ref-section-title">Power easing</h2>
-        <hr class="ref-divider">
-        <div id="seed-easing-content"></div>
-      </section>
 
-      <section class="ref-section" id="seed-duration">
-        <p class="ref-section-eyebrow">07 — Duration</p>
-        <h2 class="ref-section-title">Duration tokens</h2>
-        <hr class="ref-divider">
-        <div id="seed-duration-content"></div>
-      </section>
 
-      <section class="ref-section" id="seed-radius">
-        <p class="ref-section-eyebrow">08 — Radius</p>
-        <h2 class="ref-section-title">Border radius</h2>
-        <hr class="ref-divider">
-        <div id="seed-radius-content"></div>
-      </section>
 
-      <section class="ref-section" id="seed-borders">
-        <p class="ref-section-eyebrow">09 — Borders</p>
-        <h2 class="ref-section-title">Border width</h2>
-        <hr class="ref-divider">
-        <div id="seed-borders-content"></div>
-      </section>
 
       <section class="ref-section" id="seed-shadows">
-        <p class="ref-section-eyebrow">10 — Shadows</p>
+        <p class="ref-section-eyebrow">03 — Shadows</p>
         <h2 class="ref-section-title">Shadow tokens</h2>
         <hr class="ref-divider">
         <div id="seed-shadows-content"></div>
       </section>
 
-      <section class="ref-section" id="seed-blur">
-        <p class="ref-section-eyebrow">11 — Blur</p>
-        <h2 class="ref-section-title">Backdrop blur</h2>
-        <hr class="ref-divider">
-        <div id="seed-blur-content"></div>
-      </section>
 
-      <section class="ref-section" id="seed-zindex">
-        <p class="ref-section-eyebrow">12 — Z-Index</p>
-        <h2 class="ref-section-title">Layer scale</h2>
-        <hr class="ref-divider">
-        <div id="seed-zindex-content"></div>
-      </section>
 
     </div><!-- /panel-seed -->
 
@@ -5057,16 +5012,16 @@ document.getElementById('space-primary-swatches').innerHTML   = renderSwatches(S
 document.getElementById('space-neutral-dark').innerHTML       = renderNeutralStrip(SPACE.neutralOnDark, 'on-dark opaque stops 100→600');
 document.getElementById('space-neutral-bright').innerHTML     = renderNeutralStrip(SPACE.neutralOnBright, 'on-bright opaque stops 100→600');
 document.getElementById('space-type-specimens').innerHTML     = renderTypeSpecimens(SPACE.type);
-document.getElementById('space-scale-bars').innerHTML         = renderScaleBars(SPACE.scale);
-document.getElementById('space-containers-list').innerHTML    = renderContainers(SPACE.containers);
-document.getElementById('space-ratio-grid').innerHTML         = renderRatios(SPACE.ratios);
+document.getElementById('core-scale-bars').innerHTML         = renderScaleBars(SPACE.scale);
+document.getElementById('core-containers-list').innerHTML    = renderContainers(SPACE.containers);
+document.getElementById('core-ratio-grid').innerHTML         = renderRatios(SPACE.ratios);
 document.getElementById('space-elevation-rows').innerHTML     = renderElevation(SPACE.elevation);
-document.getElementById('space-easing-content').innerHTML     = renderEasing();
-document.getElementById('space-duration-content').innerHTML   = renderDuration(SPACE.durations);
-document.getElementById('space-radius-content').innerHTML   = renderRadius(SPACE.radius);
-document.getElementById('space-borders-content').innerHTML  = renderBorders(SPACE.borders);
-document.getElementById('space-blur-content').innerHTML     = renderBlur(SPACE.blur, 'space');
-document.getElementById('space-zindex-content').innerHTML    = renderZIndex(SPACE.zIndex);
+document.getElementById('core-easing-content').innerHTML     = renderEasing();
+document.getElementById('core-duration-content').innerHTML   = renderDuration(SPACE.durations);
+document.getElementById('core-radius-content').innerHTML   = renderRadius(SPACE.radius);
+document.getElementById('core-borders-content').innerHTML  = renderBorders(SPACE.borders);
+document.getElementById('core-blur-content').innerHTML     = renderBlur(SPACE.blur, 'space');
+document.getElementById('core-zindex-content').innerHTML    = renderZIndex(SPACE.zIndex);
 
 // ── Mount all Seed ───────────────────────────────────────────────────────────
 document.getElementById('seed-brand-swatches').innerHTML      = renderSwatches(SEED.brand);
@@ -5074,16 +5029,7 @@ document.getElementById('seed-primary-swatches').innerHTML    = renderSwatches(S
 document.getElementById('seed-secondary-swatches').innerHTML  = renderSwatches(SEED.secondary);
 document.getElementById('seed-accent-swatches').innerHTML     = renderSwatches(SEED.accent);
 document.getElementById('seed-type-specimens').innerHTML      = renderTypeSpecimens(SEED.type);
-document.getElementById('seed-scale-bars').innerHTML          = renderScaleBars(SPACE.scale);
-document.getElementById('seed-containers-list').innerHTML     = renderContainers(SPACE.containers);
-document.getElementById('seed-ratio-grid').innerHTML          = renderRatios(SPACE.ratios);
-document.getElementById('seed-easing-content').innerHTML      = renderEasing();
-document.getElementById('seed-duration-content').innerHTML    = renderDuration(SPACE.durations);
-document.getElementById('seed-radius-content').innerHTML    = renderRadius(SPACE.radius);
-document.getElementById('seed-borders-content').innerHTML   = renderBorders(SPACE.borders);
 document.getElementById('seed-shadows-content').innerHTML   = renderShadows(SEED.shadows);
-document.getElementById('seed-blur-content').innerHTML      = renderBlur(SEED.blur, 'seed');
-document.getElementById('seed-zindex-content').innerHTML     = renderZIndex(SPACE.zIndex);
 
 // Init easing interactions
 initEasingSection();
@@ -5393,10 +5339,10 @@ function renderAlignStops() {
   </table>`;
 }
 
-document.getElementById('space-align-map').innerHTML        = renderAlignMap();
-document.getElementById('space-align-composites').innerHTML = renderAlignComposites();
-document.getElementById('space-align-stops').innerHTML      = renderAlignStops();
-document.getElementById('space-align-stage').innerHTML      = renderAlignStage();
+document.getElementById('core-align-map').innerHTML        = renderAlignMap();
+document.getElementById('core-align-composites').innerHTML = renderAlignComposites();
+document.getElementById('core-align-stops').innerHTML      = renderAlignStops();
+document.getElementById('core-align-stage').innerHTML      = renderAlignStage();
 
 // ── Agōn — brand tokens (worn by Meso+) ──────────────────────────────────────
 // Source: mesoplus-site/DESIGN.md front-matter. Not yet in the FOOO token build.
@@ -5441,6 +5387,16 @@ const SIDEBAR_SECTIONS = {
     Foundations: [
       { id: 'core-readability', num: '01', label: 'Readability' },
       { id: 'core-editorial',   num: '02', label: 'Editorial' },
+      { id: 'core-scale',       num: '03', label: 'Scale' },
+      { id: 'core-containers',  num: '04', label: 'Containers' },
+      { id: 'core-alignment',   num: '05', label: 'Alignment' },
+      { id: 'core-ratios',      num: '06', label: 'Aspect Ratios' },
+      { id: 'core-easing',      num: '07', label: 'Easing' },
+      { id: 'core-duration',    num: '08', label: 'Duration' },
+      { id: 'core-radius',      num: '09', label: 'Radius' },
+      { id: 'core-borders',     num: '10', label: 'Borders' },
+      { id: 'core-blur',        num: '11', label: 'Blur' },
+      { id: 'core-zindex',      num: '12', label: 'Z-Index' },
     ],
   },
   space: {
@@ -5456,17 +5412,7 @@ const SIDEBAR_SECTIONS = {
     { id: 'space-colors',     num: '01', label: 'Colors' },
     { id: 'space-contrast',   num: '02', label: 'Accessibility' },
     { id: 'space-typography', num: '03', label: 'Typography' },
-    { id: 'space-scale',      num: '04', label: 'Scale' },
-    { id: 'space-containers', num: '05', label: 'Containers' },
-    { id: 'space-alignment',  num: '06', label: 'Alignment' },
-    { id: 'space-ratios',     num: '07', label: 'Aspect Ratios' },
-    { id: 'space-elevation',  num: '08', label: 'Elevation' },
-    { id: 'space-easing',     num: '09', label: 'Easing' },
-    { id: 'space-duration',   num: '10', label: 'Duration' },
-    { id: 'space-radius',     num: '11', label: 'Radius' },
-    { id: 'space-borders',    num: '12', label: 'Borders' },
-    { id: 'space-blur',       num: '13', label: 'Blur' },
-    { id: 'space-zindex',     num: '14', label: 'Z-Index' },
+    { id: 'space-elevation',  num: '04', label: 'Elevation' },
     ],
   },
   agon: {
@@ -5488,18 +5434,9 @@ const SIDEBAR_SECTIONS = {
       { id: 'seed-brand',     num: 'A', label: 'Brand — soon' },
     ],
     Foundations: [
-    { id: 'seed-colors',      num: '01', label: 'Colors' },
-    { id: 'seed-typography',  num: '02', label: 'Typography' },
-    { id: 'seed-scale',       num: '03', label: 'Scale' },
-    { id: 'seed-containers',  num: '04', label: 'Containers' },
-    { id: 'seed-ratios',      num: '05', label: 'Aspect Ratios' },
-    { id: 'seed-easing',      num: '06', label: 'Easing' },
-    { id: 'seed-duration',    num: '07', label: 'Duration' },
-    { id: 'seed-radius',    num: '08', label: 'Radius' },
-    { id: 'seed-borders',   num: '09', label: 'Borders' },
-    { id: 'seed-shadows',   num: '10', label: 'Shadows' },
-    { id: 'seed-blur',      num: '11', label: 'Blur' },
-    { id: 'seed-zindex',    num: '12', label: 'Z-Index' },
+    { id: 'seed-colors',     num: '01', label: 'Colors' },
+    { id: 'seed-typography', num: '02', label: 'Typography' },
+    { id: 'seed-shadows',    num: '03', label: 'Shadows' },
     ],
   },
 };
