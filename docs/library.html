@@ -451,6 +451,36 @@
       margin-bottom: 8px;
     }
 
+    /* ── Focus demo — the ring the tokens describe, on Space ── */
+    .focus-demo {
+      font-family: Inter, sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1;
+      min-height: 44px;              /* --space-target-touch */
+      padding: 0 18px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 7px;
+      border: 1px solid rgba(251,251,251,0.18);
+      background: rgba(251,251,251,0.02);
+      color: #fbfbfb;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .focus-demo.is-primary { background: #ceff1a; border-color: #ceff1a; color: #0f0f0f; }
+    .focus-demo.is-link { background: none; border-color: transparent; text-decoration: underline; }
+
+    .focus-demo:focus-visible {
+      outline: 2px solid #ceff1a;    /* --space-focus-ring / --space-focus-width */
+      outline-offset: 2px;           /* --space-focus-offset */
+    }
+
+    .focus-demo.is-primary:focus-visible {
+      outline-color: #fbfbfb;        /* the ring must contrast with the control, not vanish into it */
+    }
+
     /* ── Contrast table ── */
     .contrast-table td, .contrast-table th { padding-right: 10px; }
 
@@ -2973,11 +3003,18 @@
       </section>
 
       <section class="ref-section" id="space-contrast">
-        <p class="ref-section-eyebrow">02 — Contrast</p>
-        <h2 class="ref-section-title">WCAG 2.2 contrast</h2>
+        <p class="ref-section-eyebrow">02 — Accessibility</p>
+        <h2 class="ref-section-title">WCAG 2.2</h2>
         <hr class="ref-divider">
 
         <p class="brand-lede">
+          Conformance is a property of the tokens or it is a promise nobody keeps. The three
+          criteria below are the ones a design system can actually own — contrast, focus and
+          target size. Everything else in WCAG is decided in markup, not here.
+        </p>
+
+        <p class="spec-block-title">Contrast · 1.4.3 AA</p>
+        <p class="align-caption">
           Every ratio below is computed from the token values on this page, not typed in.
           Change a hex and the verdicts change with it — a contrast table that can be edited
           independently of the palette is a table that will eventually be wrong.
@@ -3019,6 +3056,68 @@
           including the 3:1 floor for non-text UI. “Illustration and orbital artwork only” was
           written from taste in <a href="#space-accent">D — Accent doctrine</a>; the arithmetic
           independently arrives at the same restriction.
+        </div>
+
+        <p class="spec-block-title" style="margin-top:44px;">Focus · 2.4.11 AA · 2.4.13 AAA · 1.4.11 AA</p>
+        <p class="align-caption">
+          Space had no focus token at all, which is the largest WCAG 2.2 gap in the system —
+          most of what 2.2 added is about focus. Tab into the buttons below to see the ring.
+        </p>
+
+        <div class="spec-panel" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+          <button type="button" class="focus-demo is-primary">Primary action</button>
+          <button type="button" class="focus-demo">Secondary</button>
+          <a class="focus-demo is-link" href="#space-contrast">A link</a>
+        </div>
+
+        <div style="margin-top:24px;">
+          <div class="api-row">
+            <p class="api-name">--space-focus-ring</p>
+            <p class="api-desc"><b>Photon.</b> 16.38:1 on the ground, far past the 3:1 that 1.4.11 asks of a focus indicator. Agōn substitutes Signal Green at 5.65:1; both clear it comfortably.</p>
+          </div>
+          <div class="api-row">
+            <p class="api-name">--space-focus-width</p>
+            <p class="api-desc"><code>2px</code>. 2.4.13 wants a perimeter of at least 2px around the component — 1px is the common default and it does not qualify.</p>
+          </div>
+          <div class="api-row">
+            <p class="api-name">--space-focus-offset</p>
+            <p class="api-desc"><code>2px</code>. Separates the ring from the control so it reads against both the control and the surface behind it.</p>
+          </div>
+        </div>
+
+        <div class="brand-note">
+          <strong>Focus is exempt from the one-accent rule.</strong> The accent doctrine says one
+          accent decides a view, and a Photon focus ring would appear to break it. It does not:
+          focus is transient and user-invoked, never present at rest, and it belongs to the
+          browser's conversation with the reader rather than to the composition. It is a system
+          signal, not an accent. That exemption is the resolution to the conflict — it is not a
+          licence to reuse Photon elsewhere in the same view.
+          <br><strong>Standing rule.</strong> Never <code>outline: none</code> without a
+          replacement indicator in the same rule. 2.4.11 also requires that a focused element is
+          not hidden behind sticky headers or footers — Space's fixed sidebar and any future
+          sticky bar have to leave the focused control visible.
+        </div>
+
+        <p class="spec-block-title" style="margin-top:44px;">Target size · 2.5.8 AA</p>
+        <p class="align-caption">
+          New in WCAG 2.2, and the scale already answers it: the 24 minimum <em>is</em> a rung.
+        </p>
+
+        <div class="api-row">
+          <p class="api-name">--space-target-min</p>
+          <p class="api-desc"><code>24px</code> — the <code>lg</code> rung. The AA floor for any pointer target. Not a new number; the rung that was already there, given a name.</p>
+        </div>
+        <div class="api-row">
+          <p class="api-name">--space-target-touch</p>
+          <p class="api-desc"><code>44px</code> — the floor for touch-primary surfaces. Above WCAG, matching platform guidance. Meso+ already mandates it, so Agōn inherits this as its default rather than 24.</p>
+        </div>
+
+        <div class="brand-note">
+          <strong>24 is a floor, not a target.</strong> 2.5.8 exempts inline links inside a
+          sentence, controls whose size is set by the user agent, and cases where the presentation
+          is essential — but a 20px icon button is none of those. Where a control must render
+          smaller, give it a transparent hit area that reaches the floor rather than shrinking
+          the target.
         </div>
       </section>
 
@@ -5027,7 +5126,7 @@ const SIDEBAR_SECTIONS = {
     ],
     Foundations: [
     { id: 'space-colors',     num: '01', label: 'Colors' },
-    { id: 'space-contrast',   num: '02', label: 'Contrast' },
+    { id: 'space-contrast',   num: '02', label: 'Accessibility' },
     { id: 'space-typography', num: '03', label: 'Typography' },
     { id: 'space-scale',      num: '04', label: 'Scale' },
     { id: 'space-containers', num: '05', label: 'Containers' },
