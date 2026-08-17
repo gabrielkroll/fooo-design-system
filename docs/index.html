@@ -316,7 +316,7 @@
     .band-panel {
       border-radius: 12px;
       padding: var(--scale-8);
-      min-height: 222px;
+      min-height: 360px;
       display: flex; flex-direction: column; justify-content: space-between;
       text-decoration: none;
       transition: filter 220ms ease;
@@ -335,6 +335,27 @@
       font-size: 11px; font-weight: 500;
       letter-spacing: 0.4px; text-transform: uppercase;
     }
+
+    .band-body {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: var(--scale-5);
+    }
+
+    .band-meta {
+      /* Three lines plus the rule's padding — box-sizing is border-box, so this
+         is the full box. Keeps the chip rows level across cards whose meta wraps
+         to different depths. */
+      min-height: 68px;
+      margin-top: var(--scale-7);
+      padding-top: var(--scale-5);
+      border-top: 1px solid;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .band-meta b { font-weight: 500; }
 
     .band-chips { display: flex; gap: 5px; margin-top: var(--scale-7); }
     .band-chip { width: 22px; height: 22px; border-radius: 5px; }
@@ -552,51 +573,6 @@
     </div>
   </section>
 
-  <!-- ══ Brand band ══ -->
-  <section class="wrap" style="padding-top:0;" aria-label="Brand overview">
-    <div class="band">
-      <a class="band-panel" href="library.html#space" style="background:#0f0f0f;color:#fbfbfb;">
-        <div>
-          <p class="band-role" style="color:rgba(251,251,251,0.52)">Open Orbit Studio</p>
-          <p class="band-name">Space</p>
-        </div>
-        <div class="band-chips">
-          <span class="band-chip" style="background:#ceff1a"></span>
-          <span class="band-chip" style="background:#cc4325"></span>
-          <span class="band-chip" style="background:#de6449"></span>
-          <span class="band-chip" style="background:#54428e"></span>
-          <span class="band-chip" style="background:#087ca7"></span>
-        </div>
-      </a>
-      <a class="band-panel" href="library.html#agon" style="background:#141414;color:#f6f6f6;">
-        <div>
-          <p class="band-role" style="color:rgba(246,246,246,0.52)">Meso+</p>
-          <p class="band-name">Agōn</p>
-        </div>
-        <div class="band-chips">
-          <span class="band-chip" style="background:#779632"></span>
-          <span class="band-chip" style="background:#bed18a"></span>
-          <span class="band-chip" style="background:#2e450e"></span>
-          <span class="band-chip" style="background:#f5c842"></span>
-          <span class="band-chip" style="background:#ffe8a0"></span>
-        </div>
-      </a>
-      <a class="band-panel" href="library.html#seed" style="background:#47303d;color:#fcfcfa;">
-        <div>
-          <p class="band-role" style="color:rgba(252,252,250,0.56)">fabaorigin.com</p>
-          <p class="band-name">Seed</p>
-        </div>
-        <div class="band-chips">
-          <span class="band-chip" style="background:#ceff1a"></span>
-          <span class="band-chip" style="background:#216869"></span>
-          <span class="band-chip" style="background:#aaa95a"></span>
-          <span class="band-chip" style="background:#82816d"></span>
-          <span class="band-chip" style="background:#fcfcfa"></span>
-        </div>
-      </a>
-    </div>
-  </section>
-
   <!-- ══ Brands ══ -->
   <section class="wrap" id="brands">
     <p class="eyebrow">01 — Brands</p>
@@ -607,35 +583,71 @@
       voice and anti-references. Nothing structural moves.
     </p>
 
-    <div class="grid-3">
-      <a class="card" href="library.html#space">
-        <p class="card-kicker">Primary</p>
-        <p class="card-title">Space</p>
-        <p class="card-body">Dark-mode, near-black ground, one signal accent. Metropolis · Inter · IBM Plex Mono.</p>
-        <p class="card-meta">
-          <b>Worn by</b> Open Orbit Studio, gabrielkroll.com<br>
-          <b>State</b> Brand + foundations complete
-        </p>
+    <div class="band">
+      <a class="band-panel" href="library.html#space" style="background:#0f0f0f;color:#fbfbfb;">
+        <div>
+          <p class="band-role" style="color:rgba(251,251,251,0.52)">Primary</p>
+          <p class="band-name">Space</p>
+          <p class="band-body" style="color:rgba(251,251,251,0.74)">Dark-mode, near-black ground, one signal accent. Metropolis · Inter · IBM Plex Mono.</p>
+        </div>
+        <div>
+          <div class="band-chips">
+            <span class="band-chip" style="background:#ceff1a"></span>
+            <span class="band-chip" style="background:#cc4325"></span>
+            <span class="band-chip" style="background:#de6449"></span>
+            <span class="band-chip" style="background:#54428e"></span>
+            <span class="band-chip" style="background:#087ca7"></span>
+          </div>
+          <p class="band-meta" style="border-color:rgba(251,251,251,0.18);color:rgba(251,251,251,0.52)">
+            <b style="color:rgba(251,251,251,0.74)">Worn by</b> Open Orbit Studio, gabrielkroll.com<br>
+            <b style="color:rgba(251,251,251,0.74)">State</b> Brand + foundations complete
+          </p>
+        </div>
       </a>
-      <a class="card" href="library.html#agon">
-        <p class="card-kicker">Instrument</p>
-        <p class="card-title">Agōn</p>
-        <p class="card-body">Instrument register. Mono type, one green signal, one gold rest signal, flat construction. DM Mono · Instrument Serif.</p>
-        <p class="card-meta">
-          <b>Worn by</b> Meso+<br>
-          <b>State</b> Documented — not yet in the token build
-        </p>
+
+      <a class="band-panel" href="library.html#agon" style="background:#141414;color:#f6f6f6;">
+        <div>
+          <p class="band-role" style="color:rgba(246,246,246,0.52)">Instrument</p>
+          <p class="band-name">Agōn</p>
+          <p class="band-body" style="color:rgba(246,246,246,0.74)">Instrument register. Mono type, one green signal, one gold rest signal, flat construction. DM Mono · Instrument Serif.</p>
+        </div>
+        <div>
+          <div class="band-chips">
+            <span class="band-chip" style="background:#779632"></span>
+            <span class="band-chip" style="background:#bed18a"></span>
+            <span class="band-chip" style="background:#2e450e"></span>
+            <span class="band-chip" style="background:#f5c842"></span>
+            <span class="band-chip" style="background:#ffe8a0"></span>
+          </div>
+          <p class="band-meta" style="border-color:rgba(246,246,246,0.18);color:rgba(246,246,246,0.52)">
+            <b style="color:rgba(246,246,246,0.74)">Worn by</b> Meso+<br>
+            <b style="color:rgba(246,246,246,0.74)">State</b> Documented — not yet in the token build
+          </p>
+        </div>
       </a>
-      <a class="card" href="library.html#seed">
-        <p class="card-kicker">Organic</p>
-        <p class="card-title">Seed</p>
-        <p class="card-body">Organic and earth-toned, for nature-aligned and regenerative contexts. Exo 2 · Inter · IBM Plex Mono.</p>
-        <p class="card-meta">
-          <b>Worn by</b> fabaorigin.com<br>
-          <b>State</b> Foundations only — brand pending
-        </p>
+
+      <a class="band-panel" href="library.html#seed" style="background:#47303d;color:#fcfcfa;">
+        <div>
+          <p class="band-role" style="color:rgba(252,252,250,0.56)">Organic</p>
+          <p class="band-name">Seed</p>
+          <p class="band-body" style="color:rgba(252,252,250,0.78)">Organic and earth-toned, for nature-aligned and regenerative contexts. Exo 2 · Inter · IBM Plex Mono.</p>
+        </div>
+        <div>
+          <div class="band-chips">
+            <span class="band-chip" style="background:#ceff1a"></span>
+            <span class="band-chip" style="background:#216869"></span>
+            <span class="band-chip" style="background:#aaa95a"></span>
+            <span class="band-chip" style="background:#82816d"></span>
+            <span class="band-chip" style="background:#fcfcfa"></span>
+          </div>
+          <p class="band-meta" style="border-color:rgba(252,252,250,0.22);color:rgba(252,252,250,0.56)">
+            <b style="color:rgba(252,252,250,0.78)">Worn by</b> fabaorigin.com<br>
+            <b style="color:rgba(252,252,250,0.78)">State</b> Foundations only — brand pending
+          </p>
+        </div>
       </a>
     </div>
+
   </section>
 
   <!-- ══ Start here ══ -->
