@@ -8,6 +8,11 @@ const baseSets = ["core", "semantic"];
 const themes = ["light", "dark"];
 const singleFileSource = "tokens/tokens.json";
 
+// Brand token sets live beside the core export. Each is exported from its own
+// Figma library and builds independently, so a brand can ship without waiting
+// on the others.
+const brands = ["space", "seed", "agon"];
+
 function tokenFiles(setNames) {
   return setNames.map((setName) => `tokens/${setName}.json`);
 }
@@ -104,8 +109,40 @@ async function buildTheme(themeName) {
   await sd.buildAllPlatforms();
 }
 
+async function buildBrand(brand) {
+  const source = `tokens/${brand}.json`;
+  const sd = new StyleDictionary({
+    source: [source],
+    preprocessors: ["tokens-studio"],
+    platforms: {
+      css: {
+        transformGroup: "tokens-studio",
+        transforms: ["name/kebab"],
+        buildPath: "dist/css/",
+        files: [{ destination: `${brand}.css`, format: "css/variables" }]
+      },
+      js: {
+        transformGroup: "tokens-studio",
+        transforms: ["name/kebab"],
+        buildPath: "dist/js/",
+        files: [{ destination: `${brand}.json`, format: "json/nested" }]
+      }
+    }
+  });
+
+  await sd.buildAllPlatforms();
+  writeCleanJsonFile(source, `dist/clean/${brand}.json`);
+}
+
 if (existsSync(singleFileSource)) {
   await buildSingleSource();
 } else {
   await Promise.all(themes.map(buildTheme));
+}
+
+// Brands build on top of the core export, not instead of it.
+const presentBrands = brands.filter((b) => existsSync(`tokens/${b}.json`));
+await Promise.all(presentBrands.map(buildBrand));
+if (presentBrands.length) {
+  console.log(`\nbrands\n${presentBrands.map((b) => `✔︎ dist/css/${b}.css`).join("\n")}`);
 }
