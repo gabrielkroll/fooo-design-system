@@ -229,6 +229,66 @@
       border: 1px solid rgba(15,15,15,0.14);
     }
 
+    .derive-row {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 16px;
+      padding: 13px 0;
+      border-top: 1px solid var(--s-border);
+    }
+
+    .derive-row:first-child { border-top: none; padding-top: 0; }
+
+    .derive-key {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--s-text-subtle);
+      padding-top: 2px;
+      line-height: 1.5;
+    }
+
+    .derive-val {
+      font-size: 14px;
+      line-height: 1.62;
+      color: var(--s-text-muted);
+    }
+
+    .derive-val strong { color: var(--s-text); font-weight: 500; }
+
+    @media (max-width: 700px) {
+      .derive-row { grid-template-columns: 1fr; gap: 5px; }
+    }
+
+    .repo-table { table-layout: fixed; }
+    .repo-table th, .repo-table td { text-align: left; padding-right: 14px; }
+    .repo-table th:nth-child(1), .repo-table td:nth-child(1) { width: 24%; }
+    .repo-table th:nth-child(2), .repo-table td:nth-child(2) { width: 13%; }
+    .repo-table th:nth-child(3), .repo-table td:nth-child(3) { width: 22%; }
+    .repo-table td { font-size: 13px; line-height: 1.55; padding-top: 11px; padding-bottom: 11px; }
+    .repo-table code { font-size: 11.5px; }
+
+    @media (max-width: 760px) {
+      .repo-table, .repo-table tbody, .repo-table tr, .repo-table td, .repo-table th { display: block; width: auto !important; }
+      .repo-table thead { display: none; }
+      .repo-table tr { padding: 12px 0; border-bottom: 1px solid var(--s-border); }
+    }
+
+    .brand-note {
+      border-left: 2px solid var(--s-border-mid);
+      padding: 3px 0 3px 14px;
+      margin-top: 24px;
+      max-width: 620px;
+      font-size: 13px;
+      line-height: 1.62;
+      color: var(--s-text-subtle);
+    }
+
+    .brand-note strong { color: var(--s-text-muted); font-weight: 500; }
+
+    .brand-note strong { color: var(--s-text-muted); font-weight: 500; }
+
     .rail-source {
       flex: none;
       margin-top: 0;
@@ -574,21 +634,19 @@
   </a>
 
   <div class="seg seg-3">
-    <a class="seg-item is-current" href="./" aria-current="page">Overview</a>
+    <a class="seg-item" href="./">Overview</a>
     <a class="seg-item" href="library.html">Library</a>
-    <a class="seg-item" href="repositories.html">Repos</a>
+    <a class="seg-item is-current" href="repositories.html" aria-current="page">Repos</a>
   </div>
 
   <div class="rail-scroll">
   <div class="sidebar-group">
     <div class="sidebar-group-label">On this page</div>
-    <a class="sidebar-link is-here" href="#top"><span class="sidebar-link-num">00</span>Introduction</a>
-    <a class="sidebar-link" href="#brands"><span class="sidebar-link-num">01</span>Brands</a>
-    <a class="sidebar-link" href="#start"><span class="sidebar-link-num">02</span>Start here</a>
-    <a class="sidebar-link" href="#contents"><span class="sidebar-link-num">03</span>Contents</a>
-    <a class="sidebar-link" href="#state"><span class="sidebar-link-num">04</span>State</a>
+    <a class="sidebar-link is-here" href="#top"><span class="sidebar-link-num">00</span>Adoption</a>
+    <a class="sidebar-link" href="#repos"><span class="sidebar-link-num">01</span>Repositories</a>
+    <a class="sidebar-link" href="#gap"><span class="sidebar-link-num">02</span>The gap</a>
+    <a class="sidebar-link" href="#this-site"><span class="sidebar-link-num">03</span>This site</a>
   </div>
-
   </div>
 
   <div class="sidebar-group rail-source">
@@ -600,227 +658,122 @@
 <div class="content">
 <main id="main">
 
-  <!-- ══ Hero ══ -->
   <section class="wrap" id="top">
-    <h1 class="hero-title">One system. Three brands. Four products.</h1>
+    <h1 class="hero-title" style="font-size:clamp(36px,5vw,54px);max-width:20ch;">Who is actually wearing the system.</h1>
     <p class="hero-lede">
-      FOOO — for Faba Origin and Open Orbit — is the design system behind Open Orbit
-      Studio, gabrielkroll.com, Meso+ and fabaorigin.com. Tokens are authored in Figma,
-      versioned as JSON in this repo, and documented here: brand definition and design
-      language alongside the primitives.
+      A design system is only worth what its consumers have adopted. This page is the honest
+      count: which repository wears which brand, how tokens reach it, and what still arrives
+      by hand.
     </p>
-    <div class="btn-row">
-      <a class="btn" href="library.html">Open the library</a>
-      <a class="btn is-ghost" href="https://github.com/gabrielkroll/fooo-design-system">Tokens on GitHub</a>
-    </div>
   </section>
 
-  <!-- ══ Brands ══ -->
-  <section class="wrap" id="brands">
-    <p class="eyebrow">01 — Brands</p>
-    <h2 class="sec-title">Three brands, one skeleton</h2>
+  <section class="wrap" id="repos">
+    <p class="eyebrow">01 — Repositories</p>
+    <h2 class="sec-title">Six repositories, one system</h2>
     <p class="sec-lede">
-      Scale, containers, ratios, easing, duration, radius and layering are identical
-      everywhere. A brand owns colour, type, elevation — and its own positioning,
-      voice and anti-references. Nothing structural moves.
+      Every one is its own git repository with its own remote. None are submodules, and there
+      is no root package — so tooling that assumes a monorepo does not apply here.
     </p>
 
-    <a class="band-core" href="library.html#core">
-      <div class="band-core-head">
-        <div>
-          <p class="band-role" style="color:var(--s-text-subtle)">Shared by all three</p>
-          <p class="band-name" style="color:var(--s-text)">Core</p>
-        </div>
-        <div class="band-chips band-chips-core">
-          <span class="band-chip" style="background:#0f0f0f"></span>
-          <span class="band-chip" style="background:#393939"></span>
-          <span class="band-chip" style="background:#666666"></span>
-          <span class="band-chip" style="background:#8a8a8a"></span>
-          <span class="band-chip" style="background:#bebebe"></span>
-          <span class="band-chip" style="background:#fbfbfb"></span>
-        </div>
+    <table class="stops-table repo-table">
+      <thead>
+        <tr><th>Repository</th><th>Brand</th><th>Tokens arrive by</th><th>State</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="is-num">fooo-design-system</td>
+          <td>—</td>
+          <td>source</td>
+          <td>Publishes this site. Holds <code>tokens/</code> and the build.</td>
+        </tr>
+        <tr>
+          <td class="is-num">gabrielkroll-site</td>
+          <td><span class="repo-dot" style="background:#ceff1a"></span>Space</td>
+          <td class="is-hand">hand-copied hex</td>
+          <td><code>app/lib/tokens.ts</code>, <code>globals.css</code>. On <code>feat/hero-mesh</code>, not main.</td>
+        </tr>
+        <tr>
+          <td class="is-num">openorbit-site</td>
+          <td><span class="repo-dot" style="background:#ceff1a"></span>Space</td>
+          <td class="is-hand">hand-copied hex</td>
+          <td>Near-duplicate of the above. On <code>feat/ai-sprint-reframe</code>, not main.</td>
+        </tr>
+        <tr>
+          <td class="is-num">mesoplus-site</td>
+          <td><span class="repo-dot" style="background:#779632"></span>Agōn</td>
+          <td class="is-hand">hand-copied, 26 inline defs</td>
+          <td>No build step. Uses its own names — <code>--space-text-dark-600</code>.</td>
+        </tr>
+        <tr>
+          <td class="is-num">mesoplus</td>
+          <td><span class="repo-dot" style="background:#779632"></span>Agōn</td>
+          <td class="is-none">does not use FOOO</td>
+          <td>The app. Vanilla JS, single file. Agōn grew here before it was a brand.</td>
+        </tr>
+        <tr>
+          <td class="is-num">permaculture-analyzer</td>
+          <td>—</td>
+          <td>—</td>
+          <td>No remote configured. Outside the system.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="wrap" id="gap">
+    <p class="eyebrow">02 — The gap</p>
+    <h2 class="sec-title">Everything is importable. Nothing is imported.</h2>
+    <p class="sec-lede">
+      The alias layer exists and every brand emits it. No consumer imports it yet, so every
+      value in the four repositories above was typed by hand and will not move when Figma does.
+    </p>
+
+    <div class="derive-row">
+      <div class="derive-key">What exists</div>
+      <div class="derive-val">
+        <code>dist/css/&lt;brand&gt;.public.css</code> for Space, Agōn and Seed — a stable public
+        API over the generated names, plus <code>core.css</code> holding the shared ramps.
+        Guarded: the build fails if a semantic slot points at a token that no longer exists.
       </div>
-      <p class="band-body" style="color:var(--s-text-muted);max-width:62ch;">
-        Scale, containers, alignment, aspect ratios, easing, duration, radius, borders, blur
-        and layering — plus the neutral and text ramps above. Owned once, inherited by every
-        brand. No colour of its own, which is the point.
-      </p>
-    </a>
-
-    <div class="band">
-      <a class="band-panel" href="library.html#space" style="background:#0f0f0f;color:#fbfbfb;">
-        <div>
-          <p class="band-name">Space</p>
-          <p class="band-body" style="color:rgba(251,251,251,0.74)">Dark-mode, near-black ground, one signal accent. Metropolis · Inter · IBM Plex Mono.</p>
-        </div>
-        <div>
-          <div class="band-chips">
-            <span class="band-chip" style="background:#ceff1a"></span>
-            <span class="band-chip" style="background:#cc4325"></span>
-            <span class="band-chip" style="background:#de6449"></span>
-            <span class="band-chip" style="background:#54428e"></span>
-            <span class="band-chip" style="background:#087ca7"></span>
-          </div>
-          <p class="band-meta" style="border-color:rgba(251,251,251,0.18);color:rgba(251,251,251,0.52)">
-            <b style="color:rgba(251,251,251,0.74)">Worn by</b> Open Orbit Studio, gabrielkroll.com<br>
-            <b style="color:rgba(251,251,251,0.74)">State</b> Brand + foundations complete
-          </p>
-        </div>
-      </a>
-
-      <a class="band-panel" href="library.html#agon" style="background:#141414;color:#f6f6f6;">
-        <div>
-          <p class="band-name">Agōn</p>
-          <p class="band-body" style="color:rgba(246,246,246,0.74)">Instrument register. Mono type, one green signal, one gold rest signal, flat construction. DM Mono · Instrument Serif.</p>
-        </div>
-        <div>
-          <div class="band-chips">
-            <span class="band-chip" style="background:#779632"></span>
-            <span class="band-chip" style="background:#bed18a"></span>
-            <span class="band-chip" style="background:#2e450e"></span>
-            <span class="band-chip" style="background:#f5c842"></span>
-            <span class="band-chip" style="background:#ffe8a0"></span>
-          </div>
-          <p class="band-meta" style="border-color:rgba(246,246,246,0.18);color:rgba(246,246,246,0.52)">
-            <b style="color:rgba(246,246,246,0.74)">Worn by</b> Meso+<br>
-            <b style="color:rgba(246,246,246,0.74)">State</b> Documented — not yet in the token build
-          </p>
-        </div>
-      </a>
-
-      <a class="band-panel" href="library.html#seed" style="background:#47303d;color:#fcfcfa;">
-        <div>
-          <p class="band-name">Seed</p>
-          <p class="band-body" style="color:rgba(252,252,250,0.78)">Organic and earth-toned, for nature-aligned and regenerative contexts. Exo 2 · Inter · IBM Plex Mono.</p>
-        </div>
-        <div>
-          <div class="band-chips">
-            <span class="band-chip" style="background:#ceff1a"></span>
-            <span class="band-chip" style="background:#216869"></span>
-            <span class="band-chip" style="background:#aaa95a"></span>
-            <span class="band-chip" style="background:#82816d"></span>
-            <span class="band-chip" style="background:#fcfcfa"></span>
-          </div>
-          <p class="band-meta" style="border-color:rgba(252,252,250,0.22);color:rgba(252,252,250,0.56)">
-            <b style="color:rgba(252,252,250,0.78)">Worn by</b> fabaorigin.com<br>
-            <b style="color:rgba(252,252,250,0.78)">State</b> Foundations only — brand pending
-          </p>
-        </div>
-      </a>
     </div>
-
-  </section>
-
-  <!-- ══ Start here ══ -->
-  <section class="wrap" id="start">
-    <p class="eyebrow">02 — Start here</p>
-    <h2 class="sec-title">Pick the job you're doing</h2>
-    <p class="sec-lede">
-      The same pages serve design and code. These are the shortest routes in.
-    </p>
-
-    <div class="grid-3">
-      <a class="card" href="library.html#space-typography">
-        <p class="card-kicker">Designing a screen</p>
-        <p class="card-title is-sm">Scale, type, ratios</p>
-        <p class="card-body">Snap every size to the scale. On-token type only. One radius, one of six sanctioned aspect ratios.</p>
-      </a>
-      <a class="card" href="library.html#space-colors">
-        <p class="card-kicker">Building it</p>
-        <p class="card-title is-sm">Tokens and values</p>
-        <p class="card-body">Hex, rgba, easing curves and durations, ready to copy. Machine-readable exports live in <code>dist/clean/</code>.</p>
-      </a>
-      <a class="card" href="library.html#space-voice">
-        <p class="card-kicker">Writing the words</p>
-        <p class="card-title is-sm">Voice and anti-references</p>
-        <p class="card-body">Each brand carries a voice with in-voice and out-of-voice samples, plus the references it is defined against.</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- ══ What's documented ══ -->
-  <section class="wrap" id="contents">
-    <p class="eyebrow">03 — Contents</p>
-    <h2 class="sec-title">What the library holds</h2>
-    <p class="sec-lede">
-      Two layers per brand. Brand answers <em>why it looks like this</em>; foundations
-      answer <em>what the value is</em>.
-    </p>
-
-    <div class="grid-2">
-      <div>
-        <p class="col-label">Brand — A to E</p>
-        <p class="col-note">Positioning, voice and the rules a surface is judged against. Written per brand, not shared.</p>
-        <div class="chips">
-          <a class="chip" href="library.html#space-brand">Positioning</a>
-          <a class="chip" href="library.html#space-voice">Voice</a>
-          <a class="chip" href="library.html#space-language">Design language</a>
-          <a class="chip" href="library.html#space-accent">Accent doctrine</a>
-          <a class="chip" href="library.html#space-anti">Anti-references</a>
-        </div>
+    <div class="derive-row">
+      <div class="derive-key">What is missing</div>
+      <div class="derive-val">
+        <strong>Delivery.</strong> <code>dist/</code> is gitignored, so those files exist only
+        where the build ran. Two candidates, neither built: the build writes each consumer's
+        file across sibling directories, or a CI job commits it into each repository. See
+        <code>PIPELINE.md</code>.
       </div>
-      <div>
-        <p class="col-label">Foundations — 01 to 12</p>
-        <p class="col-note">The primitives. Identical across brands except colour, type and elevation.</p>
-        <div class="chips">
-          <a class="chip" href="library.html#space-colors">Colors</a>
-          <a class="chip" href="library.html#space-typography">Typography</a>
-          <a class="chip" href="library.html#core-scale">Scale</a>
-          <a class="chip" href="library.html#core-containers">Containers</a>
-          <a class="chip" href="library.html#core-ratios">Aspect ratios</a>
-          <a class="chip" href="library.html#space-elevation">Elevation</a>
-          <a class="chip" href="library.html#core-easing">Easing</a>
-          <a class="chip" href="library.html#core-duration">Duration</a>
-          <a class="chip" href="library.html#core-radius">Radius</a>
-          <a class="chip" href="library.html#core-borders">Borders</a>
-          <a class="chip" href="library.html#core-blur">Blur</a>
-          <a class="chip" href="library.html#core-zindex">Z-index</a>
-        </div>
+    </div>
+    <div class="derive-row">
+      <div class="derive-key">What adoption costs</div>
+      <div class="derive-val">
+        Per-repo hex-to-var swaps are the long pole, not the plumbing. gabrielkroll-site and
+        openorbit-site carry near-identical <code>:root</code> blocks, so that is one diff
+        applied twice. mesoplus-site is 26 definitions in one file.
       </div>
     </div>
   </section>
 
-  <!-- ══ System state ══ -->
-  <section class="wrap" id="state">
-    <p class="eyebrow">04 — State</p>
-    <h2 class="sec-title">What is wired, and what is not</h2>
+  <section class="wrap" id="this-site">
+    <p class="eyebrow">03 — This site</p>
+    <h2 class="sec-title">The documentation is not a product</h2>
     <p class="sec-lede">
-      A design system that overstates its own readiness costs more than one that
-      does not exist. Current honest state.
+      design.openorbit.studio wears none of the three brands. It is a tool for reading the
+      system, not an example of it.
     </p>
 
-    <div class="state-row">
-      <p class="state-flag"><span class="state-dot" style="background:#4f7016"></span>Working</p>
-      <p class="state-what">Token build</p>
-      <p class="state-detail">Figma → <code>tokens/tokens.json</code> → Style Dictionary → <code>dist/{css,js,clean}</code>. Run with <code>npm run build</code>.</p>
-    </div>
-    <div class="state-row">
-      <p class="state-flag"><span class="state-dot" style="background:#4f7016"></span>Working</p>
-      <p class="state-what">Documentation</p>
-      <p class="state-detail">This site. Brand and foundations for Space, brand and deltas for Agōn, foundations for Seed.</p>
-    </div>
-    <div class="state-row">
-      <p class="state-flag"><span class="state-dot" style="background:#cc4325"></span>Not wired</p>
-      <p class="state-what">Distribution to consumers</p>
-      <p class="state-detail">Every consumer holds hand-copied hex literals. No import, no package, no symlink. See <code>PIPELINE.md</code>.</p>
-    </div>
-    <div class="state-row">
-      <p class="state-flag"><span class="state-dot" style="background:#de6449"></span>Decided</p>
-      <p class="state-what">Public alias layer</p>
-      <p class="state-detail">Generated Figma names cannot be the public API — one rename breaks every consumer. Hand-authored aliases over the generated output. Not built.</p>
-    </div>
-    <div class="state-row">
-      <p class="state-flag"><span class="state-dot" style="background:#cc4325"></span>Missing</p>
-      <p class="state-what">Agōn tokens</p>
-      <p class="state-detail">No <code>tokens/agon.json</code>. Values live in <code>mesoplus-site/DESIGN.md</code> front-matter and inline CSS.</p>
-    </div>
-    <div class="state-row">
-      <p class="state-flag"><span class="state-dot" style="background:#8a8a8a"></span>Pending</p>
-      <p class="state-what">Seed brand definition</p>
-      <p class="state-detail">Foundations are safe to build against. Positioning, voice and design language wait on the offer behind fabaorigin.com.</p>
+    <div class="brand-note" style="margin-top:0;">
+      <strong>Its chrome is its own surface.</strong> Light ground, Inter for reading, IBM Plex
+      Mono for labels and every number on the page. That last choice contradicts Core 2.0, which
+      rations mono to code, data and measurement and moved eye brows to Inter — and it stands,
+      deliberately: this site is closer to an instrument panel than to a brand surface, and
+      nearly every label on it sits beside a token value.
+      <br><strong>What it does follow.</strong> Core's geometry — the scale, the 942 measure,
+      the containers. So the site is built on the system without claiming to be a specimen of
+      any brand in it.
     </div>
   </section>
-
 </main>
 
 <footer class="footer">

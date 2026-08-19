@@ -307,6 +307,20 @@
       overflow-y: auto;
     }
 
+    .seg-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .seg-3 .seg-item { font-size: 12px; padding: 6px 4px; }
+
+    .repo-table td { vertical-align: top; }
+    .repo-table .is-hand { color: #a8331c; }
+    .repo-table .is-none { color: var(--s-text-subtle); }
+
+    .repo-dot {
+      width: 9px; height: 9px; border-radius: 2px;
+      display: inline-block; margin-right: 7px; vertical-align: 0;
+      border: 1px solid rgba(15,15,15,0.14);
+    }
+
     .rail-source {
       flex: none;
       margin-top: 0;
@@ -2686,9 +2700,10 @@
       FOOO DS
     </a>
 
-    <div class="seg">
+    <div class="seg seg-3">
       <a class="seg-item" href="./">Overview</a>
       <a class="seg-item is-current" href="library.html" aria-current="page">Library</a>
+      <a class="seg-item" href="repositories.html">Repos</a>
     </div>
 
     <div class="rail-scroll">
